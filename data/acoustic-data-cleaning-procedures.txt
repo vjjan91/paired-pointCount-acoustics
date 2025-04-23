@@ -1,0 +1,19 @@
+Metadata prior to cleaning up the acoustic data
+
+For 2024-Winter:
+- Firmware-based config failed so recordings were made setting switch to Default for simultaneous 10 minute recording (each saved as a single file).
+- Filename convention slightly different from 2024 Summer. Filenames indicate data_startTime_GridID in that sequence. 
+- F14 grid sampled on 17 Dec 2024 -- no AudioMoth recording available, but point count done.
+- The time and GridID as mentioned in the filename and the Excel file are correct and have been verified--in case any minor differences are noticed in the initial voice note at the start.
+
+For 2024-Summer:
+- All filenames end with GridID_startTime (before the .MOV), e.g., the file 20240423_080338_N11_0803.WAV refers to the GRID centroid N11 and 10-min point count start time of 0803 h. 
+- Filenames starting with 19700101_ are recordings made under default mode due to custom setting malfunction in the field. Correct start time of recording is noted in filename after Grid ID, but for the correct date of the recording please refer main datasheets. 
+- Where the recording overlapped the customised break of 5 seconds, it was saved as two recordings, named as PARTA and PARTB in the filename, accordingly. 
+- In the 20240423 Data collected by Jignasa and Praveen, the N09 recording at 0834 is missing due to malfunction. Grid ID N09 therefore has no acoustic data.
+- In the 20240423 data collected by Jignasa and Praveen, the filename (19700101_053701_N08_0852.WAV) has the N08 recording in which the observer says N09 at the start and then corrects themselves to N08 (N08 is correct).
+
+Vijay Ramesh cleaned up the summer and winter data and organized it as follows:
+- All files now have the current naming convetion: YYYYMMDD_HHMM_GridID.WAV
+- PartA and PartB files were combined into a single file.
+- To refer to code that was used in this process, please see https://github.com/vjjan91/programming-resources
