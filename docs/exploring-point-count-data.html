@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 2 Exploring point-count data | Source code and supporting information for Predicting bird species abundances from acoustic data</title>
+  <meta name="description" content="Section 2 Exploring point-count data | Source code and supporting information for Predicting bird species abundances from acoustic data" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 2 Exploring point-count data | Source code and supporting information for Predicting bird species abundances from acoustic data" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="vjjan91/paired-pointCount-acoustics" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 2 Exploring point-count data | Source code and supporting information for Predicting bird species abundances from acoustic data" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Divya Mudappa" />
+<meta name="author" content="T R Shankar Raman" />
+<meta name="author" content="" />
+<meta name="author" content="Laurel B Symes" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html"><i class="fa fa-check"></i><b>2</b> Exploring point-count data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#install-required-libraries"><i class="fa fa-check"></i><b>2.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="2.2" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#loading-point-count-data"><i class="fa fa-check"></i><b>2.2</b> Loading point-count data</a></li>
+<li class="chapter" data-level="2.3" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#load-site-level-information-and-create-gridded-data"><i class="fa fa-check"></i><b>2.3</b> Load site level information and create gridded data</a></li>
+<li class="chapter" data-level="2.4" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#extract-species-level-information"><i class="fa fa-check"></i><b>2.4</b> Extract species-level information</a></li>
+<li class="chapter" data-level="2.5" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#visualizing-richness-data-across-seasons"><i class="fa fa-check"></i><b>2.5</b> Visualizing richness data across seasons</a></li>
+<li class="chapter" data-level="2.6" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#visualizing-abundance-by-species-across-seasons"><i class="fa fa-check"></i><b>2.6</b> Visualizing abundance by species across seasons</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code and supporting information for <em>Predicting bird species abundances from acoustic data</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exploring-point-count-data" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Section 2</span> Exploring point-count data<a href="exploring-point-count-data.html#exploring-point-count-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this script, we will explore the point-count data to understand bird species diversity patterns across seasons. For this analysis, we rely on two seasons of point-count data, that was carried out in June 2024 and Dec 2024.</p>
+<div id="install-required-libraries" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Install required libraries<a href="exploring-point-count-data.html#install-required-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="exploring-point-count-data.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="exploring-point-count-data.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="exploring-point-count-data.html#cb1-3" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-4"><a href="exploring-point-count-data.html#cb1-4" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb1-5"><a href="exploring-point-count-data.html#cb1-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="exploring-point-count-data.html#cb1-6" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb1-7"><a href="exploring-point-count-data.html#cb1-7" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-8"><a href="exploring-point-count-data.html#cb1-8" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb1-9"><a href="exploring-point-count-data.html#cb1-9" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-10"><a href="exploring-point-count-data.html#cb1-10" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb1-11"><a href="exploring-point-count-data.html#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="exploring-point-count-data.html#cb1-12" tabindex="-1"></a><span class="co"># for plotting</span></span>
+<span id="cb1-13"><a href="exploring-point-count-data.html#cb1-13" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-14"><a href="exploring-point-count-data.html#cb1-14" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-15"><a href="exploring-point-count-data.html#cb1-15" tabindex="-1"></a><span class="fu">library</span>(ggspatial)</span>
+<span id="cb1-16"><a href="exploring-point-count-data.html#cb1-16" tabindex="-1"></a><span class="fu">library</span>(colorspace)</span>
+<span id="cb1-17"><a href="exploring-point-count-data.html#cb1-17" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb1-18"><a href="exploring-point-count-data.html#cb1-18" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
+<span id="cb1-19"><a href="exploring-point-count-data.html#cb1-19" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="exploring-point-count-data.html#cb1-20" tabindex="-1"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb1-21"><a href="exploring-point-count-data.html#cb1-21" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+</div>
+<div id="loading-point-count-data" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Loading point-count data<a href="exploring-point-count-data.html#loading-point-count-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="exploring-point-count-data.html#cb2-1" tabindex="-1"></a><span class="co"># load two seasons of point-count data</span></span>
+<span id="cb2-2"><a href="exploring-point-count-data.html#cb2-2" tabindex="-1"></a>point_counts <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/point-count-data.csv&quot;</span>)</span>
+<span id="cb2-3"><a href="exploring-point-count-data.html#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="exploring-point-count-data.html#cb2-4" tabindex="-1"></a><span class="co"># removing all mammal species and unidentified bird species</span></span>
+<span id="cb2-5"><a href="exploring-point-count-data.html#cb2-5" tabindex="-1"></a>point_counts <span class="ot">&lt;-</span> point_counts <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="exploring-point-count-data.html#cb2-6" tabindex="-1"></a>  <span class="fu">filter</span>(birdMamm <span class="sc">==</span> <span class="st">&quot;Bird&quot;</span>)</span>
+<span id="cb2-7"><a href="exploring-point-count-data.html#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="exploring-point-count-data.html#cb2-8" tabindex="-1"></a><span class="co"># Using gsub to remove text within parentheses including the parentheses</span></span>
+<span id="cb2-9"><a href="exploring-point-count-data.html#cb2-9" tabindex="-1"></a>point_counts<span class="sc">$</span>eBirdIndiaName2023 <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">([^</span><span class="sc">\\</span><span class="st">)]+</span><span class="sc">\\</span><span class="st">)&quot;</span>, <span class="st">&quot;&quot;</span>, point_counts<span class="sc">$</span>eBirdIndiaName2023)</span>
+<span id="cb2-10"><a href="exploring-point-count-data.html#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="exploring-point-count-data.html#cb2-11" tabindex="-1"></a><span class="co"># add species scientific name to the point-count data </span></span>
+<span id="cb2-12"><a href="exploring-point-count-data.html#cb2-12" tabindex="-1"></a>sci_name <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/species-taxonomy.csv&quot;</span>)</span>
+<span id="cb2-13"><a href="exploring-point-count-data.html#cb2-13" tabindex="-1"></a>sci_name<span class="sc">$</span>eBirdIndiaName2023 <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">([^</span><span class="sc">\\</span><span class="st">)]+</span><span class="sc">\\</span><span class="st">)&quot;</span>, <span class="st">&quot;&quot;</span>, sci_name<span class="sc">$</span>eBirdIndiaName2023)</span>
+<span id="cb2-14"><a href="exploring-point-count-data.html#cb2-14" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="exploring-point-count-data.html#cb2-15" tabindex="-1"></a><span class="co"># add scientific_name to the point_count data</span></span>
+<span id="cb2-16"><a href="exploring-point-count-data.html#cb2-16" tabindex="-1"></a>point_counts <span class="ot">&lt;-</span> <span class="fu">left_join</span>(point_counts[,<span class="sc">-</span><span class="dv">7</span>], sci_name[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>)])</span>
+<span id="cb2-17"><a href="exploring-point-count-data.html#cb2-17" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="exploring-point-count-data.html#cb2-18" tabindex="-1"></a><span class="co"># rename columns</span></span>
+<span id="cb2-19"><a href="exploring-point-count-data.html#cb2-19" tabindex="-1"></a><span class="fu">names</span>(point_counts)[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="st">&quot;start_time&quot;</span></span>
+<span id="cb2-20"><a href="exploring-point-count-data.html#cb2-20" tabindex="-1"></a><span class="fu">names</span>(point_counts)[<span class="dv">7</span>] <span class="ot">&lt;-</span> <span class="st">&quot;common_name&quot;</span></span>
+<span id="cb2-21"><a href="exploring-point-count-data.html#cb2-21" tabindex="-1"></a><span class="fu">names</span>(point_counts)[<span class="dv">12</span>] <span class="ot">&lt;-</span> <span class="st">&quot;scientific_name&quot;</span></span>
+<span id="cb2-22"><a href="exploring-point-count-data.html#cb2-22" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="exploring-point-count-data.html#cb2-23" tabindex="-1"></a><span class="co"># write to file</span></span>
+<span id="cb2-24"><a href="exploring-point-count-data.html#cb2-24" tabindex="-1"></a><span class="fu">write.csv</span>(point_counts, <span class="st">&quot;results/cleaned-point-count-data.csv&quot;</span>, <span class="at">row.names =</span> F)</span></code></pre></div>
+</div>
+<div id="load-site-level-information-and-create-gridded-data" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Load site level information and create gridded data<a href="exploring-point-count-data.html#load-site-level-information-and-create-gridded-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="exploring-point-count-data.html#cb3-1" tabindex="-1"></a><span class="co"># we write a function below to create a grid around the centroid of each location of size 1ha</span></span>
+<span id="cb3-2"><a href="exploring-point-count-data.html#cb3-2" tabindex="-1"></a><span class="co"># the grid is primarily created for visualizing species richness &amp; other associated metrics (this step is optional)</span></span>
+<span id="cb3-3"><a href="exploring-point-count-data.html#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="exploring-point-count-data.html#cb3-4" tabindex="-1"></a><span class="co"># function to create square grid around a point</span></span>
+<span id="cb3-5"><a href="exploring-point-count-data.html#cb3-5" tabindex="-1"></a>create_square_grid <span class="ot">&lt;-</span> <span class="cf">function</span>(lon, lat, <span class="at">size_ha =</span> <span class="dv">1</span>) {</span>
+<span id="cb3-6"><a href="exploring-point-count-data.html#cb3-6" tabindex="-1"></a>  </span>
+<span id="cb3-7"><a href="exploring-point-count-data.html#cb3-7" tabindex="-1"></a>  <span class="co"># convert hectares to degrees (approximate conversion)</span></span>
+<span id="cb3-8"><a href="exploring-point-count-data.html#cb3-8" tabindex="-1"></a>  <span class="co"># 1 ha = 100m x 100m</span></span>
+<span id="cb3-9"><a href="exploring-point-count-data.html#cb3-9" tabindex="-1"></a>  <span class="co"># at the equator, 1 degree is approximately 111,320 meters</span></span>
+<span id="cb3-10"><a href="exploring-point-count-data.html#cb3-10" tabindex="-1"></a>  <span class="co"># so we need to convert 100m to degrees</span></span>
+<span id="cb3-11"><a href="exploring-point-count-data.html#cb3-11" tabindex="-1"></a>  </span>
+<span id="cb3-12"><a href="exploring-point-count-data.html#cb3-12" tabindex="-1"></a>  size_degrees <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(size_ha) <span class="sc">*</span> <span class="dv">100</span> <span class="sc">/</span> <span class="dv">111320</span></span>
+<span id="cb3-13"><a href="exploring-point-count-data.html#cb3-13" tabindex="-1"></a>  </span>
+<span id="cb3-14"><a href="exploring-point-count-data.html#cb3-14" tabindex="-1"></a>  <span class="co"># Create a square polygon</span></span>
+<span id="cb3-15"><a href="exploring-point-count-data.html#cb3-15" tabindex="-1"></a>  coords <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb3-16"><a href="exploring-point-count-data.html#cb3-16" tabindex="-1"></a>    lon <span class="sc">-</span> size_degrees<span class="sc">/</span><span class="dv">2</span>, lat <span class="sc">-</span> size_degrees<span class="sc">/</span><span class="dv">2</span>,  <span class="co"># bottom left</span></span>
+<span id="cb3-17"><a href="exploring-point-count-data.html#cb3-17" tabindex="-1"></a>    lon <span class="sc">+</span> size_degrees<span class="sc">/</span><span class="dv">2</span>, lat <span class="sc">-</span> size_degrees<span class="sc">/</span><span class="dv">2</span>,  <span class="co"># bottom right</span></span>
+<span id="cb3-18"><a href="exploring-point-count-data.html#cb3-18" tabindex="-1"></a>    lon <span class="sc">+</span> size_degrees<span class="sc">/</span><span class="dv">2</span>, lat <span class="sc">+</span> size_degrees<span class="sc">/</span><span class="dv">2</span>,  <span class="co"># top right</span></span>
+<span id="cb3-19"><a href="exploring-point-count-data.html#cb3-19" tabindex="-1"></a>    lon <span class="sc">-</span> size_degrees<span class="sc">/</span><span class="dv">2</span>, lat <span class="sc">+</span> size_degrees<span class="sc">/</span><span class="dv">2</span>,  <span class="co"># top left</span></span>
+<span id="cb3-20"><a href="exploring-point-count-data.html#cb3-20" tabindex="-1"></a>    lon <span class="sc">-</span> size_degrees<span class="sc">/</span><span class="dv">2</span>, lat <span class="sc">-</span> size_degrees<span class="sc">/</span><span class="dv">2</span>   <span class="co"># close the polygon</span></span>
+<span id="cb3-21"><a href="exploring-point-count-data.html#cb3-21" tabindex="-1"></a>  ), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-22"><a href="exploring-point-count-data.html#cb3-22" tabindex="-1"></a>  </span>
+<span id="cb3-23"><a href="exploring-point-count-data.html#cb3-23" tabindex="-1"></a>  <span class="co"># Create polygon</span></span>
+<span id="cb3-24"><a href="exploring-point-count-data.html#cb3-24" tabindex="-1"></a>  pol <span class="ot">&lt;-</span> <span class="fu">st_polygon</span>(<span class="fu">list</span>(coords))</span>
+<span id="cb3-25"><a href="exploring-point-count-data.html#cb3-25" tabindex="-1"></a>  <span class="fu">return</span>(pol)</span>
+<span id="cb3-26"><a href="exploring-point-count-data.html#cb3-26" tabindex="-1"></a>}</span>
+<span id="cb3-27"><a href="exploring-point-count-data.html#cb3-27" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="exploring-point-count-data.html#cb3-28" tabindex="-1"></a><span class="co"># function to obtain the latitude and longitude from a .csv file and create an associated shapefile</span></span>
+<span id="cb3-29"><a href="exploring-point-count-data.html#cb3-29" tabindex="-1"></a>create_grid_shapefile <span class="ot">&lt;-</span> <span class="cf">function</span>(csv_path, output_shp, <span class="at">lon_col =</span> <span class="st">&quot;longitude&quot;</span>, <span class="at">lat_col =</span> <span class="st">&quot;latitude&quot;</span>) {</span>
+<span id="cb3-30"><a href="exploring-point-count-data.html#cb3-30" tabindex="-1"></a>  </span>
+<span id="cb3-31"><a href="exploring-point-count-data.html#cb3-31" tabindex="-1"></a>  <span class="co"># read CSV file</span></span>
+<span id="cb3-32"><a href="exploring-point-count-data.html#cb3-32" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(csv_path)</span>
+<span id="cb3-33"><a href="exploring-point-count-data.html#cb3-33" tabindex="-1"></a>  </span>
+<span id="cb3-34"><a href="exploring-point-count-data.html#cb3-34" tabindex="-1"></a>  <span class="co"># create list to store polygons</span></span>
+<span id="cb3-35"><a href="exploring-point-count-data.html#cb3-35" tabindex="-1"></a>  polygons <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb3-36"><a href="exploring-point-count-data.html#cb3-36" tabindex="-1"></a>  </span>
+<span id="cb3-37"><a href="exploring-point-count-data.html#cb3-37" tabindex="-1"></a>  <span class="co"># create square grid for each point</span></span>
+<span id="cb3-38"><a href="exploring-point-count-data.html#cb3-38" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data)) {</span>
+<span id="cb3-39"><a href="exploring-point-count-data.html#cb3-39" tabindex="-1"></a>    polygons[[i]] <span class="ot">&lt;-</span> <span class="fu">create_square_grid</span>(</span>
+<span id="cb3-40"><a href="exploring-point-count-data.html#cb3-40" tabindex="-1"></a>      data[[lon_col]][i],</span>
+<span id="cb3-41"><a href="exploring-point-count-data.html#cb3-41" tabindex="-1"></a>      data[[lat_col]][i]</span>
+<span id="cb3-42"><a href="exploring-point-count-data.html#cb3-42" tabindex="-1"></a>    )</span>
+<span id="cb3-43"><a href="exploring-point-count-data.html#cb3-43" tabindex="-1"></a>  }</span>
+<span id="cb3-44"><a href="exploring-point-count-data.html#cb3-44" tabindex="-1"></a>  </span>
+<span id="cb3-45"><a href="exploring-point-count-data.html#cb3-45" tabindex="-1"></a>  <span class="co"># convert to sf object</span></span>
+<span id="cb3-46"><a href="exploring-point-count-data.html#cb3-46" tabindex="-1"></a>  grid_sf <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(</span>
+<span id="cb3-47"><a href="exploring-point-count-data.html#cb3-47" tabindex="-1"></a>    <span class="co"># Include original data</span></span>
+<span id="cb3-48"><a href="exploring-point-count-data.html#cb3-48" tabindex="-1"></a>    data,</span>
+<span id="cb3-49"><a href="exploring-point-count-data.html#cb3-49" tabindex="-1"></a>    <span class="co"># Convert polygon list to geometry</span></span>
+<span id="cb3-50"><a href="exploring-point-count-data.html#cb3-50" tabindex="-1"></a>    <span class="at">geometry =</span> <span class="fu">st_sfc</span>(polygons, <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb3-51"><a href="exploring-point-count-data.html#cb3-51" tabindex="-1"></a>  )</span>
+<span id="cb3-52"><a href="exploring-point-count-data.html#cb3-52" tabindex="-1"></a>  </span>
+<span id="cb3-53"><a href="exploring-point-count-data.html#cb3-53" tabindex="-1"></a>  <span class="co"># write to shapefile</span></span>
+<span id="cb3-54"><a href="exploring-point-count-data.html#cb3-54" tabindex="-1"></a>  <span class="fu">st_write</span>(grid_sf, output_shp, <span class="at">driver =</span> <span class="st">&quot;ESRI Shapefile&quot;</span>, <span class="at">append =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-55"><a href="exploring-point-count-data.html#cb3-55" tabindex="-1"></a>  </span>
+<span id="cb3-56"><a href="exploring-point-count-data.html#cb3-56" tabindex="-1"></a>  <span class="fu">return</span>(grid_sf)</span>
+<span id="cb3-57"><a href="exploring-point-count-data.html#cb3-57" tabindex="-1"></a>}</span>
+<span id="cb3-58"><a href="exploring-point-count-data.html#cb3-58" tabindex="-1"></a></span>
+<span id="cb3-59"><a href="exploring-point-count-data.html#cb3-59" tabindex="-1"></a><span class="co"># site-level information</span></span>
+<span id="cb3-60"><a href="exploring-point-count-data.html#cb3-60" tabindex="-1"></a>sites <span class="ot">&lt;-</span> <span class="st">&quot;data/sites.csv&quot;</span></span>
+<span id="cb3-61"><a href="exploring-point-count-data.html#cb3-61" tabindex="-1"></a>grid_shp <span class="ot">&lt;-</span> <span class="st">&quot;data/candura_grids.shp&quot;</span></span>
+<span id="cb3-62"><a href="exploring-point-count-data.html#cb3-62" tabindex="-1"></a></span>
+<span id="cb3-63"><a href="exploring-point-count-data.html#cb3-63" tabindex="-1"></a><span class="co"># Create the grid shapefile</span></span>
+<span id="cb3-64"><a href="exploring-point-count-data.html#cb3-64" tabindex="-1"></a>grid_sf <span class="ot">&lt;-</span> <span class="fu">create_grid_shapefile</span>(</span>
+<span id="cb3-65"><a href="exploring-point-count-data.html#cb3-65" tabindex="-1"></a>  <span class="at">csv_path =</span> sites,</span>
+<span id="cb3-66"><a href="exploring-point-count-data.html#cb3-66" tabindex="-1"></a>  <span class="at">output_shp =</span> grid_shp,</span>
+<span id="cb3-67"><a href="exploring-point-count-data.html#cb3-67" tabindex="-1"></a>  <span class="at">lon_col =</span> <span class="st">&quot;decimalLongitude&quot;</span>,  <span class="co"># replace with your longitude column name</span></span>
+<span id="cb3-68"><a href="exploring-point-count-data.html#cb3-68" tabindex="-1"></a>  <span class="at">lat_col =</span> <span class="st">&quot;decimalLatitude&quot;</span>    <span class="co"># replace with your latitude column name</span></span>
+<span id="cb3-69"><a href="exploring-point-count-data.html#cb3-69" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="extract-species-level-information" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Extract species-level information<a href="exploring-point-count-data.html#extract-species-level-information" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="exploring-point-count-data.html#cb4-1" tabindex="-1"></a><span class="co"># estimate abundance across all species for each grid and season</span></span>
+<span id="cb4-2"><a href="exploring-point-count-data.html#cb4-2" tabindex="-1"></a>abundance <span class="ot">&lt;-</span> point_counts <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="exploring-point-count-data.html#cb4-3" tabindex="-1"></a>  <span class="fu">group_by</span>(gridID, common_name, seasonYear) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="exploring-point-count-data.html#cb4-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">abundance =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="exploring-point-count-data.html#cb4-5" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb4-6"><a href="exploring-point-count-data.html#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="exploring-point-count-data.html#cb4-7" tabindex="-1"></a><span class="co"># unique species observed across seasons</span></span>
+<span id="cb4-8"><a href="exploring-point-count-data.html#cb4-8" tabindex="-1"></a><span class="co"># in summer 82 unique species were detected</span></span>
+<span id="cb4-9"><a href="exploring-point-count-data.html#cb4-9" tabindex="-1"></a>summer_species <span class="ot">&lt;-</span> abundance <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="exploring-point-count-data.html#cb4-10" tabindex="-1"></a>  <span class="fu">filter</span>(seasonYear <span class="sc">==</span> <span class="st">&quot;2024 Summer&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="exploring-point-count-data.html#cb4-11" tabindex="-1"></a>  <span class="fu">distinct</span>(common_name)</span>
+<span id="cb4-12"><a href="exploring-point-count-data.html#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="exploring-point-count-data.html#cb4-13" tabindex="-1"></a><span class="co"># 89 unique species were detected in the winter</span></span>
+<span id="cb4-14"><a href="exploring-point-count-data.html#cb4-14" tabindex="-1"></a>winter_species <span class="ot">&lt;-</span> abundance <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="exploring-point-count-data.html#cb4-15" tabindex="-1"></a>  <span class="fu">filter</span>(seasonYear <span class="sc">==</span> <span class="st">&quot;2024 Winter&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-16"><a href="exploring-point-count-data.html#cb4-16" tabindex="-1"></a>  <span class="fu">distinct</span>(common_name)</span>
+<span id="cb4-17"><a href="exploring-point-count-data.html#cb4-17" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="exploring-point-count-data.html#cb4-18" tabindex="-1"></a><span class="co"># overall list of unique species detected in point counts</span></span>
+<span id="cb4-19"><a href="exploring-point-count-data.html#cb4-19" tabindex="-1"></a><span class="co"># 107 unique species were detected across both seasons</span></span>
+<span id="cb4-20"><a href="exploring-point-count-data.html#cb4-20" tabindex="-1"></a>pc_species <span class="ot">&lt;-</span> abundance <span class="sc">%&gt;%</span></span>
+<span id="cb4-21"><a href="exploring-point-count-data.html#cb4-21" tabindex="-1"></a>  <span class="fu">distinct</span>(common_name) <span class="sc">%&gt;%</span></span>
+<span id="cb4-22"><a href="exploring-point-count-data.html#cb4-22" tabindex="-1"></a>  <span class="fu">left_join</span>(., sci_name[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>)], </span>
+<span id="cb4-23"><a href="exploring-point-count-data.html#cb4-23" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;common_name&quot;</span> <span class="ot">=</span> <span class="st">&quot;eBirdIndiaName2023&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-24"><a href="exploring-point-count-data.html#cb4-24" tabindex="-1"></a>  <span class="fu">rename</span>(., <span class="at">scientific_name =</span> eBirdScientificName2023)</span>
+<span id="cb4-25"><a href="exploring-point-count-data.html#cb4-25" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="exploring-point-count-data.html#cb4-26" tabindex="-1"></a><span class="co"># write to file</span></span>
+<span id="cb4-27"><a href="exploring-point-count-data.html#cb4-27" tabindex="-1"></a><span class="fu">write.csv</span>(pc_species, <span class="st">&quot;results/species-in-point-counts.csv&quot;</span>,</span>
+<span id="cb4-28"><a href="exploring-point-count-data.html#cb4-28" tabindex="-1"></a>          <span class="at">row.names =</span> F)</span>
+<span id="cb4-29"><a href="exploring-point-count-data.html#cb4-29" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="exploring-point-count-data.html#cb4-30" tabindex="-1"></a><span class="co"># total abundance by species for each season across grids</span></span>
+<span id="cb4-31"><a href="exploring-point-count-data.html#cb4-31" tabindex="-1"></a>totAbundance_by_season <span class="ot">&lt;-</span> abundance <span class="sc">%&gt;%</span></span>
+<span id="cb4-32"><a href="exploring-point-count-data.html#cb4-32" tabindex="-1"></a>  <span class="fu">group_by</span>(common_name, seasonYear) <span class="sc">%&gt;%</span></span>
+<span id="cb4-33"><a href="exploring-point-count-data.html#cb4-33" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">totAbundance =</span> <span class="fu">sum</span>(abundance))</span>
+<span id="cb4-34"><a href="exploring-point-count-data.html#cb4-34" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="exploring-point-count-data.html#cb4-35" tabindex="-1"></a><span class="co"># species most abundant across seasons include the Yellow-browed Bulbul, Southern Hill Myna, Crimson-backed Sunbird, Greater Racket-tailed Drongo </span></span>
+<span id="cb4-36"><a href="exploring-point-count-data.html#cb4-36" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="exploring-point-count-data.html#cb4-37" tabindex="-1"></a><span class="co"># estimate richness for point count data (calculated for each site)</span></span>
+<span id="cb4-38"><a href="exploring-point-count-data.html#cb4-38" tabindex="-1"></a>richness <span class="ot">&lt;-</span> abundance <span class="sc">%&gt;%</span></span>
+<span id="cb4-39"><a href="exploring-point-count-data.html#cb4-39" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">forRichness =</span> <span class="fu">case_when</span>(abundance <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">~</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-40"><a href="exploring-point-count-data.html#cb4-40" tabindex="-1"></a>  <span class="fu">group_by</span>(gridID, seasonYear) <span class="sc">%&gt;%</span></span>
+<span id="cb4-41"><a href="exploring-point-count-data.html#cb4-41" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">richness =</span> <span class="fu">sum</span>(forRichness)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-42"><a href="exploring-point-count-data.html#cb4-42" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+</div>
+<div id="visualizing-richness-data-across-seasons" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Visualizing richness data across seasons<a href="exploring-point-count-data.html#visualizing-richness-data-across-seasons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="exploring-point-count-data.html#cb5-1" tabindex="-1"></a><span class="co"># First, join your species data with the spatial data</span></span>
+<span id="cb5-2"><a href="exploring-point-count-data.html#cb5-2" tabindex="-1"></a>grid_with_richness <span class="ot">&lt;-</span> grid_sf <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="exploring-point-count-data.html#cb5-3" tabindex="-1"></a>  <span class="fu">left_join</span>(richness, <span class="at">by =</span> <span class="st">&quot;gridID&quot;</span>)</span>
+<span id="cb5-4"><a href="exploring-point-count-data.html#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="exploring-point-count-data.html#cb5-5" tabindex="-1"></a><span class="co"># Create the plot</span></span>
+<span id="cb5-6"><a href="exploring-point-count-data.html#cb5-6" tabindex="-1"></a>fig_richness_by_season <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-7"><a href="exploring-point-count-data.html#cb5-7" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> grid_with_richness, <span class="fu">aes</span>(<span class="at">fill =</span> richness),</span>
+<span id="cb5-8"><a href="exploring-point-count-data.html#cb5-8" tabindex="-1"></a>          <span class="at">alpha=</span><span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="exploring-point-count-data.html#cb5-9" tabindex="-1"></a>  <span class="fu">geom_sf_text</span>(<span class="at">data =</span> grid_with_richness, </span>
+<span id="cb5-10"><a href="exploring-point-count-data.html#cb5-10" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste</span>(gridID, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>, richness)),</span>
+<span id="cb5-11"><a href="exploring-point-count-data.html#cb5-11" tabindex="-1"></a>               <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="exploring-point-count-data.html#cb5-12" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>seasonYear) <span class="sc">+</span></span>
+<span id="cb5-13"><a href="exploring-point-count-data.html#cb5-13" tabindex="-1"></a>  <span class="fu">scale_fill_scico</span>(<span class="at">palette =</span> <span class="st">&quot;lajolla&quot;</span>)<span class="sc">+</span></span>
+<span id="cb5-14"><a href="exploring-point-count-data.html#cb5-14" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-15"><a href="exploring-point-count-data.html#cb5-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Species</span><span class="sc">\n</span><span class="st">Richness&quot;</span>,</span>
+<span id="cb5-16"><a href="exploring-point-count-data.html#cb5-16" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">&quot;Species Richness by Season&quot;</span>) <span class="sc">+</span></span>
+<span id="cb5-17"><a href="exploring-point-count-data.html#cb5-17" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb5-18"><a href="exploring-point-count-data.html#cb5-18" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb5-19"><a href="exploring-point-count-data.html#cb5-19" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb5-20"><a href="exploring-point-count-data.html#cb5-20" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb5-21"><a href="exploring-point-count-data.html#cb5-21" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb5-22"><a href="exploring-point-count-data.html#cb5-22" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="exploring-point-count-data.html#cb5-23" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;figs/fig_richness_by_season.png&quot;</span>, <span class="at">plot =</span> fig_richness_by_season, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">7</span>, <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, </span>
+<span id="cb5-24"><a href="exploring-point-count-data.html#cb5-24" tabindex="-1"></a>       <span class="at">dpi =</span> <span class="dv">300</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb5-25"><a href="exploring-point-count-data.html#cb5-25" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+<div class="float">
+<img src="figs/fig_richness_by_season.png" alt="Species richness by season" />
+<div class="figcaption">Species richness by season</div>
+</div>
+</div>
+<div id="visualizing-abundance-by-species-across-seasons" class="section level2 hasAnchor" number="2.6">
+<h2><span class="header-section-number">2.6</span> Visualizing abundance by species across seasons<a href="exploring-point-count-data.html#visualizing-abundance-by-species-across-seasons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="exploring-point-count-data.html#cb6-1" tabindex="-1"></a><span class="co"># join abundance data with the spatial data</span></span>
+<span id="cb6-2"><a href="exploring-point-count-data.html#cb6-2" tabindex="-1"></a>grid_with_abundance <span class="ot">&lt;-</span> grid_sf <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="exploring-point-count-data.html#cb6-3" tabindex="-1"></a>  <span class="fu">left_join</span>(abundance, <span class="at">by =</span> <span class="st">&quot;gridID&quot;</span>)</span>
+<span id="cb6-4"><a href="exploring-point-count-data.html#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="exploring-point-count-data.html#cb6-5" tabindex="-1"></a><span class="co"># first, let&#39;s create a base grid that has all possible combinations</span></span>
+<span id="cb6-6"><a href="exploring-point-count-data.html#cb6-6" tabindex="-1"></a>base_grid <span class="ot">&lt;-</span> grid_with_abundance <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="exploring-point-count-data.html#cb6-7" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gridID, geometry) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="exploring-point-count-data.html#cb6-8" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb6-9"><a href="exploring-point-count-data.html#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="exploring-point-count-data.html#cb6-10" tabindex="-1"></a><span class="co"># get unique seasons</span></span>
+<span id="cb6-11"><a href="exploring-point-count-data.html#cb6-11" tabindex="-1"></a>seasons <span class="ot">&lt;-</span> <span class="fu">unique</span>(grid_with_abundance<span class="sc">$</span>seasonYear)</span>
+<span id="cb6-12"><a href="exploring-point-count-data.html#cb6-12" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="exploring-point-count-data.html#cb6-13" tabindex="-1"></a><span class="co"># create a complete grid with all combinations</span></span>
+<span id="cb6-14"><a href="exploring-point-count-data.html#cb6-14" tabindex="-1"></a>complete_grid <span class="ot">&lt;-</span> base_grid <span class="sc">%&gt;%</span></span>
+<span id="cb6-15"><a href="exploring-point-count-data.html#cb6-15" tabindex="-1"></a>  <span class="fu">crossing</span>(<span class="at">seasonYear =</span> seasons) <span class="sc">%&gt;%</span></span>
+<span id="cb6-16"><a href="exploring-point-count-data.html#cb6-16" tabindex="-1"></a>  <span class="fu">st_sf</span>()</span>
+<span id="cb6-17"><a href="exploring-point-count-data.html#cb6-17" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="exploring-point-count-data.html#cb6-18" tabindex="-1"></a><span class="co"># get unique species list</span></span>
+<span id="cb6-19"><a href="exploring-point-count-data.html#cb6-19" tabindex="-1"></a>species_list <span class="ot">&lt;-</span> <span class="fu">unique</span>(grid_with_abundance<span class="sc">$</span>common_name)</span>
+<span id="cb6-20"><a href="exploring-point-count-data.html#cb6-20" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="exploring-point-count-data.html#cb6-21" tabindex="-1"></a><span class="co"># create PDF</span></span>
+<span id="cb6-22"><a href="exploring-point-count-data.html#cb6-22" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&quot;figs/species_by_season_abundance.pdf&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">7</span>)</span>
+<span id="cb6-23"><a href="exploring-point-count-data.html#cb6-23" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="exploring-point-count-data.html#cb6-24" tabindex="-1"></a><span class="co"># loop through each species</span></span>
+<span id="cb6-25"><a href="exploring-point-count-data.html#cb6-25" tabindex="-1"></a><span class="cf">for</span>(sp <span class="cf">in</span> species_list) {</span>
+<span id="cb6-26"><a href="exploring-point-count-data.html#cb6-26" tabindex="-1"></a>  </span>
+<span id="cb6-27"><a href="exploring-point-count-data.html#cb6-27" tabindex="-1"></a>  <span class="co"># get data for this species</span></span>
+<span id="cb6-28"><a href="exploring-point-count-data.html#cb6-28" tabindex="-1"></a>  current_species_data <span class="ot">&lt;-</span> grid_with_abundance <span class="sc">%&gt;%</span></span>
+<span id="cb6-29"><a href="exploring-point-count-data.html#cb6-29" tabindex="-1"></a>    <span class="fu">filter</span>(common_name <span class="sc">==</span> sp) <span class="sc">%&gt;%</span></span>
+<span id="cb6-30"><a href="exploring-point-count-data.html#cb6-30" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(gridID, seasonYear, abundance) <span class="sc">%&gt;%</span></span>
+<span id="cb6-31"><a href="exploring-point-count-data.html#cb6-31" tabindex="-1"></a>    <span class="fu">st_drop_geometry</span>()</span>
+<span id="cb6-32"><a href="exploring-point-count-data.html#cb6-32" tabindex="-1"></a>  </span>
+<span id="cb6-33"><a href="exploring-point-count-data.html#cb6-33" tabindex="-1"></a>  <span class="co"># join with complete grid</span></span>
+<span id="cb6-34"><a href="exploring-point-count-data.html#cb6-34" tabindex="-1"></a>  plot_data <span class="ot">&lt;-</span> complete_grid <span class="sc">%&gt;%</span></span>
+<span id="cb6-35"><a href="exploring-point-count-data.html#cb6-35" tabindex="-1"></a>    <span class="fu">left_join</span>(current_species_data, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;gridID&quot;</span>, <span class="st">&quot;seasonYear&quot;</span>))</span>
+<span id="cb6-36"><a href="exploring-point-count-data.html#cb6-36" tabindex="-1"></a>  </span>
+<span id="cb6-37"><a href="exploring-point-count-data.html#cb6-37" tabindex="-1"></a>  <span class="co"># Create plot</span></span>
+<span id="cb6-38"><a href="exploring-point-count-data.html#cb6-38" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-39"><a href="exploring-point-count-data.html#cb6-39" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> plot_data, <span class="fu">aes</span>(<span class="at">fill =</span> abundance),</span>
+<span id="cb6-40"><a href="exploring-point-count-data.html#cb6-40" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb6-41"><a href="exploring-point-count-data.html#cb6-41" tabindex="-1"></a>    <span class="fu">geom_sf_text</span>(<span class="at">data =</span> plot_data, </span>
+<span id="cb6-42"><a href="exploring-point-count-data.html#cb6-42" tabindex="-1"></a>                 <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste</span>(gridID, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>, </span>
+<span id="cb6-43"><a href="exploring-point-count-data.html#cb6-43" tabindex="-1"></a>                                   <span class="fu">ifelse</span>(<span class="fu">is.na</span>(abundance), </span>
+<span id="cb6-44"><a href="exploring-point-count-data.html#cb6-44" tabindex="-1"></a>                                          <span class="st">&quot;0&quot;</span>, abundance))),</span>
+<span id="cb6-45"><a href="exploring-point-count-data.html#cb6-45" tabindex="-1"></a>                 <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-46"><a href="exploring-point-count-data.html#cb6-46" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>seasonYear) <span class="sc">+</span></span>
+<span id="cb6-47"><a href="exploring-point-count-data.html#cb6-47" tabindex="-1"></a>  <span class="fu">scale_fill_scico</span>(<span class="at">palette =</span> <span class="st">&quot;lajolla&quot;</span>,</span>
+<span id="cb6-48"><a href="exploring-point-count-data.html#cb6-48" tabindex="-1"></a>                    <span class="at">na.value =</span> <span class="st">&quot;grey80&quot;</span>)<span class="sc">+</span></span>
+<span id="cb6-49"><a href="exploring-point-count-data.html#cb6-49" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb6-50"><a href="exploring-point-count-data.html#cb6-50" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb6-51"><a href="exploring-point-count-data.html#cb6-51" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb6-52"><a href="exploring-point-count-data.html#cb6-52" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb6-53"><a href="exploring-point-count-data.html#cb6-53" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb6-54"><a href="exploring-point-count-data.html#cb6-54" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb6-55"><a href="exploring-point-count-data.html#cb6-55" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Abundance&quot;</span>,</span>
+<span id="cb6-56"><a href="exploring-point-count-data.html#cb6-56" tabindex="-1"></a>         <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">&quot;Abundance of&quot;</span>, sp, <span class="st">&quot;by Season&quot;</span>))</span>
+<span id="cb6-57"><a href="exploring-point-count-data.html#cb6-57" tabindex="-1"></a>  </span>
+<span id="cb6-58"><a href="exploring-point-count-data.html#cb6-58" tabindex="-1"></a>  <span class="fu">print</span>(p)</span>
+<span id="cb6-59"><a href="exploring-point-count-data.html#cb6-59" tabindex="-1"></a>}</span>
+<span id="cb6-60"><a href="exploring-point-count-data.html#cb6-60" tabindex="-1"></a></span>
+<span id="cb6-61"><a href="exploring-point-count-data.html#cb6-61" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/paired-pointCount-acoustics/edit/master/01_point-count-data.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
