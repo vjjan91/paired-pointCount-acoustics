@@ -6,6 +6,10 @@
 *.RData
 *.rdata
 
+# ignore birdNET selection tables
+results/birdNET-outputs
+results/birdNET-segments
+
 # User-specific files
 .Ruserdata
 
