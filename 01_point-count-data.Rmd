@@ -155,10 +155,12 @@ winter_species <- abundance %>%
 # overall list of unique species detected in point counts
 # 107 unique species were detected across both seasons
 pc_species <- abundance %>%
-  distinct(common_name) %>%
+  group_by(common_name) %>%
+  summarise(cumulative_abundance = sum(abundance)) %>%
   left_join(., sci_name[,-c(1,2,4)], 
             by = c("common_name" = "eBirdIndiaName2023")) %>%
-  rename(., scientific_name = eBirdScientificName2023)
+  rename(., scientific_name = eBirdScientificName2023) %>%
+  arrange(desc(cumulative_abundance))
 
 # write to file
 write.csv(pc_species, "results/species-in-point-counts.csv",
