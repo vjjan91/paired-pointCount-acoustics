@@ -1,0 +1,542 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Exploring outputs from BirdNET  
+
+Given our list of species that were detected in the point count data, we carry out the following next steps to achieve automated identification of bird species from the acoustic data. Please visit the *acoustic-data-cleaning-procedures.txt* to learn more about how the audio data was cleaned prior and processed.  
+
+## Install required libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(data.table)
+library(extrafont)
+library(sf)
+library(raster)
+library(viridis) # for colorblind-friendly colors
+library(gridExtra) # for arranging multiple plots
+
+# for plotting
+library(scales)
+library(ggplot2)
+library(ggspatial)
+library(colorspace)
+library(scico)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+We will carry out a few iterations of the BirdNET analysis to essentially test and improve the detections of multiple species that were detected in our point counts. We first ran a model by using the 'Batch Analysis' Tab using the 'species-by-location' feature, which essentially runs the out-of-the-box model for species that can potentially occur at that location. However, upon further running the segments.py function through the 'Segments' tab, we realized that several species that are present in the point-count data were not captured and several other new species that do not occur have been introduced. We will now run a second model by continuing to test BirdNET's out-of-the-box model on a custom list of species that we provide to the model. 
+
+All instructions for running BirdNET were through this document - https://zenodo.org/records/8415090 and conversations with Dr. Laurel Symes and other staff at the K. Lisa Yang Center for Conservation Bioacoustics.  
+
+## Creating a custom species list for BirdNET analysis  
+
+```{r}
+# load the list of species in the point-count data and create a separate file in the format requested by BirdNET
+# given taxonomic changes in the eBird India list of species, we need to match it with the existing taxonomy provided by BirdNET
+
+# list of species in point counts
+pc_species <- read.csv("results/species-in-point-counts.csv")
+birdNET_species <- read.csv("data/birdNET-base-model-complete-species-list.csv")
+
+# we join the two columns and create a new column in the format requested by BirdNET
+custom_list <- left_join(pc_species, birdNET_species,
+  by = c("common_name" = "common_name_birdNET")
+) %>%
+  mutate(combined_name = paste(scientific_name_birdNET,
+    common_name,
+    sep = "_"
+  ))
+
+# Upon creating a combined_name column that includes the scientific_name and common_name in the format requested by BirdNET, we noticed that taxonomic updates in the eBird India file does not match the existing taxonomy as used by BirdNET.
+# We will save the above file and manually make changes to the same before using it within the BirdNET GUI
+# We will convert the below file to a text file before running BirdNET
+
+write.csv(custom_list, "results/custom-list-for-BirdNET.csv", row.names = F)
+```
+
+Based on the above comparison between what exists in the BirdNET out-of-the-box model and the updated taxonomy, the only species that was detected in the point-count data and is not present in the BirdNET out-of-the-box model is the *Indian Swiftlet*. Other species had minor taxonomic changes which were not accommodated in the current version and was fixed manually. 
+
+## Results from validating the BirdNET out-of-the-box model  
+
+Using the custom species list, we validated the same using Raven Pro for a set of hundred random selections across the range of confidence scores. 
+
+Of the list of 106 species (out of a total of 107 that was detected in the point count data) that was provided as a custom list to the BirdNET GUI, only 84 species were detected by BirdNET, from which segments were created (using the segments.py command). 
+
+Species that can be excluded since they are often not detected within the rainforest grids and will not be the focus for our next set of analysis include:
+
+- Ashy Prinia
+- Brown Boobook (also performed poorly)
+- Brown Fish-Owl
+- Common Sandpiper
+- Oriental-Magpie Robin (few detections)
+- Purple Sunbird
+- Red-rumped Swallow (very few detections)
+- Streak-throated Woodpecker
+
+Species for which the model performed poorly and requires a custom classifier include:
+
+- Black-hooded Oriole
+- Bronzed Drongo (very tricky to validate unless it's making a chip-oo-yeee call or its repetitive enough that you can distinguish it from the racket-tailed drongo)
+- Brown-breasted Flycatcher
+- Changeable-Hawk Eagle (need to increase segment length to validate better, but often is confused with Crested serpent eagle)
+- Chestnut-headed bee-eater (need to choose a higher confidence score to validate selections in the first place and the model confuses calls with background noise quite a bit/insect vocalizations at similar frequencies)
+- Common Flameback (hard to validate at low confidence scores as the thin-ness of the call is not apparent and easily confused with Malabar/Greater Flameback)
+- Common Iora (a single detection was made and potentially needs a new classifier)
+- Brown Boobook
+- Brown Fish-Owl
+- Crested Goshawk
+- Golden-fronted Leafbird (mimic whose vocalizations at low confidence scores sound very much like the Bronzed Drongo)
+- Black-naped Monarch (either confused with paradise flycatcher - the call and the song is similarly confused with a yellow-browed bulbul potentially)
+- Greater Coucal (confused as Nilgiri Langur)
+- Heart-spotted Woodpecker (confused with other flamebacks and nuthatches)
+- Indian Blue Robin
+- Indian Golden Oriole
+- Indian Pitta
+- Indian Yellow Tit
+- Lesser Yellownape (might as well throw in a random species since the model is picking everything except this species)
+- Malabar Starling 
+- Nilgiri Flycatcher (very few detections)
+- Orange-headed Thrush (seems to be confused with hill myna or yellow-browed bulbul)
+- Red Spurfowl
+- Rufous Babbler (very few detections perhaps?)
+- Rusty-tailed Flycatcher (of the few detections, all are accurate but a custom classifier is required)
+- Shikra (few detections at the moment)
+- Verditer Flycatcher (very few detections)
+- White-bellied Woodpecker (almost no detections)
+
+Species for which the out-of-the-box model performed well and we could potentially set a threshold include:
+
+- Asian Fairy-bluebird
+- Brown-capped Pygmy Woodpecker
+- Common Kingfisher
+- Common Tailorbird
+- Crested-Serpent Eagle
+- Crimson-backed Sunbird
+- Eurasian Hoopoe
+- Great Hornbill
+- Greater Flameback (performs pretty well, hard to validate though due to similarity with Common flameback)
+- Indian Peafowl
+- Indian Scimitar-Babbler
+- Indian White-eye
+- Jungle Myna (few detections however)
+- Large-billed Crow
+- Large-billed Leaf Warbler
+- Malabar Barbet
+- Malabar Parakeet
+- Malabar Trogon  
+- Malabar Woodshrike
+- Nilgiri Flowerpecker
+- Orange Minivet
+- Red-wattled Lapwing
+- Red-whiskered Bulbul
+- Southern Hill Myna
+- Square-tailed Bulbul
+- Stork-billed Kingfisher
+- White-cheeked Barbet
+- White-throated Kingfisher
+- Yellow-browed Bulbul
+
+## Setting thresholds for species after validation
+
+The above notes were made while validating data using Raven Pro. We will now set thresholds for all the species that were validated from the list of 84 species.
+
+Below, the code is written in such a way that we are able to handle failure of model fit, convergence and summarize species that have very few detections. We initially set thresholds for the confidence scores at which the probability of a true positive is at 0.90, 0.95 and 0.99. 
+
+Ultimately, we want to select species for which the model performance is sufficiently high for us to retrieve true positives with a probability of occurrence at 0.95. 
+
+```{r}
+# create empty dataframes to store results
+threshold_df <- data.frame(
+  species = character(),
+  threshold90 = numeric(),
+  threshold95 = numeric(),
+  threshold99 = numeric(),
+  n_samples = numeric(),
+  stringsAsFactors = FALSE
+)
+
+# create dataframe for failed model fits
+failed_models_df <- data.frame(
+  species = character(),
+  reason = character(),
+  stringsAsFactors = FALSE
+)
+
+# create dataframe for imbalanced cases
+imbalanced_df <- data.frame(
+  species = character(),
+  total_samples = numeric(),
+  number_valid_0 = numeric(),
+  number_valid_1 = numeric(),
+  proportion_valid = numeric(),
+  stringsAsFactors = FALSE
+)
+
+# create dataframe for all excluded species
+excluded_species_df <- data.frame(
+  species = character(),
+  reason = character(),
+  details = character(),
+  stringsAsFactors = FALSE
+)
+
+# create list to store plots
+plot_list <- list()
+
+# get list of species folders
+species_folders <- list.dirs("results/birdNET-segments", full.names = TRUE, recursive = FALSE)
+
+# get all species folders names
+all_species <- basename(species_folders)
+
+# loop through each species folder
+for (folder in species_folders) {
+  species_name <- basename(folder)
+
+  # find the .txt file
+  file_path <- list.files(folder, pattern = ".txt$", full.names = TRUE)
+
+  # handling missing .txt files for species
+  if (length(file_path) == 0) {
+    excluded_species_df <- rbind(
+      excluded_species_df,
+      data.frame(
+        species = species_name,
+        reason = "missing_file",
+        details = "No .txt file found"
+      )
+    )
+    next
+  }
+
+  # read the data
+  table <- read.table(file_path, sep = "\t", header = TRUE)
+
+  # filter for Spectrogram 1
+  # there are duplicates in the selection table at times
+  table <- table %>%
+    filter(View == "Spectrogram 1")
+
+  # extract score
+  table$Score <- as.numeric(substr(table$Begin.File, 1, 5))
+
+  # check for NAs in Valid
+  if (any(is.na(table$Valid))) {
+    excluded_species_df <- rbind(
+      excluded_species_df,
+      data.frame(
+        species = species_name,
+        reason = "invalid_data",
+        details = "NAs found in Valid column"
+      )
+    )
+    next
+  }
+
+  # check if there are at least 5 rows
+  # remove species with too few samples
+  if (nrow(table) < 5) {
+    excluded_species_df <- rbind(
+      excluded_species_df,
+      data.frame(
+        species = species_name,
+        reason = "insufficient_samples",
+        details = paste("Only", nrow(table), "samples")
+      )
+    )
+    next
+  }
+
+  # check if there's enough variation in the Score
+  if (length(unique(table$Score)) < 5) {
+    excluded_species_df <- rbind(
+      excluded_species_df,
+      data.frame(
+        species = species_name,
+        reason = "insufficient_score_variation",
+        details = paste("Only", length(unique(table$Score)), "unique scores")
+      )
+    )
+    next
+  }
+
+  # check for extreme imbalance in Valid
+  prop_valid <- mean(table$Valid)
+  n_valid_0 <- sum(table$Valid == 0)
+  n_valid_1 <- sum(table$Valid == 1)
+
+  if (prop_valid < 0.05 || prop_valid > 0.95) {
+    excluded_species_df <- rbind(
+      excluded_species_df,
+      data.frame(
+        species = species_name,
+        reason = "imbalanced_data",
+        details = paste(
+          "Valid proportion:", round(prop_valid, 3),
+          ", Valid_0:", n_valid_0,
+          ", Valid_1:", n_valid_1
+        )
+      )
+    )
+
+    # also add to imbalanced_df
+    imbalanced_df <- rbind(
+      imbalanced_df,
+      data.frame(
+        species = species_name,
+        total_samples = nrow(table),
+        number_valid_0 = n_valid_0,
+        number_valid_1 = n_valid_1,
+        proportion_valid = prop_valid
+      )
+    )
+    next
+  }
+
+  # try to fit the model with tryCatch
+  model_fit <- tryCatch(
+    {
+      model <- glm(Valid ~ Score, family = "binomial", data = table)
+
+      # check for convergence
+      if (!model$converged) {
+        excluded_species_df <- rbind(
+          excluded_species_df,
+          data.frame(
+            species = species_name,
+            reason = "model_non_convergence",
+            details = "Model did not converge"
+          )
+        )
+
+        failed_models_df <- rbind(
+          failed_models_df,
+          data.frame(
+            species = species_name,
+            reason = "model did not converge"
+          )
+        )
+        return(NULL)
+      }
+
+      # calculate predictions
+      prediction.range.conf <- seq(0, 1, .001)
+      predictions.conf <- predict(model, list(Score = prediction.range.conf), type = "r")
+
+      # Calculate thresholds
+      threshold90 <- (log(.90 / (1 - .90)) - model$coefficients[1]) / model$coefficients[2]
+      threshold95 <- (log(.95 / (1 - .95)) - model$coefficients[1]) / model$coefficients[2]
+      threshold99 <- (log(.99 / (1 - .99)) - model$coefficients[1]) / model$coefficients[2]
+
+      # check if thresholds are within reasonable bounds
+      if (any(c(threshold90, threshold95, threshold99) < 0) ||
+        any(c(threshold90, threshold95, threshold99) > 1) ||
+        any(is.infinite(c(threshold90, threshold95, threshold99))) ||
+        any(is.na(c(threshold90, threshold95, threshold99)))) {
+        excluded_species_df <- rbind(
+          excluded_species_df,
+          data.frame(
+            species = species_name,
+            reason = "invalid_thresholds",
+            details = "Threshold values outside valid range"
+          )
+        )
+
+        failed_models_df <- rbind(
+          failed_models_df,
+          data.frame(
+            species = species_name,
+            reason = "invalid threshold values"
+          )
+        )
+        return(NULL)
+      }
+
+      list(
+        model = model,
+        predictions = predictions.conf,
+        thresholds = c(threshold90, threshold95, threshold99)
+      )
+    },
+    error = function(e) {
+      excluded_species_df <- rbind(
+        excluded_species_df,
+        data.frame(
+          species = species_name,
+          reason = "model_error",
+          details = paste("Error:", e$message)
+        )
+      )
+
+      failed_models_df <- rbind(
+        failed_models_df,
+        data.frame(
+          species = species_name,
+          reason = paste("error:", e$message)
+        )
+      )
+      return(NULL)
+    }
+  )
+
+  # skip to next species if model fitting failed
+  if (is.null(model_fit)) {
+    next
+  }
+
+  # extract results from successful model fit
+  model <- model_fit$model
+  predictions.conf <- model_fit$predictions
+  threshold90 <- model_fit$thresholds[1]
+  threshold95 <- model_fit$thresholds[2]
+  threshold99 <- model_fit$thresholds[3]
+
+  # store thresholds
+  threshold_df <- rbind(
+    threshold_df,
+    data.frame(
+      species = species_name,
+      threshold90 = threshold90,
+      threshold95 = threshold95,
+      threshold99 = threshold99,
+      n_samples = nrow(table)
+    )
+  )
+
+  # round threshold values to 3 decimal places for labels
+  threshold90_label <- round(threshold90, 3)
+  threshold95_label <- round(threshold95, 3)
+  threshold99_label <- round(threshold99, 3)
+
+  # get viridis colors
+  viz_colors <- viridis(5)
+  curve_color <- viz_colors[1]
+  threshold_colors <- viz_colors[c(2, 3, 4)]
+
+  # create ggplot
+  p <- ggplot(table, aes(x = Score, y = Valid)) +
+    geom_point(alpha = 0.2) +
+    geom_line(
+      data = data.frame(
+        x = prediction.range.conf,
+        y = predictions.conf
+      ),
+      aes(x = x, y = y),
+      color = curve_color,
+      size = 1.2
+    ) +
+    geom_vline(xintercept = threshold90, color = threshold_colors[1], size = 1) +
+    geom_vline(xintercept = threshold95, color = threshold_colors[2], size = 1) +
+    geom_vline(xintercept = threshold99, color = threshold_colors[3], size = 1) +
+    # add threshold labels with offset
+    annotate("text",
+      x = pmin(pmax(threshold90, 0.05), 0.95) + 0.02,
+      y = 0.5,
+      label = paste("90%:", threshold90_label),
+      color = threshold_colors[1],
+      family = "Century Gothic",
+      angle = 90,
+      hjust = 0.5,
+      size = 3
+    ) +
+    annotate("text",
+      x = pmin(pmax(threshold95, 0.05), 0.95) + 0.02,
+      y = 0.5,
+      label = paste("95%:", threshold95_label),
+      color = threshold_colors[2],
+      family = "Century Gothic",
+      angle = 90,
+      hjust = 0.5,
+      size = 3
+    ) +
+    annotate("text",
+      x = pmin(pmax(threshold99, 0.05), 0.95) + 0.02,
+      y = 0.5,
+      label = paste("99%:", threshold99_label),
+      color = threshold_colors[3],
+      family = "Century Gothic",
+      angle = 90,
+      hjust = 0.5,
+      size = 3
+    ) +
+    labs(
+      title = species_name,
+      x = "Confidence Score",
+      y = "pr(BirdNET prediction is correct)"
+    ) +
+    theme_minimal() +
+    theme(
+      text = element_text(family = "Century Gothic"),
+      plot.title = element_text(family = "Century Gothic", size = 14),
+      axis.title = element_text(family = "Century Gothic", size = 12),
+      axis.text = element_text(family = "Century Gothic", size = 10)
+    ) +
+    scale_x_continuous(limits = c(0, 1)) +
+    scale_y_continuous(limits = c(0, 1))
+
+  plot_list[[species_name]] <- p
+}
+
+# get list of species for which plots were successfully made
+successful_species <- names(plot_list)
+
+# find species that weren't processed at all
+unprocessed_species <- setdiff(
+  all_species,
+  unique(c(
+    successful_species,
+    excluded_species_df$species
+  ))
+)
+
+# add unprocessed species to excluded_species_df if any exist
+if (length(unprocessed_species) > 0) {
+  excluded_species_df <- rbind(
+    excluded_species_df,
+    data.frame(
+      species = unprocessed_species,
+      reason = "unknown",
+      details = "Species was not processed"
+    )
+  )
+}
+
+# write output files
+write.csv(threshold_df, "results/species_thresholds_outOfTheBox.csv", row.names = FALSE)
+write.csv(failed_models_df, "results/failed_models_outOfTheBox.csv", row.names = FALSE)
+write.csv(imbalanced_df, "results/imbalanced_cases_outOfTheBox.csv", row.names = FALSE)
+write.csv(excluded_species_df, "results/excluded_species_outOfTheBox.csv", row.names = FALSE)
+
+# save all plots to PDF
+pdf("figs/species_threshold_outOfTheBox.pdf", width = 10, height = 8, family = "Century Gothic")
+for (p in plot_list) {
+  print(p)
+}
+dev.off()
+
+# print summary
+cat("\nSummary:\n")
+cat("Total species:", length(all_species), "\n")
+cat("Successful species:", length(successful_species), "\n")
+cat("Excluded species:", nrow(excluded_species_df), "\n")
+cat("\nExclusion reasons:\n")
+print(table(excluded_species_df$reason))
+```
+
+Based on the above summary accounting for errors in model convergeneces, missing files, invalid thresholds and imbalanced data, we can safely ignore:
+
+- species with insufficient samples/detections
+- species that have missing files (in order words, these are essentially species with very few detections that I did not validate them and generate a selection table)
+
+The next steps involve: a) examining the species threshold plot for those species for which the logistic regression/binomial glm converged. For such species, we choose the threshold at which species probability of detecting a true positive is 0.95. b) we go through the list of species which are reported as having imbalanced data or invalid thresholds and we set a blanket threshold of 0.25 for such species and include a subset of the same. This would involve qualitative examination of the list of species.
+
+This .csv is titled *curatedThresholds-specieslist.csv*, which can be used in future scripts to extract detections from the BirdNET-outputs-folder to generate the paired-acoustic dataset. 
+
+
