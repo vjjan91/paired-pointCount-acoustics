@@ -61,13 +61,13 @@ custom_list <- left_join(pc_species, birdNET_species,
 write.csv(custom_list, "results/custom-list-for-BirdNET.csv", row.names = F)
 ```
 
-Based on the above comparison between what exists in the BirdNET out-of-the-box model and the updated taxonomy, the only species that was detected in the point-count data and is not present in the BirdNET out-of-the-box model is the *Indian Swiftlet*. Other species had minor taxonomic changes which were not accommodated in the current version and was fixed manually. 
+Based on the above comparison between what exists in the BirdNET out-of-the-box model and the updated taxonomy, the only species that was detected in the point-count data and is not present in the BirdNET out-of-the-box model is the *Indian Swiftlet*. Other species had minor taxonomic changes which were not accommodated in the current version and was fixed manually in the text file. 
 
 ## Results from validating the BirdNET out-of-the-box model  
 
-Using the custom species list, we validated the same using Raven Pro for a set of hundred random selections across the range of confidence scores. 
-
 Of the list of 106 species (out of a total of 107 that was detected in the point count data) that was provided as a custom list to the BirdNET GUI, only 84 species were detected by BirdNET, from which segments were created (using the segments.py command). 
+
+We validated the same using Raven Pro for a set of hundred random selections across the range of confidence scores for each species. 
 
 Species that can be excluded since they are often not detected within the rainforest grids and will not be the focus for our next set of analysis include:
 
@@ -535,7 +535,7 @@ Based on the above summary accounting for errors in model convergeneces, missing
 - species with insufficient samples/detections
 - species that have missing files (in order words, these are essentially species with very few detections that I did not validate them and generate a selection table)
 
-The next steps involve: a) examining the species threshold plot for those species for which the logistic regression/binomial glm converged. For such species, we choose the threshold at which species probability of detecting a true positive is 0.95. b) we go through the list of species which are reported as having imbalanced data or invalid thresholds and we set a blanket threshold of 0.25 for such species and include a subset of the same. This would involve qualitative examination of the list of species.
+The next steps involve: a) examining the species threshold plot for those species for which the logistic regression/binomial glm converged. For such species, we choose the threshold at which species probability of detecting a true positive is 0.95. b) we go through the list of species which are reported as having imbalanced data or invalid thresholds and we set a blanket threshold of 0.25 for such species and include a subset of the same. This would involve qualitative examination of the list of species from the notes made above.
 
 This .csv is titled *curatedThresholds-specieslist.csv*, which can be used in future scripts to extract detections from the BirdNET-outputs-folder to generate the paired-acoustic dataset. 
 
