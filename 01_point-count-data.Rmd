@@ -12,9 +12,7 @@ In this script, we will explore the point-count data to understand bird species 
 library(tidyverse)
 library(dplyr)
 library(stringr)
-library(vegan)
 library(ggplot2)
-library(scico)
 library(data.table)
 library(extrafont)
 library(sf)
@@ -26,7 +24,6 @@ library(ggplot2)
 library(ggspatial)
 library(colorspace)
 library(scico)
-library(paletteer)
 
 # Source any custom/other internal functions necessary for analysis
 source("code/01_internal-functions.R")
