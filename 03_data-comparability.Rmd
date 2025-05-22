@@ -1,0 +1,135 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Data comparability  
+
+In this script, we extract acoustic detections from each audio file by using the curated thresholds that were set for BirdNET data and compare it with the cleaned point count dataset. 
+
+## Install required libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(data.table)
+library(extrafont)
+library(sf)
+library(raster)
+
+# for plotting
+library(scales)
+library(ggplot2)
+library(ggspatial)
+library(colorspace)
+library(scico)
+
+# Source any custom/other internal functions necessary for analysis
+source("code/01_internal-functions.R")
+```
+
+## Loading the acoustic data and filtering outputs above a threshold  
+
+In the previous script, we created curated thresholds for each species above which the probability of detecting a species is at 0.95. For a few species for which the detector performed really well (proportion of true positives: false positives > 0.95), we set a random threshold value of 0.25 above which we expect the probability of species detected to be greater than or equal to 0.95. 
+
+```{r}
+## curate species thresholds
+threshold <- read.csv("results/curatedThresholds-species-list.csv")
+
+## load the BirdNET output file
+birdnet_results <- read.csv("results/birdNET-outputs/BirdNET_CombinedTable.csv")
+
+## filter species detections above the threshold we chose
+## include a gridID column so that we can join this with the point_count data
+birdnet_subset <- birdnet_results %>%
+    inner_join(threshold, by = c("Common.name" = "species")) %>%
+    filter(Confidence >= threshold) %>%
+    mutate(filename_pattern = basename(File) %>% 
+                        sub(".*\\\\([0-9]{8}_[0-9]{4}_[A-Z0-9]+)\\.WAV", "\\1", .)) %>%
+    mutate(date = substr(filename_pattern, 1, 8) %>%
+             ymd() %>%
+             format("%Y-%b-%d")) %>%
+  mutate(gridID = substr(filename_pattern, 15, nchar(filename_pattern)) %>%
+               sub("\\.WAV$", "", .))
+```
+
+## Loading point count data
+```{r}
+point_count <- read.csv("results/cleaned-point-count-data.csv")
+```
+
+## Curating the acoustic dataset and creating a new object
+```{r}
+# use only a subset of the birdnet_subset columns for the new object
+acoustic_data <- birdnet_subset[,c(3,4,9,10)]
+names(acoustic_data) <- c("scientific_name","common_name",
+                          "date", "gridID")
+
+# summarise and group the data based on the four columns and create a number column that indicates the number of acoustic detections
+acoustic_data <-  acoustic_data %>%
+  group_by(scientific_name, common_name, date, gridID) %>%
+  summarise(number = n()) %>%
+  ungroup()
+
+# create a new column to indicate dateType
+acoustic_data <-  acoustic_data %>%
+  mutate(dataType = "acoustic_data")
+point_count <- point_count %>%
+  mutate(dataType = "point_count")
+
+# join with point_count data (remove the birdMamm column since all the data we are dealing with is bird data)
+datSubset <- bind_rows(point_count[,-6], acoustic_data)
+
+# based on differences in taxonomy updates done by BirdNET and the eBird team and the species that we are currently analyzing, the Greater Flameback needs to be changed to Malabar Flameback along with it's scientific name
+# note: VR also had to manually edit the cleaned-point-data.csv to match older scientific names that are currently accepted by BirdNET
+
+datSubset <- datSubset %>%
+  mutate(
+    common_name = case_when(
+      common_name == "Greater Flameback" ~ "Malabar Flameback",
+      TRUE ~ common_name
+    ),
+    scientific_name = case_when(
+      scientific_name == "Chrysocolaptes guttacristatus" ~ "Chrysocolaptes socialis",
+      TRUE ~ scientific_name
+    )
+  )
+
+# let's fill in missing rows for seasonYear and start_time
+datSubset <- datSubset %>%
+  group_by(date, gridID) %>%
+# fill(start_time, .direction = "downup") %>%
+  fill(seasonYear, .direction = "downup") %>%
+  ungroup()
+
+# change structures before writing to file
+datSubset$start_time <- as.character(datSubset$start_time)
+datSubset$timeSeg <- as.character(datSubset$timeSeg)
+
+# rename columns
+names(datSubset)[1] <- "year_season"
+names(datSubset)[5] <- "time_segment"
+
+# lastly, before writing the data locally, we only keep those species that are present in the curated birdNet thresholds species list and ignore those found only in point_count data and not in acoustic_data
+
+# filter the entire dataframe to keep only those species in the species_thresholds list
+names(threshold)[1] <- "common_name"
+threshold <- threshold %>%
+  mutate(
+    common_name = case_when(
+      common_name == "Greater Flameback" ~ "Malabar Flameback",
+      TRUE ~ common_name
+    ))
+
+# filter those species
+# we only retain 44 species of the initial list of 107 that were detected in point_counts 
+datSubset <- datSubset %>%
+  filter(common_name %in% threshold$common_name)
+
+# write to file
+write.csv(datSubset, "results/datSubset.csv", row.names = F)
+```
+
+
+
