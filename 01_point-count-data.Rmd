@@ -6,7 +6,6 @@ editor_options:
 # Exploring point-count data  
 
 In this script, we will explore the point-count data to understand bird species diversity patterns across seasons. For this analysis, we rely on two seasons of point-count data, that was carried out in June 2024 and Dec 2024.  
-
 ## Install required libraries
 ```{r}
 library(tidyverse)
