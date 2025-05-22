@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 3 Exploring outputs from BirdNET | Source code and supporting information for Predicting bird species abundances from acoustic data</title>
+  <meta name="description" content="Section 3 Exploring outputs from BirdNET | Source code and supporting information for Predicting bird species abundances from acoustic data" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 3 Exploring outputs from BirdNET | Source code and supporting information for Predicting bird species abundances from acoustic data" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="vjjan91/paired-pointCount-acoustics" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 3 Exploring outputs from BirdNET | Source code and supporting information for Predicting bird species abundances from acoustic data" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Divya Mudappa" />
+<meta name="author" content="T R Shankar Raman" />
+<meta name="author" content="" />
+<meta name="author" content="Laurel B Symes" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="exploring-point-count-data.html"/>
+<link rel="next" href="data-comparability.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html"><i class="fa fa-check"></i><b>2</b> Exploring point-count data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#loading-point-count-data"><i class="fa fa-check"></i><b>2.1</b> Loading point-count data</a></li>
+<li class="chapter" data-level="2.2" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#load-site-level-information-and-create-gridded-data"><i class="fa fa-check"></i><b>2.2</b> Load site level information and create gridded data</a></li>
+<li class="chapter" data-level="2.3" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#extract-species-level-information"><i class="fa fa-check"></i><b>2.3</b> Extract species-level information</a></li>
+<li class="chapter" data-level="2.4" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#visualizing-richness-data-across-seasons"><i class="fa fa-check"></i><b>2.4</b> Visualizing richness data across seasons</a></li>
+<li class="chapter" data-level="2.5" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#visualizing-abundance-by-species-across-seasons"><i class="fa fa-check"></i><b>2.5</b> Visualizing abundance by species across seasons</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html"><i class="fa fa-check"></i><b>3</b> Exploring outputs from BirdNET</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html#install-required-libraries"><i class="fa fa-check"></i><b>3.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="3.2" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html#creating-a-custom-species-list-for-birdnet-analysis"><i class="fa fa-check"></i><b>3.2</b> Creating a custom species list for BirdNET analysis</a></li>
+<li class="chapter" data-level="3.3" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html#results-from-validating-the-birdnet-out-of-the-box-model"><i class="fa fa-check"></i><b>3.3</b> Results from validating the BirdNET out-of-the-box model</a></li>
+<li class="chapter" data-level="3.4" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html#setting-thresholds-for-species-after-validation"><i class="fa fa-check"></i><b>3.4</b> Setting thresholds for species after validation</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-comparability.html"><a href="data-comparability.html"><i class="fa fa-check"></i><b>4</b> Data comparability</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-comparability.html"><a href="data-comparability.html#install-required-libraries-1"><i class="fa fa-check"></i><b>4.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="data-comparability.html"><a href="data-comparability.html#loading-the-acoustic-data-and-filtering-outputs-above-a-threshold"><i class="fa fa-check"></i><b>4.2</b> Loading the acoustic data and filtering outputs above a threshold</a></li>
+<li class="chapter" data-level="4.3" data-path="data-comparability.html"><a href="data-comparability.html#loading-point-count-data-1"><i class="fa fa-check"></i><b>4.3</b> Loading point count data</a></li>
+<li class="chapter" data-level="4.4" data-path="data-comparability.html"><a href="data-comparability.html#curating-the-acoustic-dataset-and-creating-a-new-object"><i class="fa fa-check"></i><b>4.4</b> Curating the acoustic dataset and creating a new object</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code and supporting information for <em>Predicting bird species abundances from acoustic data</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exploring-outputs-from-birdnet" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Section 3</span> Exploring outputs from BirdNET<a href="exploring-outputs-from-birdnet.html#exploring-outputs-from-birdnet" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Given our list of species that were detected in the point count data, we carry out the following next steps to achieve automated identification of bird species from the acoustic data. Please visit the <em>acoustic-data-cleaning-procedures.txt</em> to learn more about how the audio data was cleaned prior and processed.</p>
+<div id="install-required-libraries" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Install required libraries<a href="exploring-outputs-from-birdnet.html#install-required-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="exploring-outputs-from-birdnet.html#cb7-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-2"><a href="exploring-outputs-from-birdnet.html#cb7-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb7-3"><a href="exploring-outputs-from-birdnet.html#cb7-3" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb7-4"><a href="exploring-outputs-from-birdnet.html#cb7-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-5"><a href="exploring-outputs-from-birdnet.html#cb7-5" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb7-6"><a href="exploring-outputs-from-birdnet.html#cb7-6" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb7-7"><a href="exploring-outputs-from-birdnet.html#cb7-7" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb7-8"><a href="exploring-outputs-from-birdnet.html#cb7-8" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb7-9"><a href="exploring-outputs-from-birdnet.html#cb7-9" tabindex="-1"></a><span class="fu">library</span>(viridis) <span class="co"># for colorblind-friendly colors</span></span>
+<span id="cb7-10"><a href="exploring-outputs-from-birdnet.html#cb7-10" tabindex="-1"></a><span class="fu">library</span>(gridExtra) <span class="co"># for arranging multiple plots</span></span>
+<span id="cb7-11"><a href="exploring-outputs-from-birdnet.html#cb7-11" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="exploring-outputs-from-birdnet.html#cb7-12" tabindex="-1"></a><span class="co"># for plotting</span></span>
+<span id="cb7-13"><a href="exploring-outputs-from-birdnet.html#cb7-13" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb7-14"><a href="exploring-outputs-from-birdnet.html#cb7-14" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-15"><a href="exploring-outputs-from-birdnet.html#cb7-15" tabindex="-1"></a><span class="fu">library</span>(ggspatial)</span>
+<span id="cb7-16"><a href="exploring-outputs-from-birdnet.html#cb7-16" tabindex="-1"></a><span class="fu">library</span>(colorspace)</span>
+<span id="cb7-17"><a href="exploring-outputs-from-birdnet.html#cb7-17" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb7-18"><a href="exploring-outputs-from-birdnet.html#cb7-18" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="exploring-outputs-from-birdnet.html#cb7-19" tabindex="-1"></a><span class="co"># Source any custom/other internal functions necessary for analysis</span></span>
+<span id="cb7-20"><a href="exploring-outputs-from-birdnet.html#cb7-20" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;code/01_internal-functions.R&quot;</span>)</span></code></pre></div>
+<p>We will carry out a few iterations of the BirdNET analysis to essentially test and improve the detections of multiple species that were detected in our point counts. We first ran a model by using the ‘Batch Analysis’ Tab using the ‘species-by-location’ feature, which essentially runs the out-of-the-box model for species that can potentially occur at that location. However, upon further running the segments.py function through the ‘Segments’ tab, we realized that several species that are present in the point-count data were not captured and several other new species that do not occur have been introduced. We will now run a second model by continuing to test BirdNET’s out-of-the-box model on a custom list of species that we provide to the model.</p>
+<p>All instructions for running BirdNET were through this document - <a href="https://zenodo.org/records/8415090" class="uri">https://zenodo.org/records/8415090</a> and conversations with Dr. Laurel Symes and other staff at the K. Lisa Yang Center for Conservation Bioacoustics.</p>
+</div>
+<div id="creating-a-custom-species-list-for-birdnet-analysis" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Creating a custom species list for BirdNET analysis<a href="exploring-outputs-from-birdnet.html#creating-a-custom-species-list-for-birdnet-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="exploring-outputs-from-birdnet.html#cb8-1" tabindex="-1"></a><span class="co"># load the list of species in the point-count data and create a separate file in the format requested by BirdNET</span></span>
+<span id="cb8-2"><a href="exploring-outputs-from-birdnet.html#cb8-2" tabindex="-1"></a><span class="co"># given taxonomic changes in the eBird India list of species, we need to match it with the existing taxonomy provided by BirdNET</span></span>
+<span id="cb8-3"><a href="exploring-outputs-from-birdnet.html#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="exploring-outputs-from-birdnet.html#cb8-4" tabindex="-1"></a><span class="co"># list of species in point counts</span></span>
+<span id="cb8-5"><a href="exploring-outputs-from-birdnet.html#cb8-5" tabindex="-1"></a>pc_species <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;results/species-in-point-counts.csv&quot;</span>)</span>
+<span id="cb8-6"><a href="exploring-outputs-from-birdnet.html#cb8-6" tabindex="-1"></a>birdNET_species <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/birdNET-base-model-complete-species-list.csv&quot;</span>)</span>
+<span id="cb8-7"><a href="exploring-outputs-from-birdnet.html#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="exploring-outputs-from-birdnet.html#cb8-8" tabindex="-1"></a><span class="co"># we join the two columns and create a new column in the format requested by BirdNET</span></span>
+<span id="cb8-9"><a href="exploring-outputs-from-birdnet.html#cb8-9" tabindex="-1"></a>custom_list <span class="ot">&lt;-</span> <span class="fu">left_join</span>(pc_species, birdNET_species,</span>
+<span id="cb8-10"><a href="exploring-outputs-from-birdnet.html#cb8-10" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;common_name&quot;</span> <span class="ot">=</span> <span class="st">&quot;common_name_birdNET&quot;</span>)</span>
+<span id="cb8-11"><a href="exploring-outputs-from-birdnet.html#cb8-11" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-12"><a href="exploring-outputs-from-birdnet.html#cb8-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">combined_name =</span> <span class="fu">paste</span>(scientific_name_birdNET,</span>
+<span id="cb8-13"><a href="exploring-outputs-from-birdnet.html#cb8-13" tabindex="-1"></a>    common_name,</span>
+<span id="cb8-14"><a href="exploring-outputs-from-birdnet.html#cb8-14" tabindex="-1"></a>    <span class="at">sep =</span> <span class="st">&quot;_&quot;</span></span>
+<span id="cb8-15"><a href="exploring-outputs-from-birdnet.html#cb8-15" tabindex="-1"></a>  ))</span>
+<span id="cb8-16"><a href="exploring-outputs-from-birdnet.html#cb8-16" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="exploring-outputs-from-birdnet.html#cb8-17" tabindex="-1"></a><span class="co"># Upon creating a combined_name column that includes the scientific_name and common_name in the format requested by BirdNET, we noticed that taxonomic updates in the eBird India file does not match the existing taxonomy as used by BirdNET.</span></span>
+<span id="cb8-18"><a href="exploring-outputs-from-birdnet.html#cb8-18" tabindex="-1"></a><span class="co"># We will save the above file and manually make changes to the same before using it within the BirdNET GUI</span></span>
+<span id="cb8-19"><a href="exploring-outputs-from-birdnet.html#cb8-19" tabindex="-1"></a><span class="co"># We will convert the below file to a text file before running BirdNET</span></span>
+<span id="cb8-20"><a href="exploring-outputs-from-birdnet.html#cb8-20" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="exploring-outputs-from-birdnet.html#cb8-21" tabindex="-1"></a><span class="fu">write.csv</span>(custom_list, <span class="st">&quot;results/custom-list-for-BirdNET.csv&quot;</span>, <span class="at">row.names =</span> F)</span></code></pre></div>
+<p>Based on the above comparison between what exists in the BirdNET out-of-the-box model and the updated taxonomy, the only species that was detected in the point-count data and is not present in the BirdNET out-of-the-box model is the <em>Indian Swiftlet</em>. Other species had minor taxonomic changes which were not accommodated in the current version and was fixed manually in the text file.</p>
+</div>
+<div id="results-from-validating-the-birdnet-out-of-the-box-model" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Results from validating the BirdNET out-of-the-box model<a href="exploring-outputs-from-birdnet.html#results-from-validating-the-birdnet-out-of-the-box-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Of the list of 106 species (out of a total of 107 that was detected in the point count data) that was provided as a custom list to the BirdNET GUI, only 84 species were detected by BirdNET, from which segments were created (using the segments.py command).</p>
+<p>We validated the same using Raven Pro for a set of hundred random selections across the range of confidence scores for each species.</p>
+<p>Species that can be excluded since they are often not detected within the rainforest grids and will not be the focus for our next set of analysis include:</p>
+<ul>
+<li>Ashy Prinia</li>
+<li>Brown Boobook (also performed poorly)</li>
+<li>Brown Fish-Owl</li>
+<li>Common Sandpiper</li>
+<li>Oriental-Magpie Robin (few detections)</li>
+<li>Purple Sunbird</li>
+<li>Red-rumped Swallow (very few detections)</li>
+<li>Streak-throated Woodpecker</li>
+</ul>
+<p>Species for which the model performed poorly and requires a custom classifier include:</p>
+<ul>
+<li>Black-hooded Oriole</li>
+<li>Bronzed Drongo (very tricky to validate unless it’s making a chip-oo-yeee call or its repetitive enough that you can distinguish it from the racket-tailed drongo)</li>
+<li>Brown-breasted Flycatcher</li>
+<li>Changeable-Hawk Eagle (need to increase segment length to validate better, but often is confused with Crested serpent eagle)</li>
+<li>Chestnut-headed bee-eater (need to choose a higher confidence score to validate selections in the first place and the model confuses calls with background noise quite a bit/insect vocalizations at similar frequencies)</li>
+<li>Common Flameback (hard to validate at low confidence scores as the thin-ness of the call is not apparent and easily confused with Malabar/Greater Flameback)</li>
+<li>Common Iora (a single detection was made and potentially needs a new classifier)</li>
+<li>Brown Boobook</li>
+<li>Brown Fish-Owl</li>
+<li>Crested Goshawk</li>
+<li>Golden-fronted Leafbird (mimic whose vocalizations at low confidence scores sound very much like the Bronzed Drongo)</li>
+<li>Black-naped Monarch (either confused with paradise flycatcher - the call and the song is similarly confused with a yellow-browed bulbul potentially)</li>
+<li>Greater Coucal (confused as Nilgiri Langur)</li>
+<li>Heart-spotted Woodpecker (confused with other flamebacks and nuthatches)</li>
+<li>Indian Blue Robin</li>
+<li>Indian Golden Oriole</li>
+<li>Indian Pitta</li>
+<li>Indian Yellow Tit</li>
+<li>Lesser Yellownape (might as well throw in a random species since the model is picking everything except this species)</li>
+<li>Malabar Starling</li>
+<li>Nilgiri Flycatcher (very few detections)</li>
+<li>Orange-headed Thrush (seems to be confused with hill myna or yellow-browed bulbul)</li>
+<li>Red Spurfowl</li>
+<li>Rufous Babbler (very few detections perhaps?)</li>
+<li>Rusty-tailed Flycatcher (of the few detections, all are accurate but a custom classifier is required)</li>
+<li>Shikra (few detections at the moment)</li>
+<li>Verditer Flycatcher (very few detections)</li>
+<li>White-bellied Woodpecker (almost no detections)</li>
+</ul>
+<p>Species for which the out-of-the-box model performed well and we could potentially set a threshold include:</p>
+<ul>
+<li>Asian Fairy-bluebird</li>
+<li>Brown-capped Pygmy Woodpecker</li>
+<li>Common Kingfisher</li>
+<li>Common Tailorbird</li>
+<li>Crested-Serpent Eagle</li>
+<li>Crimson-backed Sunbird</li>
+<li>Eurasian Hoopoe</li>
+<li>Great Hornbill</li>
+<li>Greater Flameback (performs pretty well, hard to validate though due to similarity with Common flameback)</li>
+<li>Indian Peafowl</li>
+<li>Indian Scimitar-Babbler</li>
+<li>Indian White-eye</li>
+<li>Jungle Myna (few detections however)</li>
+<li>Large-billed Crow</li>
+<li>Large-billed Leaf Warbler</li>
+<li>Malabar Barbet</li>
+<li>Malabar Parakeet</li>
+<li>Malabar Trogon<br />
+</li>
+<li>Malabar Woodshrike</li>
+<li>Nilgiri Flowerpecker</li>
+<li>Orange Minivet</li>
+<li>Red-wattled Lapwing</li>
+<li>Red-whiskered Bulbul</li>
+<li>Southern Hill Myna</li>
+<li>Square-tailed Bulbul</li>
+<li>Stork-billed Kingfisher</li>
+<li>White-cheeked Barbet</li>
+<li>White-throated Kingfisher</li>
+<li>Yellow-browed Bulbul</li>
+</ul>
+</div>
+<div id="setting-thresholds-for-species-after-validation" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Setting thresholds for species after validation<a href="exploring-outputs-from-birdnet.html#setting-thresholds-for-species-after-validation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The above notes were made while validating data using Raven Pro. We will now set thresholds for all the species that were validated from the list of 84 species.</p>
+<p>Below, the code is written in such a way that we are able to handle failure of model fit, convergence and summarize species that have very few detections. We initially set thresholds for the confidence scores at which the probability of a true positive is at 0.90, 0.95 and 0.99.</p>
+<p>Ultimately, we want to select species for which the model performance is sufficiently high for us to retrieve true positives with a probability of occurrence at 0.95.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="exploring-outputs-from-birdnet.html#cb9-1" tabindex="-1"></a><span class="co"># create empty dataframes to store results</span></span>
+<span id="cb9-2"><a href="exploring-outputs-from-birdnet.html#cb9-2" tabindex="-1"></a>threshold_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-3"><a href="exploring-outputs-from-birdnet.html#cb9-3" tabindex="-1"></a>  <span class="at">species =</span> <span class="fu">character</span>(),</span>
+<span id="cb9-4"><a href="exploring-outputs-from-birdnet.html#cb9-4" tabindex="-1"></a>  <span class="at">threshold90 =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb9-5"><a href="exploring-outputs-from-birdnet.html#cb9-5" tabindex="-1"></a>  <span class="at">threshold95 =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb9-6"><a href="exploring-outputs-from-birdnet.html#cb9-6" tabindex="-1"></a>  <span class="at">threshold99 =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb9-7"><a href="exploring-outputs-from-birdnet.html#cb9-7" tabindex="-1"></a>  <span class="at">n_samples =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb9-8"><a href="exploring-outputs-from-birdnet.html#cb9-8" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb9-9"><a href="exploring-outputs-from-birdnet.html#cb9-9" tabindex="-1"></a>)</span>
+<span id="cb9-10"><a href="exploring-outputs-from-birdnet.html#cb9-10" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="exploring-outputs-from-birdnet.html#cb9-11" tabindex="-1"></a><span class="co"># create dataframe for failed model fits</span></span>
+<span id="cb9-12"><a href="exploring-outputs-from-birdnet.html#cb9-12" tabindex="-1"></a>failed_models_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-13"><a href="exploring-outputs-from-birdnet.html#cb9-13" tabindex="-1"></a>  <span class="at">species =</span> <span class="fu">character</span>(),</span>
+<span id="cb9-14"><a href="exploring-outputs-from-birdnet.html#cb9-14" tabindex="-1"></a>  <span class="at">reason =</span> <span class="fu">character</span>(),</span>
+<span id="cb9-15"><a href="exploring-outputs-from-birdnet.html#cb9-15" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb9-16"><a href="exploring-outputs-from-birdnet.html#cb9-16" tabindex="-1"></a>)</span>
+<span id="cb9-17"><a href="exploring-outputs-from-birdnet.html#cb9-17" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="exploring-outputs-from-birdnet.html#cb9-18" tabindex="-1"></a><span class="co"># create dataframe for imbalanced cases</span></span>
+<span id="cb9-19"><a href="exploring-outputs-from-birdnet.html#cb9-19" tabindex="-1"></a>imbalanced_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-20"><a href="exploring-outputs-from-birdnet.html#cb9-20" tabindex="-1"></a>  <span class="at">species =</span> <span class="fu">character</span>(),</span>
+<span id="cb9-21"><a href="exploring-outputs-from-birdnet.html#cb9-21" tabindex="-1"></a>  <span class="at">total_samples =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb9-22"><a href="exploring-outputs-from-birdnet.html#cb9-22" tabindex="-1"></a>  <span class="at">number_valid_0 =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb9-23"><a href="exploring-outputs-from-birdnet.html#cb9-23" tabindex="-1"></a>  <span class="at">number_valid_1 =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb9-24"><a href="exploring-outputs-from-birdnet.html#cb9-24" tabindex="-1"></a>  <span class="at">proportion_valid =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb9-25"><a href="exploring-outputs-from-birdnet.html#cb9-25" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb9-26"><a href="exploring-outputs-from-birdnet.html#cb9-26" tabindex="-1"></a>)</span>
+<span id="cb9-27"><a href="exploring-outputs-from-birdnet.html#cb9-27" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="exploring-outputs-from-birdnet.html#cb9-28" tabindex="-1"></a><span class="co"># create dataframe for all excluded species</span></span>
+<span id="cb9-29"><a href="exploring-outputs-from-birdnet.html#cb9-29" tabindex="-1"></a>excluded_species_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-30"><a href="exploring-outputs-from-birdnet.html#cb9-30" tabindex="-1"></a>  <span class="at">species =</span> <span class="fu">character</span>(),</span>
+<span id="cb9-31"><a href="exploring-outputs-from-birdnet.html#cb9-31" tabindex="-1"></a>  <span class="at">reason =</span> <span class="fu">character</span>(),</span>
+<span id="cb9-32"><a href="exploring-outputs-from-birdnet.html#cb9-32" tabindex="-1"></a>  <span class="at">details =</span> <span class="fu">character</span>(),</span>
+<span id="cb9-33"><a href="exploring-outputs-from-birdnet.html#cb9-33" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb9-34"><a href="exploring-outputs-from-birdnet.html#cb9-34" tabindex="-1"></a>)</span>
+<span id="cb9-35"><a href="exploring-outputs-from-birdnet.html#cb9-35" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="exploring-outputs-from-birdnet.html#cb9-36" tabindex="-1"></a><span class="co"># create list to store plots</span></span>
+<span id="cb9-37"><a href="exploring-outputs-from-birdnet.html#cb9-37" tabindex="-1"></a>plot_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb9-38"><a href="exploring-outputs-from-birdnet.html#cb9-38" tabindex="-1"></a></span>
+<span id="cb9-39"><a href="exploring-outputs-from-birdnet.html#cb9-39" tabindex="-1"></a><span class="co"># get list of species folders</span></span>
+<span id="cb9-40"><a href="exploring-outputs-from-birdnet.html#cb9-40" tabindex="-1"></a>species_folders <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="st">&quot;results/birdNET-segments&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-41"><a href="exploring-outputs-from-birdnet.html#cb9-41" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="exploring-outputs-from-birdnet.html#cb9-42" tabindex="-1"></a><span class="co"># get all species folders names</span></span>
+<span id="cb9-43"><a href="exploring-outputs-from-birdnet.html#cb9-43" tabindex="-1"></a>all_species <span class="ot">&lt;-</span> <span class="fu">basename</span>(species_folders)</span>
+<span id="cb9-44"><a href="exploring-outputs-from-birdnet.html#cb9-44" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="exploring-outputs-from-birdnet.html#cb9-45" tabindex="-1"></a><span class="co"># loop through each species folder</span></span>
+<span id="cb9-46"><a href="exploring-outputs-from-birdnet.html#cb9-46" tabindex="-1"></a><span class="cf">for</span> (folder <span class="cf">in</span> species_folders) {</span>
+<span id="cb9-47"><a href="exploring-outputs-from-birdnet.html#cb9-47" tabindex="-1"></a>  species_name <span class="ot">&lt;-</span> <span class="fu">basename</span>(folder)</span>
+<span id="cb9-48"><a href="exploring-outputs-from-birdnet.html#cb9-48" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="exploring-outputs-from-birdnet.html#cb9-49" tabindex="-1"></a>  <span class="co"># find the .txt file</span></span>
+<span id="cb9-50"><a href="exploring-outputs-from-birdnet.html#cb9-50" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> <span class="fu">list.files</span>(folder, <span class="at">pattern =</span> <span class="st">&quot;.txt$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-51"><a href="exploring-outputs-from-birdnet.html#cb9-51" tabindex="-1"></a></span>
+<span id="cb9-52"><a href="exploring-outputs-from-birdnet.html#cb9-52" tabindex="-1"></a>  <span class="co"># handling missing .txt files for species</span></span>
+<span id="cb9-53"><a href="exploring-outputs-from-birdnet.html#cb9-53" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(file_path) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb9-54"><a href="exploring-outputs-from-birdnet.html#cb9-54" tabindex="-1"></a>    excluded_species_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-55"><a href="exploring-outputs-from-birdnet.html#cb9-55" tabindex="-1"></a>      excluded_species_df,</span>
+<span id="cb9-56"><a href="exploring-outputs-from-birdnet.html#cb9-56" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb9-57"><a href="exploring-outputs-from-birdnet.html#cb9-57" tabindex="-1"></a>        <span class="at">species =</span> species_name,</span>
+<span id="cb9-58"><a href="exploring-outputs-from-birdnet.html#cb9-58" tabindex="-1"></a>        <span class="at">reason =</span> <span class="st">&quot;missing_file&quot;</span>,</span>
+<span id="cb9-59"><a href="exploring-outputs-from-birdnet.html#cb9-59" tabindex="-1"></a>        <span class="at">details =</span> <span class="st">&quot;No .txt file found&quot;</span></span>
+<span id="cb9-60"><a href="exploring-outputs-from-birdnet.html#cb9-60" tabindex="-1"></a>      )</span>
+<span id="cb9-61"><a href="exploring-outputs-from-birdnet.html#cb9-61" tabindex="-1"></a>    )</span>
+<span id="cb9-62"><a href="exploring-outputs-from-birdnet.html#cb9-62" tabindex="-1"></a>    <span class="cf">next</span></span>
+<span id="cb9-63"><a href="exploring-outputs-from-birdnet.html#cb9-63" tabindex="-1"></a>  }</span>
+<span id="cb9-64"><a href="exploring-outputs-from-birdnet.html#cb9-64" tabindex="-1"></a></span>
+<span id="cb9-65"><a href="exploring-outputs-from-birdnet.html#cb9-65" tabindex="-1"></a>  <span class="co"># read the data</span></span>
+<span id="cb9-66"><a href="exploring-outputs-from-birdnet.html#cb9-66" tabindex="-1"></a>  table <span class="ot">&lt;-</span> <span class="fu">read.table</span>(file_path, <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-67"><a href="exploring-outputs-from-birdnet.html#cb9-67" tabindex="-1"></a></span>
+<span id="cb9-68"><a href="exploring-outputs-from-birdnet.html#cb9-68" tabindex="-1"></a>  <span class="co"># filter for Spectrogram 1</span></span>
+<span id="cb9-69"><a href="exploring-outputs-from-birdnet.html#cb9-69" tabindex="-1"></a>  <span class="co"># there are duplicates in the selection table at times</span></span>
+<span id="cb9-70"><a href="exploring-outputs-from-birdnet.html#cb9-70" tabindex="-1"></a>  table <span class="ot">&lt;-</span> table <span class="sc">%&gt;%</span></span>
+<span id="cb9-71"><a href="exploring-outputs-from-birdnet.html#cb9-71" tabindex="-1"></a>    <span class="fu">filter</span>(View <span class="sc">==</span> <span class="st">&quot;Spectrogram 1&quot;</span>)</span>
+<span id="cb9-72"><a href="exploring-outputs-from-birdnet.html#cb9-72" tabindex="-1"></a></span>
+<span id="cb9-73"><a href="exploring-outputs-from-birdnet.html#cb9-73" tabindex="-1"></a>  <span class="co"># extract score</span></span>
+<span id="cb9-74"><a href="exploring-outputs-from-birdnet.html#cb9-74" tabindex="-1"></a>  table<span class="sc">$</span>Score <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">substr</span>(table<span class="sc">$</span>Begin.File, <span class="dv">1</span>, <span class="dv">5</span>))</span>
+<span id="cb9-75"><a href="exploring-outputs-from-birdnet.html#cb9-75" tabindex="-1"></a></span>
+<span id="cb9-76"><a href="exploring-outputs-from-birdnet.html#cb9-76" tabindex="-1"></a>  <span class="co"># check for NAs in Valid</span></span>
+<span id="cb9-77"><a href="exploring-outputs-from-birdnet.html#cb9-77" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(table<span class="sc">$</span>Valid))) {</span>
+<span id="cb9-78"><a href="exploring-outputs-from-birdnet.html#cb9-78" tabindex="-1"></a>    excluded_species_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-79"><a href="exploring-outputs-from-birdnet.html#cb9-79" tabindex="-1"></a>      excluded_species_df,</span>
+<span id="cb9-80"><a href="exploring-outputs-from-birdnet.html#cb9-80" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb9-81"><a href="exploring-outputs-from-birdnet.html#cb9-81" tabindex="-1"></a>        <span class="at">species =</span> species_name,</span>
+<span id="cb9-82"><a href="exploring-outputs-from-birdnet.html#cb9-82" tabindex="-1"></a>        <span class="at">reason =</span> <span class="st">&quot;invalid_data&quot;</span>,</span>
+<span id="cb9-83"><a href="exploring-outputs-from-birdnet.html#cb9-83" tabindex="-1"></a>        <span class="at">details =</span> <span class="st">&quot;NAs found in Valid column&quot;</span></span>
+<span id="cb9-84"><a href="exploring-outputs-from-birdnet.html#cb9-84" tabindex="-1"></a>      )</span>
+<span id="cb9-85"><a href="exploring-outputs-from-birdnet.html#cb9-85" tabindex="-1"></a>    )</span>
+<span id="cb9-86"><a href="exploring-outputs-from-birdnet.html#cb9-86" tabindex="-1"></a>    <span class="cf">next</span></span>
+<span id="cb9-87"><a href="exploring-outputs-from-birdnet.html#cb9-87" tabindex="-1"></a>  }</span>
+<span id="cb9-88"><a href="exploring-outputs-from-birdnet.html#cb9-88" tabindex="-1"></a></span>
+<span id="cb9-89"><a href="exploring-outputs-from-birdnet.html#cb9-89" tabindex="-1"></a>  <span class="co"># check if there are at least 5 rows</span></span>
+<span id="cb9-90"><a href="exploring-outputs-from-birdnet.html#cb9-90" tabindex="-1"></a>  <span class="co"># remove species with too few samples</span></span>
+<span id="cb9-91"><a href="exploring-outputs-from-birdnet.html#cb9-91" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">nrow</span>(table) <span class="sc">&lt;</span> <span class="dv">5</span>) {</span>
+<span id="cb9-92"><a href="exploring-outputs-from-birdnet.html#cb9-92" tabindex="-1"></a>    excluded_species_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-93"><a href="exploring-outputs-from-birdnet.html#cb9-93" tabindex="-1"></a>      excluded_species_df,</span>
+<span id="cb9-94"><a href="exploring-outputs-from-birdnet.html#cb9-94" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb9-95"><a href="exploring-outputs-from-birdnet.html#cb9-95" tabindex="-1"></a>        <span class="at">species =</span> species_name,</span>
+<span id="cb9-96"><a href="exploring-outputs-from-birdnet.html#cb9-96" tabindex="-1"></a>        <span class="at">reason =</span> <span class="st">&quot;insufficient_samples&quot;</span>,</span>
+<span id="cb9-97"><a href="exploring-outputs-from-birdnet.html#cb9-97" tabindex="-1"></a>        <span class="at">details =</span> <span class="fu">paste</span>(<span class="st">&quot;Only&quot;</span>, <span class="fu">nrow</span>(table), <span class="st">&quot;samples&quot;</span>)</span>
+<span id="cb9-98"><a href="exploring-outputs-from-birdnet.html#cb9-98" tabindex="-1"></a>      )</span>
+<span id="cb9-99"><a href="exploring-outputs-from-birdnet.html#cb9-99" tabindex="-1"></a>    )</span>
+<span id="cb9-100"><a href="exploring-outputs-from-birdnet.html#cb9-100" tabindex="-1"></a>    <span class="cf">next</span></span>
+<span id="cb9-101"><a href="exploring-outputs-from-birdnet.html#cb9-101" tabindex="-1"></a>  }</span>
+<span id="cb9-102"><a href="exploring-outputs-from-birdnet.html#cb9-102" tabindex="-1"></a></span>
+<span id="cb9-103"><a href="exploring-outputs-from-birdnet.html#cb9-103" tabindex="-1"></a>  <span class="co"># check if there&#39;s enough variation in the Score</span></span>
+<span id="cb9-104"><a href="exploring-outputs-from-birdnet.html#cb9-104" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">unique</span>(table<span class="sc">$</span>Score)) <span class="sc">&lt;</span> <span class="dv">5</span>) {</span>
+<span id="cb9-105"><a href="exploring-outputs-from-birdnet.html#cb9-105" tabindex="-1"></a>    excluded_species_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-106"><a href="exploring-outputs-from-birdnet.html#cb9-106" tabindex="-1"></a>      excluded_species_df,</span>
+<span id="cb9-107"><a href="exploring-outputs-from-birdnet.html#cb9-107" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb9-108"><a href="exploring-outputs-from-birdnet.html#cb9-108" tabindex="-1"></a>        <span class="at">species =</span> species_name,</span>
+<span id="cb9-109"><a href="exploring-outputs-from-birdnet.html#cb9-109" tabindex="-1"></a>        <span class="at">reason =</span> <span class="st">&quot;insufficient_score_variation&quot;</span>,</span>
+<span id="cb9-110"><a href="exploring-outputs-from-birdnet.html#cb9-110" tabindex="-1"></a>        <span class="at">details =</span> <span class="fu">paste</span>(<span class="st">&quot;Only&quot;</span>, <span class="fu">length</span>(<span class="fu">unique</span>(table<span class="sc">$</span>Score)), <span class="st">&quot;unique scores&quot;</span>)</span>
+<span id="cb9-111"><a href="exploring-outputs-from-birdnet.html#cb9-111" tabindex="-1"></a>      )</span>
+<span id="cb9-112"><a href="exploring-outputs-from-birdnet.html#cb9-112" tabindex="-1"></a>    )</span>
+<span id="cb9-113"><a href="exploring-outputs-from-birdnet.html#cb9-113" tabindex="-1"></a>    <span class="cf">next</span></span>
+<span id="cb9-114"><a href="exploring-outputs-from-birdnet.html#cb9-114" tabindex="-1"></a>  }</span>
+<span id="cb9-115"><a href="exploring-outputs-from-birdnet.html#cb9-115" tabindex="-1"></a></span>
+<span id="cb9-116"><a href="exploring-outputs-from-birdnet.html#cb9-116" tabindex="-1"></a>  <span class="co"># check for extreme imbalance in Valid</span></span>
+<span id="cb9-117"><a href="exploring-outputs-from-birdnet.html#cb9-117" tabindex="-1"></a>  prop_valid <span class="ot">&lt;-</span> <span class="fu">mean</span>(table<span class="sc">$</span>Valid)</span>
+<span id="cb9-118"><a href="exploring-outputs-from-birdnet.html#cb9-118" tabindex="-1"></a>  n_valid_0 <span class="ot">&lt;-</span> <span class="fu">sum</span>(table<span class="sc">$</span>Valid <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb9-119"><a href="exploring-outputs-from-birdnet.html#cb9-119" tabindex="-1"></a>  n_valid_1 <span class="ot">&lt;-</span> <span class="fu">sum</span>(table<span class="sc">$</span>Valid <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb9-120"><a href="exploring-outputs-from-birdnet.html#cb9-120" tabindex="-1"></a></span>
+<span id="cb9-121"><a href="exploring-outputs-from-birdnet.html#cb9-121" tabindex="-1"></a>  <span class="cf">if</span> (prop_valid <span class="sc">&lt;</span> <span class="fl">0.05</span> <span class="sc">||</span> prop_valid <span class="sc">&gt;</span> <span class="fl">0.95</span>) {</span>
+<span id="cb9-122"><a href="exploring-outputs-from-birdnet.html#cb9-122" tabindex="-1"></a>    excluded_species_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-123"><a href="exploring-outputs-from-birdnet.html#cb9-123" tabindex="-1"></a>      excluded_species_df,</span>
+<span id="cb9-124"><a href="exploring-outputs-from-birdnet.html#cb9-124" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb9-125"><a href="exploring-outputs-from-birdnet.html#cb9-125" tabindex="-1"></a>        <span class="at">species =</span> species_name,</span>
+<span id="cb9-126"><a href="exploring-outputs-from-birdnet.html#cb9-126" tabindex="-1"></a>        <span class="at">reason =</span> <span class="st">&quot;imbalanced_data&quot;</span>,</span>
+<span id="cb9-127"><a href="exploring-outputs-from-birdnet.html#cb9-127" tabindex="-1"></a>        <span class="at">details =</span> <span class="fu">paste</span>(</span>
+<span id="cb9-128"><a href="exploring-outputs-from-birdnet.html#cb9-128" tabindex="-1"></a>          <span class="st">&quot;Valid proportion:&quot;</span>, <span class="fu">round</span>(prop_valid, <span class="dv">3</span>),</span>
+<span id="cb9-129"><a href="exploring-outputs-from-birdnet.html#cb9-129" tabindex="-1"></a>          <span class="st">&quot;, Valid_0:&quot;</span>, n_valid_0,</span>
+<span id="cb9-130"><a href="exploring-outputs-from-birdnet.html#cb9-130" tabindex="-1"></a>          <span class="st">&quot;, Valid_1:&quot;</span>, n_valid_1</span>
+<span id="cb9-131"><a href="exploring-outputs-from-birdnet.html#cb9-131" tabindex="-1"></a>        )</span>
+<span id="cb9-132"><a href="exploring-outputs-from-birdnet.html#cb9-132" tabindex="-1"></a>      )</span>
+<span id="cb9-133"><a href="exploring-outputs-from-birdnet.html#cb9-133" tabindex="-1"></a>    )</span>
+<span id="cb9-134"><a href="exploring-outputs-from-birdnet.html#cb9-134" tabindex="-1"></a></span>
+<span id="cb9-135"><a href="exploring-outputs-from-birdnet.html#cb9-135" tabindex="-1"></a>    <span class="co"># also add to imbalanced_df</span></span>
+<span id="cb9-136"><a href="exploring-outputs-from-birdnet.html#cb9-136" tabindex="-1"></a>    imbalanced_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-137"><a href="exploring-outputs-from-birdnet.html#cb9-137" tabindex="-1"></a>      imbalanced_df,</span>
+<span id="cb9-138"><a href="exploring-outputs-from-birdnet.html#cb9-138" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb9-139"><a href="exploring-outputs-from-birdnet.html#cb9-139" tabindex="-1"></a>        <span class="at">species =</span> species_name,</span>
+<span id="cb9-140"><a href="exploring-outputs-from-birdnet.html#cb9-140" tabindex="-1"></a>        <span class="at">total_samples =</span> <span class="fu">nrow</span>(table),</span>
+<span id="cb9-141"><a href="exploring-outputs-from-birdnet.html#cb9-141" tabindex="-1"></a>        <span class="at">number_valid_0 =</span> n_valid_0,</span>
+<span id="cb9-142"><a href="exploring-outputs-from-birdnet.html#cb9-142" tabindex="-1"></a>        <span class="at">number_valid_1 =</span> n_valid_1,</span>
+<span id="cb9-143"><a href="exploring-outputs-from-birdnet.html#cb9-143" tabindex="-1"></a>        <span class="at">proportion_valid =</span> prop_valid</span>
+<span id="cb9-144"><a href="exploring-outputs-from-birdnet.html#cb9-144" tabindex="-1"></a>      )</span>
+<span id="cb9-145"><a href="exploring-outputs-from-birdnet.html#cb9-145" tabindex="-1"></a>    )</span>
+<span id="cb9-146"><a href="exploring-outputs-from-birdnet.html#cb9-146" tabindex="-1"></a>    <span class="cf">next</span></span>
+<span id="cb9-147"><a href="exploring-outputs-from-birdnet.html#cb9-147" tabindex="-1"></a>  }</span>
+<span id="cb9-148"><a href="exploring-outputs-from-birdnet.html#cb9-148" tabindex="-1"></a></span>
+<span id="cb9-149"><a href="exploring-outputs-from-birdnet.html#cb9-149" tabindex="-1"></a>  <span class="co"># try to fit the model with tryCatch</span></span>
+<span id="cb9-150"><a href="exploring-outputs-from-birdnet.html#cb9-150" tabindex="-1"></a>  model_fit <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb9-151"><a href="exploring-outputs-from-birdnet.html#cb9-151" tabindex="-1"></a>    {</span>
+<span id="cb9-152"><a href="exploring-outputs-from-birdnet.html#cb9-152" tabindex="-1"></a>      model <span class="ot">&lt;-</span> <span class="fu">glm</span>(Valid <span class="sc">~</span> Score, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>, <span class="at">data =</span> table)</span>
+<span id="cb9-153"><a href="exploring-outputs-from-birdnet.html#cb9-153" tabindex="-1"></a></span>
+<span id="cb9-154"><a href="exploring-outputs-from-birdnet.html#cb9-154" tabindex="-1"></a>      <span class="co"># check for convergence</span></span>
+<span id="cb9-155"><a href="exploring-outputs-from-birdnet.html#cb9-155" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span>model<span class="sc">$</span>converged) {</span>
+<span id="cb9-156"><a href="exploring-outputs-from-birdnet.html#cb9-156" tabindex="-1"></a>        excluded_species_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-157"><a href="exploring-outputs-from-birdnet.html#cb9-157" tabindex="-1"></a>          excluded_species_df,</span>
+<span id="cb9-158"><a href="exploring-outputs-from-birdnet.html#cb9-158" tabindex="-1"></a>          <span class="fu">data.frame</span>(</span>
+<span id="cb9-159"><a href="exploring-outputs-from-birdnet.html#cb9-159" tabindex="-1"></a>            <span class="at">species =</span> species_name,</span>
+<span id="cb9-160"><a href="exploring-outputs-from-birdnet.html#cb9-160" tabindex="-1"></a>            <span class="at">reason =</span> <span class="st">&quot;model_non_convergence&quot;</span>,</span>
+<span id="cb9-161"><a href="exploring-outputs-from-birdnet.html#cb9-161" tabindex="-1"></a>            <span class="at">details =</span> <span class="st">&quot;Model did not converge&quot;</span></span>
+<span id="cb9-162"><a href="exploring-outputs-from-birdnet.html#cb9-162" tabindex="-1"></a>          )</span>
+<span id="cb9-163"><a href="exploring-outputs-from-birdnet.html#cb9-163" tabindex="-1"></a>        )</span>
+<span id="cb9-164"><a href="exploring-outputs-from-birdnet.html#cb9-164" tabindex="-1"></a></span>
+<span id="cb9-165"><a href="exploring-outputs-from-birdnet.html#cb9-165" tabindex="-1"></a>        failed_models_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-166"><a href="exploring-outputs-from-birdnet.html#cb9-166" tabindex="-1"></a>          failed_models_df,</span>
+<span id="cb9-167"><a href="exploring-outputs-from-birdnet.html#cb9-167" tabindex="-1"></a>          <span class="fu">data.frame</span>(</span>
+<span id="cb9-168"><a href="exploring-outputs-from-birdnet.html#cb9-168" tabindex="-1"></a>            <span class="at">species =</span> species_name,</span>
+<span id="cb9-169"><a href="exploring-outputs-from-birdnet.html#cb9-169" tabindex="-1"></a>            <span class="at">reason =</span> <span class="st">&quot;model did not converge&quot;</span></span>
+<span id="cb9-170"><a href="exploring-outputs-from-birdnet.html#cb9-170" tabindex="-1"></a>          )</span>
+<span id="cb9-171"><a href="exploring-outputs-from-birdnet.html#cb9-171" tabindex="-1"></a>        )</span>
+<span id="cb9-172"><a href="exploring-outputs-from-birdnet.html#cb9-172" tabindex="-1"></a>        <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb9-173"><a href="exploring-outputs-from-birdnet.html#cb9-173" tabindex="-1"></a>      }</span>
+<span id="cb9-174"><a href="exploring-outputs-from-birdnet.html#cb9-174" tabindex="-1"></a></span>
+<span id="cb9-175"><a href="exploring-outputs-from-birdnet.html#cb9-175" tabindex="-1"></a>      <span class="co"># calculate predictions</span></span>
+<span id="cb9-176"><a href="exploring-outputs-from-birdnet.html#cb9-176" tabindex="-1"></a>      prediction.range.conf <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, .<span class="dv">001</span>)</span>
+<span id="cb9-177"><a href="exploring-outputs-from-birdnet.html#cb9-177" tabindex="-1"></a>      predictions.conf <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, </span>
+<span id="cb9-178"><a href="exploring-outputs-from-birdnet.html#cb9-178" tabindex="-1"></a>                                  <span class="fu">list</span>(<span class="at">Score =</span> prediction.range.conf), </span>
+<span id="cb9-179"><a href="exploring-outputs-from-birdnet.html#cb9-179" tabindex="-1"></a>                                  <span class="at">type =</span> <span class="st">&quot;r&quot;</span>)</span>
+<span id="cb9-180"><a href="exploring-outputs-from-birdnet.html#cb9-180" tabindex="-1"></a></span>
+<span id="cb9-181"><a href="exploring-outputs-from-birdnet.html#cb9-181" tabindex="-1"></a>      <span class="co"># Calculate thresholds</span></span>
+<span id="cb9-182"><a href="exploring-outputs-from-birdnet.html#cb9-182" tabindex="-1"></a>      threshold90 <span class="ot">&lt;-</span> (<span class="fu">log</span>(.<span class="dv">90</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> .<span class="dv">90</span>)) <span class="sc">-</span> model<span class="sc">$</span>coefficients[<span class="dv">1</span>]) <span class="sc">/</span> model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb9-183"><a href="exploring-outputs-from-birdnet.html#cb9-183" tabindex="-1"></a>      threshold95 <span class="ot">&lt;-</span> (<span class="fu">log</span>(.<span class="dv">95</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> .<span class="dv">95</span>)) <span class="sc">-</span> model<span class="sc">$</span>coefficients[<span class="dv">1</span>]) <span class="sc">/</span> model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb9-184"><a href="exploring-outputs-from-birdnet.html#cb9-184" tabindex="-1"></a>      threshold99 <span class="ot">&lt;-</span> (<span class="fu">log</span>(.<span class="dv">99</span> <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> .<span class="dv">99</span>)) <span class="sc">-</span> model<span class="sc">$</span>coefficients[<span class="dv">1</span>]) <span class="sc">/</span> model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb9-185"><a href="exploring-outputs-from-birdnet.html#cb9-185" tabindex="-1"></a></span>
+<span id="cb9-186"><a href="exploring-outputs-from-birdnet.html#cb9-186" tabindex="-1"></a>      <span class="co"># check if thresholds are within reasonable bounds</span></span>
+<span id="cb9-187"><a href="exploring-outputs-from-birdnet.html#cb9-187" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">c</span>(threshold90, threshold95, threshold99) <span class="sc">&lt;</span> <span class="dv">0</span>) <span class="sc">||</span></span>
+<span id="cb9-188"><a href="exploring-outputs-from-birdnet.html#cb9-188" tabindex="-1"></a>        <span class="fu">any</span>(<span class="fu">c</span>(threshold90, threshold95, threshold99) <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">||</span></span>
+<span id="cb9-189"><a href="exploring-outputs-from-birdnet.html#cb9-189" tabindex="-1"></a>        <span class="fu">any</span>(<span class="fu">is.infinite</span>(<span class="fu">c</span>(threshold90, threshold95, threshold99))) <span class="sc">||</span></span>
+<span id="cb9-190"><a href="exploring-outputs-from-birdnet.html#cb9-190" tabindex="-1"></a>        <span class="fu">any</span>(<span class="fu">is.na</span>(<span class="fu">c</span>(threshold90, threshold95, threshold99)))) {</span>
+<span id="cb9-191"><a href="exploring-outputs-from-birdnet.html#cb9-191" tabindex="-1"></a>        excluded_species_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-192"><a href="exploring-outputs-from-birdnet.html#cb9-192" tabindex="-1"></a>          excluded_species_df,</span>
+<span id="cb9-193"><a href="exploring-outputs-from-birdnet.html#cb9-193" tabindex="-1"></a>          <span class="fu">data.frame</span>(</span>
+<span id="cb9-194"><a href="exploring-outputs-from-birdnet.html#cb9-194" tabindex="-1"></a>            <span class="at">species =</span> species_name,</span>
+<span id="cb9-195"><a href="exploring-outputs-from-birdnet.html#cb9-195" tabindex="-1"></a>            <span class="at">reason =</span> <span class="st">&quot;invalid_thresholds&quot;</span>,</span>
+<span id="cb9-196"><a href="exploring-outputs-from-birdnet.html#cb9-196" tabindex="-1"></a>            <span class="at">details =</span> <span class="st">&quot;Threshold values outside valid range&quot;</span></span>
+<span id="cb9-197"><a href="exploring-outputs-from-birdnet.html#cb9-197" tabindex="-1"></a>          )</span>
+<span id="cb9-198"><a href="exploring-outputs-from-birdnet.html#cb9-198" tabindex="-1"></a>        )</span>
+<span id="cb9-199"><a href="exploring-outputs-from-birdnet.html#cb9-199" tabindex="-1"></a></span>
+<span id="cb9-200"><a href="exploring-outputs-from-birdnet.html#cb9-200" tabindex="-1"></a>        failed_models_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-201"><a href="exploring-outputs-from-birdnet.html#cb9-201" tabindex="-1"></a>          failed_models_df,</span>
+<span id="cb9-202"><a href="exploring-outputs-from-birdnet.html#cb9-202" tabindex="-1"></a>          <span class="fu">data.frame</span>(</span>
+<span id="cb9-203"><a href="exploring-outputs-from-birdnet.html#cb9-203" tabindex="-1"></a>            <span class="at">species =</span> species_name,</span>
+<span id="cb9-204"><a href="exploring-outputs-from-birdnet.html#cb9-204" tabindex="-1"></a>            <span class="at">reason =</span> <span class="st">&quot;invalid threshold values&quot;</span></span>
+<span id="cb9-205"><a href="exploring-outputs-from-birdnet.html#cb9-205" tabindex="-1"></a>          )</span>
+<span id="cb9-206"><a href="exploring-outputs-from-birdnet.html#cb9-206" tabindex="-1"></a>        )</span>
+<span id="cb9-207"><a href="exploring-outputs-from-birdnet.html#cb9-207" tabindex="-1"></a>        <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb9-208"><a href="exploring-outputs-from-birdnet.html#cb9-208" tabindex="-1"></a>      }</span>
+<span id="cb9-209"><a href="exploring-outputs-from-birdnet.html#cb9-209" tabindex="-1"></a></span>
+<span id="cb9-210"><a href="exploring-outputs-from-birdnet.html#cb9-210" tabindex="-1"></a>      <span class="fu">list</span>(</span>
+<span id="cb9-211"><a href="exploring-outputs-from-birdnet.html#cb9-211" tabindex="-1"></a>        <span class="at">model =</span> model,</span>
+<span id="cb9-212"><a href="exploring-outputs-from-birdnet.html#cb9-212" tabindex="-1"></a>        <span class="at">predictions =</span> predictions.conf,</span>
+<span id="cb9-213"><a href="exploring-outputs-from-birdnet.html#cb9-213" tabindex="-1"></a>        <span class="at">thresholds =</span> <span class="fu">c</span>(threshold90, threshold95, threshold99)</span>
+<span id="cb9-214"><a href="exploring-outputs-from-birdnet.html#cb9-214" tabindex="-1"></a>      )</span>
+<span id="cb9-215"><a href="exploring-outputs-from-birdnet.html#cb9-215" tabindex="-1"></a>    },</span>
+<span id="cb9-216"><a href="exploring-outputs-from-birdnet.html#cb9-216" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb9-217"><a href="exploring-outputs-from-birdnet.html#cb9-217" tabindex="-1"></a>      excluded_species_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-218"><a href="exploring-outputs-from-birdnet.html#cb9-218" tabindex="-1"></a>        excluded_species_df,</span>
+<span id="cb9-219"><a href="exploring-outputs-from-birdnet.html#cb9-219" tabindex="-1"></a>        <span class="fu">data.frame</span>(</span>
+<span id="cb9-220"><a href="exploring-outputs-from-birdnet.html#cb9-220" tabindex="-1"></a>          <span class="at">species =</span> species_name,</span>
+<span id="cb9-221"><a href="exploring-outputs-from-birdnet.html#cb9-221" tabindex="-1"></a>          <span class="at">reason =</span> <span class="st">&quot;model_error&quot;</span>,</span>
+<span id="cb9-222"><a href="exploring-outputs-from-birdnet.html#cb9-222" tabindex="-1"></a>          <span class="at">details =</span> <span class="fu">paste</span>(<span class="st">&quot;Error:&quot;</span>, e<span class="sc">$</span>message)</span>
+<span id="cb9-223"><a href="exploring-outputs-from-birdnet.html#cb9-223" tabindex="-1"></a>        )</span>
+<span id="cb9-224"><a href="exploring-outputs-from-birdnet.html#cb9-224" tabindex="-1"></a>      )</span>
+<span id="cb9-225"><a href="exploring-outputs-from-birdnet.html#cb9-225" tabindex="-1"></a></span>
+<span id="cb9-226"><a href="exploring-outputs-from-birdnet.html#cb9-226" tabindex="-1"></a>      failed_models_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-227"><a href="exploring-outputs-from-birdnet.html#cb9-227" tabindex="-1"></a>        failed_models_df,</span>
+<span id="cb9-228"><a href="exploring-outputs-from-birdnet.html#cb9-228" tabindex="-1"></a>        <span class="fu">data.frame</span>(</span>
+<span id="cb9-229"><a href="exploring-outputs-from-birdnet.html#cb9-229" tabindex="-1"></a>          <span class="at">species =</span> species_name,</span>
+<span id="cb9-230"><a href="exploring-outputs-from-birdnet.html#cb9-230" tabindex="-1"></a>          <span class="at">reason =</span> <span class="fu">paste</span>(<span class="st">&quot;error:&quot;</span>, e<span class="sc">$</span>message)</span>
+<span id="cb9-231"><a href="exploring-outputs-from-birdnet.html#cb9-231" tabindex="-1"></a>        )</span>
+<span id="cb9-232"><a href="exploring-outputs-from-birdnet.html#cb9-232" tabindex="-1"></a>      )</span>
+<span id="cb9-233"><a href="exploring-outputs-from-birdnet.html#cb9-233" tabindex="-1"></a>      <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb9-234"><a href="exploring-outputs-from-birdnet.html#cb9-234" tabindex="-1"></a>    }</span>
+<span id="cb9-235"><a href="exploring-outputs-from-birdnet.html#cb9-235" tabindex="-1"></a>  )</span>
+<span id="cb9-236"><a href="exploring-outputs-from-birdnet.html#cb9-236" tabindex="-1"></a></span>
+<span id="cb9-237"><a href="exploring-outputs-from-birdnet.html#cb9-237" tabindex="-1"></a>  <span class="co"># skip to next species if model fitting failed</span></span>
+<span id="cb9-238"><a href="exploring-outputs-from-birdnet.html#cb9-238" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(model_fit)) {</span>
+<span id="cb9-239"><a href="exploring-outputs-from-birdnet.html#cb9-239" tabindex="-1"></a>    <span class="cf">next</span></span>
+<span id="cb9-240"><a href="exploring-outputs-from-birdnet.html#cb9-240" tabindex="-1"></a>  }</span>
+<span id="cb9-241"><a href="exploring-outputs-from-birdnet.html#cb9-241" tabindex="-1"></a></span>
+<span id="cb9-242"><a href="exploring-outputs-from-birdnet.html#cb9-242" tabindex="-1"></a>  <span class="co"># extract results from successful model fit</span></span>
+<span id="cb9-243"><a href="exploring-outputs-from-birdnet.html#cb9-243" tabindex="-1"></a>  model <span class="ot">&lt;-</span> model_fit<span class="sc">$</span>model</span>
+<span id="cb9-244"><a href="exploring-outputs-from-birdnet.html#cb9-244" tabindex="-1"></a>  predictions.conf <span class="ot">&lt;-</span> model_fit<span class="sc">$</span>predictions</span>
+<span id="cb9-245"><a href="exploring-outputs-from-birdnet.html#cb9-245" tabindex="-1"></a>  threshold90 <span class="ot">&lt;-</span> model_fit<span class="sc">$</span>thresholds[<span class="dv">1</span>]</span>
+<span id="cb9-246"><a href="exploring-outputs-from-birdnet.html#cb9-246" tabindex="-1"></a>  threshold95 <span class="ot">&lt;-</span> model_fit<span class="sc">$</span>thresholds[<span class="dv">2</span>]</span>
+<span id="cb9-247"><a href="exploring-outputs-from-birdnet.html#cb9-247" tabindex="-1"></a>  threshold99 <span class="ot">&lt;-</span> model_fit<span class="sc">$</span>thresholds[<span class="dv">3</span>]</span>
+<span id="cb9-248"><a href="exploring-outputs-from-birdnet.html#cb9-248" tabindex="-1"></a></span>
+<span id="cb9-249"><a href="exploring-outputs-from-birdnet.html#cb9-249" tabindex="-1"></a>  <span class="co"># store thresholds</span></span>
+<span id="cb9-250"><a href="exploring-outputs-from-birdnet.html#cb9-250" tabindex="-1"></a>  threshold_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-251"><a href="exploring-outputs-from-birdnet.html#cb9-251" tabindex="-1"></a>    threshold_df,</span>
+<span id="cb9-252"><a href="exploring-outputs-from-birdnet.html#cb9-252" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb9-253"><a href="exploring-outputs-from-birdnet.html#cb9-253" tabindex="-1"></a>      <span class="at">species =</span> species_name,</span>
+<span id="cb9-254"><a href="exploring-outputs-from-birdnet.html#cb9-254" tabindex="-1"></a>      <span class="at">threshold90 =</span> threshold90,</span>
+<span id="cb9-255"><a href="exploring-outputs-from-birdnet.html#cb9-255" tabindex="-1"></a>      <span class="at">threshold95 =</span> threshold95,</span>
+<span id="cb9-256"><a href="exploring-outputs-from-birdnet.html#cb9-256" tabindex="-1"></a>      <span class="at">threshold99 =</span> threshold99,</span>
+<span id="cb9-257"><a href="exploring-outputs-from-birdnet.html#cb9-257" tabindex="-1"></a>      <span class="at">n_samples =</span> <span class="fu">nrow</span>(table)</span>
+<span id="cb9-258"><a href="exploring-outputs-from-birdnet.html#cb9-258" tabindex="-1"></a>    )</span>
+<span id="cb9-259"><a href="exploring-outputs-from-birdnet.html#cb9-259" tabindex="-1"></a>  )</span>
+<span id="cb9-260"><a href="exploring-outputs-from-birdnet.html#cb9-260" tabindex="-1"></a></span>
+<span id="cb9-261"><a href="exploring-outputs-from-birdnet.html#cb9-261" tabindex="-1"></a>  <span class="co"># round threshold values to 3 decimal places for labels</span></span>
+<span id="cb9-262"><a href="exploring-outputs-from-birdnet.html#cb9-262" tabindex="-1"></a>  threshold90_label <span class="ot">&lt;-</span> <span class="fu">round</span>(threshold90, <span class="dv">3</span>)</span>
+<span id="cb9-263"><a href="exploring-outputs-from-birdnet.html#cb9-263" tabindex="-1"></a>  threshold95_label <span class="ot">&lt;-</span> <span class="fu">round</span>(threshold95, <span class="dv">3</span>)</span>
+<span id="cb9-264"><a href="exploring-outputs-from-birdnet.html#cb9-264" tabindex="-1"></a>  threshold99_label <span class="ot">&lt;-</span> <span class="fu">round</span>(threshold99, <span class="dv">3</span>)</span>
+<span id="cb9-265"><a href="exploring-outputs-from-birdnet.html#cb9-265" tabindex="-1"></a></span>
+<span id="cb9-266"><a href="exploring-outputs-from-birdnet.html#cb9-266" tabindex="-1"></a>  <span class="co"># get viridis colors</span></span>
+<span id="cb9-267"><a href="exploring-outputs-from-birdnet.html#cb9-267" tabindex="-1"></a>  viz_colors <span class="ot">&lt;-</span> <span class="fu">viridis</span>(<span class="dv">5</span>)</span>
+<span id="cb9-268"><a href="exploring-outputs-from-birdnet.html#cb9-268" tabindex="-1"></a>  curve_color <span class="ot">&lt;-</span> viz_colors[<span class="dv">1</span>]</span>
+<span id="cb9-269"><a href="exploring-outputs-from-birdnet.html#cb9-269" tabindex="-1"></a>  threshold_colors <span class="ot">&lt;-</span> viz_colors[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)]</span>
+<span id="cb9-270"><a href="exploring-outputs-from-birdnet.html#cb9-270" tabindex="-1"></a></span>
+<span id="cb9-271"><a href="exploring-outputs-from-birdnet.html#cb9-271" tabindex="-1"></a>  <span class="co"># create ggplot</span></span>
+<span id="cb9-272"><a href="exploring-outputs-from-birdnet.html#cb9-272" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(table, <span class="fu">aes</span>(<span class="at">x =</span> Score, <span class="at">y =</span> Valid)) <span class="sc">+</span></span>
+<span id="cb9-273"><a href="exploring-outputs-from-birdnet.html#cb9-273" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb9-274"><a href="exploring-outputs-from-birdnet.html#cb9-274" tabindex="-1"></a>    <span class="fu">geom_line</span>(</span>
+<span id="cb9-275"><a href="exploring-outputs-from-birdnet.html#cb9-275" tabindex="-1"></a>      <span class="at">data =</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-276"><a href="exploring-outputs-from-birdnet.html#cb9-276" tabindex="-1"></a>        <span class="at">x =</span> prediction.range.conf,</span>
+<span id="cb9-277"><a href="exploring-outputs-from-birdnet.html#cb9-277" tabindex="-1"></a>        <span class="at">y =</span> predictions.conf</span>
+<span id="cb9-278"><a href="exploring-outputs-from-birdnet.html#cb9-278" tabindex="-1"></a>      ),</span>
+<span id="cb9-279"><a href="exploring-outputs-from-birdnet.html#cb9-279" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y),</span>
+<span id="cb9-280"><a href="exploring-outputs-from-birdnet.html#cb9-280" tabindex="-1"></a>      <span class="at">color =</span> curve_color,</span>
+<span id="cb9-281"><a href="exploring-outputs-from-birdnet.html#cb9-281" tabindex="-1"></a>      <span class="at">size =</span> <span class="fl">1.2</span></span>
+<span id="cb9-282"><a href="exploring-outputs-from-birdnet.html#cb9-282" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb9-283"><a href="exploring-outputs-from-birdnet.html#cb9-283" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold90, <span class="at">color =</span> threshold_colors[<span class="dv">1</span>], <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-284"><a href="exploring-outputs-from-birdnet.html#cb9-284" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold95, <span class="at">color =</span> threshold_colors[<span class="dv">2</span>], <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-285"><a href="exploring-outputs-from-birdnet.html#cb9-285" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> threshold99, <span class="at">color =</span> threshold_colors[<span class="dv">3</span>], <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-286"><a href="exploring-outputs-from-birdnet.html#cb9-286" tabindex="-1"></a>    <span class="co"># add threshold labels with offset</span></span>
+<span id="cb9-287"><a href="exploring-outputs-from-birdnet.html#cb9-287" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>,</span>
+<span id="cb9-288"><a href="exploring-outputs-from-birdnet.html#cb9-288" tabindex="-1"></a>      <span class="at">x =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(threshold90, <span class="fl">0.05</span>), <span class="fl">0.95</span>) <span class="sc">+</span> <span class="fl">0.02</span>,</span>
+<span id="cb9-289"><a href="exploring-outputs-from-birdnet.html#cb9-289" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">0.5</span>,</span>
+<span id="cb9-290"><a href="exploring-outputs-from-birdnet.html#cb9-290" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">&quot;90%:&quot;</span>, threshold90_label),</span>
+<span id="cb9-291"><a href="exploring-outputs-from-birdnet.html#cb9-291" tabindex="-1"></a>      <span class="at">color =</span> threshold_colors[<span class="dv">1</span>],</span>
+<span id="cb9-292"><a href="exploring-outputs-from-birdnet.html#cb9-292" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb9-293"><a href="exploring-outputs-from-birdnet.html#cb9-293" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span>,</span>
+<span id="cb9-294"><a href="exploring-outputs-from-birdnet.html#cb9-294" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb9-295"><a href="exploring-outputs-from-birdnet.html#cb9-295" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb9-296"><a href="exploring-outputs-from-birdnet.html#cb9-296" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb9-297"><a href="exploring-outputs-from-birdnet.html#cb9-297" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>,</span>
+<span id="cb9-298"><a href="exploring-outputs-from-birdnet.html#cb9-298" tabindex="-1"></a>      <span class="at">x =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(threshold95, <span class="fl">0.05</span>), <span class="fl">0.95</span>) <span class="sc">+</span> <span class="fl">0.02</span>,</span>
+<span id="cb9-299"><a href="exploring-outputs-from-birdnet.html#cb9-299" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">0.5</span>,</span>
+<span id="cb9-300"><a href="exploring-outputs-from-birdnet.html#cb9-300" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">&quot;95%:&quot;</span>, threshold95_label),</span>
+<span id="cb9-301"><a href="exploring-outputs-from-birdnet.html#cb9-301" tabindex="-1"></a>      <span class="at">color =</span> threshold_colors[<span class="dv">2</span>],</span>
+<span id="cb9-302"><a href="exploring-outputs-from-birdnet.html#cb9-302" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb9-303"><a href="exploring-outputs-from-birdnet.html#cb9-303" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span>,</span>
+<span id="cb9-304"><a href="exploring-outputs-from-birdnet.html#cb9-304" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb9-305"><a href="exploring-outputs-from-birdnet.html#cb9-305" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb9-306"><a href="exploring-outputs-from-birdnet.html#cb9-306" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb9-307"><a href="exploring-outputs-from-birdnet.html#cb9-307" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>,</span>
+<span id="cb9-308"><a href="exploring-outputs-from-birdnet.html#cb9-308" tabindex="-1"></a>      <span class="at">x =</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(threshold99, <span class="fl">0.05</span>), <span class="fl">0.95</span>) <span class="sc">+</span> <span class="fl">0.02</span>,</span>
+<span id="cb9-309"><a href="exploring-outputs-from-birdnet.html#cb9-309" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">0.5</span>,</span>
+<span id="cb9-310"><a href="exploring-outputs-from-birdnet.html#cb9-310" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste</span>(<span class="st">&quot;99%:&quot;</span>, threshold99_label),</span>
+<span id="cb9-311"><a href="exploring-outputs-from-birdnet.html#cb9-311" tabindex="-1"></a>      <span class="at">color =</span> threshold_colors[<span class="dv">3</span>],</span>
+<span id="cb9-312"><a href="exploring-outputs-from-birdnet.html#cb9-312" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb9-313"><a href="exploring-outputs-from-birdnet.html#cb9-313" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span>,</span>
+<span id="cb9-314"><a href="exploring-outputs-from-birdnet.html#cb9-314" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb9-315"><a href="exploring-outputs-from-birdnet.html#cb9-315" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb9-316"><a href="exploring-outputs-from-birdnet.html#cb9-316" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb9-317"><a href="exploring-outputs-from-birdnet.html#cb9-317" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb9-318"><a href="exploring-outputs-from-birdnet.html#cb9-318" tabindex="-1"></a>      <span class="at">title =</span> species_name,</span>
+<span id="cb9-319"><a href="exploring-outputs-from-birdnet.html#cb9-319" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">&quot;Confidence Score&quot;</span>,</span>
+<span id="cb9-320"><a href="exploring-outputs-from-birdnet.html#cb9-320" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">&quot;pr(BirdNET prediction is correct)&quot;</span></span>
+<span id="cb9-321"><a href="exploring-outputs-from-birdnet.html#cb9-321" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb9-322"><a href="exploring-outputs-from-birdnet.html#cb9-322" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-323"><a href="exploring-outputs-from-birdnet.html#cb9-323" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb9-324"><a href="exploring-outputs-from-birdnet.html#cb9-324" tabindex="-1"></a>      <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>),</span>
+<span id="cb9-325"><a href="exploring-outputs-from-birdnet.html#cb9-325" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb9-326"><a href="exploring-outputs-from-birdnet.html#cb9-326" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb9-327"><a href="exploring-outputs-from-birdnet.html#cb9-327" tabindex="-1"></a>      <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
+<span id="cb9-328"><a href="exploring-outputs-from-birdnet.html#cb9-328" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb9-329"><a href="exploring-outputs-from-birdnet.html#cb9-329" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb9-330"><a href="exploring-outputs-from-birdnet.html#cb9-330" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb9-331"><a href="exploring-outputs-from-birdnet.html#cb9-331" tabindex="-1"></a></span>
+<span id="cb9-332"><a href="exploring-outputs-from-birdnet.html#cb9-332" tabindex="-1"></a>  plot_list[[species_name]] <span class="ot">&lt;-</span> p</span>
+<span id="cb9-333"><a href="exploring-outputs-from-birdnet.html#cb9-333" tabindex="-1"></a>}</span>
+<span id="cb9-334"><a href="exploring-outputs-from-birdnet.html#cb9-334" tabindex="-1"></a></span>
+<span id="cb9-335"><a href="exploring-outputs-from-birdnet.html#cb9-335" tabindex="-1"></a><span class="co"># get list of species for which plots were successfully made</span></span>
+<span id="cb9-336"><a href="exploring-outputs-from-birdnet.html#cb9-336" tabindex="-1"></a>successful_species <span class="ot">&lt;-</span> <span class="fu">names</span>(plot_list)</span>
+<span id="cb9-337"><a href="exploring-outputs-from-birdnet.html#cb9-337" tabindex="-1"></a></span>
+<span id="cb9-338"><a href="exploring-outputs-from-birdnet.html#cb9-338" tabindex="-1"></a><span class="co"># find species that weren&#39;t processed at all</span></span>
+<span id="cb9-339"><a href="exploring-outputs-from-birdnet.html#cb9-339" tabindex="-1"></a>unprocessed_species <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(</span>
+<span id="cb9-340"><a href="exploring-outputs-from-birdnet.html#cb9-340" tabindex="-1"></a>  all_species,</span>
+<span id="cb9-341"><a href="exploring-outputs-from-birdnet.html#cb9-341" tabindex="-1"></a>  <span class="fu">unique</span>(<span class="fu">c</span>(</span>
+<span id="cb9-342"><a href="exploring-outputs-from-birdnet.html#cb9-342" tabindex="-1"></a>    successful_species,</span>
+<span id="cb9-343"><a href="exploring-outputs-from-birdnet.html#cb9-343" tabindex="-1"></a>    excluded_species_df<span class="sc">$</span>species</span>
+<span id="cb9-344"><a href="exploring-outputs-from-birdnet.html#cb9-344" tabindex="-1"></a>  ))</span>
+<span id="cb9-345"><a href="exploring-outputs-from-birdnet.html#cb9-345" tabindex="-1"></a>)</span>
+<span id="cb9-346"><a href="exploring-outputs-from-birdnet.html#cb9-346" tabindex="-1"></a></span>
+<span id="cb9-347"><a href="exploring-outputs-from-birdnet.html#cb9-347" tabindex="-1"></a><span class="co"># add unprocessed species to excluded_species_df if any exist</span></span>
+<span id="cb9-348"><a href="exploring-outputs-from-birdnet.html#cb9-348" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(unprocessed_species) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb9-349"><a href="exploring-outputs-from-birdnet.html#cb9-349" tabindex="-1"></a>  excluded_species_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb9-350"><a href="exploring-outputs-from-birdnet.html#cb9-350" tabindex="-1"></a>    excluded_species_df,</span>
+<span id="cb9-351"><a href="exploring-outputs-from-birdnet.html#cb9-351" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb9-352"><a href="exploring-outputs-from-birdnet.html#cb9-352" tabindex="-1"></a>      <span class="at">species =</span> unprocessed_species,</span>
+<span id="cb9-353"><a href="exploring-outputs-from-birdnet.html#cb9-353" tabindex="-1"></a>      <span class="at">reason =</span> <span class="st">&quot;unknown&quot;</span>,</span>
+<span id="cb9-354"><a href="exploring-outputs-from-birdnet.html#cb9-354" tabindex="-1"></a>      <span class="at">details =</span> <span class="st">&quot;Species was not processed&quot;</span></span>
+<span id="cb9-355"><a href="exploring-outputs-from-birdnet.html#cb9-355" tabindex="-1"></a>    )</span>
+<span id="cb9-356"><a href="exploring-outputs-from-birdnet.html#cb9-356" tabindex="-1"></a>  )</span>
+<span id="cb9-357"><a href="exploring-outputs-from-birdnet.html#cb9-357" tabindex="-1"></a>}</span>
+<span id="cb9-358"><a href="exploring-outputs-from-birdnet.html#cb9-358" tabindex="-1"></a></span>
+<span id="cb9-359"><a href="exploring-outputs-from-birdnet.html#cb9-359" tabindex="-1"></a><span class="co"># write output files</span></span>
+<span id="cb9-360"><a href="exploring-outputs-from-birdnet.html#cb9-360" tabindex="-1"></a><span class="fu">write.csv</span>(threshold_df, <span class="st">&quot;results/species_thresholds_outOfTheBox.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-361"><a href="exploring-outputs-from-birdnet.html#cb9-361" tabindex="-1"></a><span class="fu">write.csv</span>(failed_models_df, <span class="st">&quot;results/failed_models_outOfTheBox.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-362"><a href="exploring-outputs-from-birdnet.html#cb9-362" tabindex="-1"></a><span class="fu">write.csv</span>(imbalanced_df, <span class="st">&quot;results/imbalanced_cases_outOfTheBox.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-363"><a href="exploring-outputs-from-birdnet.html#cb9-363" tabindex="-1"></a><span class="fu">write.csv</span>(excluded_species_df, <span class="st">&quot;results/excluded_species_outOfTheBox.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-364"><a href="exploring-outputs-from-birdnet.html#cb9-364" tabindex="-1"></a></span>
+<span id="cb9-365"><a href="exploring-outputs-from-birdnet.html#cb9-365" tabindex="-1"></a><span class="co"># save all plots to PDF</span></span>
+<span id="cb9-366"><a href="exploring-outputs-from-birdnet.html#cb9-366" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&quot;figs/species_threshold_outOfTheBox.pdf&quot;</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>)</span>
+<span id="cb9-367"><a href="exploring-outputs-from-birdnet.html#cb9-367" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> plot_list) {</span>
+<span id="cb9-368"><a href="exploring-outputs-from-birdnet.html#cb9-368" tabindex="-1"></a>  <span class="fu">print</span>(p)</span>
+<span id="cb9-369"><a href="exploring-outputs-from-birdnet.html#cb9-369" tabindex="-1"></a>}</span>
+<span id="cb9-370"><a href="exploring-outputs-from-birdnet.html#cb9-370" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb9-371"><a href="exploring-outputs-from-birdnet.html#cb9-371" tabindex="-1"></a></span>
+<span id="cb9-372"><a href="exploring-outputs-from-birdnet.html#cb9-372" tabindex="-1"></a><span class="co"># print summary</span></span>
+<span id="cb9-373"><a href="exploring-outputs-from-birdnet.html#cb9-373" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">Summary:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb9-374"><a href="exploring-outputs-from-birdnet.html#cb9-374" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Total species:&quot;</span>, <span class="fu">length</span>(all_species), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb9-375"><a href="exploring-outputs-from-birdnet.html#cb9-375" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Successful species:&quot;</span>, <span class="fu">length</span>(successful_species), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb9-376"><a href="exploring-outputs-from-birdnet.html#cb9-376" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Excluded species:&quot;</span>, <span class="fu">nrow</span>(excluded_species_df), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb9-377"><a href="exploring-outputs-from-birdnet.html#cb9-377" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">Exclusion reasons:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb9-378"><a href="exploring-outputs-from-birdnet.html#cb9-378" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">table</span>(excluded_species_df<span class="sc">$</span>reason))</span></code></pre></div>
+<p>Based on the above summary accounting for errors in model convergeneces, missing files, invalid thresholds and imbalanced data, we can safely ignore:</p>
+<ul>
+<li>species with insufficient samples/detections</li>
+<li>species that have missing files (in order words, these are essentially species with very few detections that I did not validate them and generate a selection table)</li>
+</ul>
+<p>The next steps involve: a) examining the species threshold plot for those species for which the logistic regression/binomial glm converged. For such species, we choose the threshold at which species probability of detecting a true positive is 0.95. b) we go through the list of species which are reported as having imbalanced data or invalid thresholds and we set a blanket threshold of 0.25 for such species and include a subset of the same. This would involve qualitative examination of the list of species from the notes made above.</p>
+<p>This .csv is titled <em>curatedThresholds-species-list.csv</em>, which can be used in future scripts to extract detections from the BirdNET-outputs-folder to generate the paired-acoustic dataset.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exploring-point-count-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-comparability.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/paired-pointCount-acoustics/edit/master/02_exploring-birdNET-outputs.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
