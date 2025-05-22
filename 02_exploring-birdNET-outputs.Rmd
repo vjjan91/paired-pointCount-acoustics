@@ -328,7 +328,9 @@ for (folder in species_folders) {
 
       # calculate predictions
       prediction.range.conf <- seq(0, 1, .001)
-      predictions.conf <- predict(model, list(Score = prediction.range.conf), type = "r")
+      predictions.conf <- predict(model, 
+                                  list(Score = prediction.range.conf), 
+                                  type = "r")
 
       # Calculate thresholds
       threshold90 <- (log(.90 / (1 - .90)) - model$coefficients[1]) / model$coefficients[2]
@@ -537,6 +539,6 @@ Based on the above summary accounting for errors in model convergeneces, missing
 
 The next steps involve: a) examining the species threshold plot for those species for which the logistic regression/binomial glm converged. For such species, we choose the threshold at which species probability of detecting a true positive is 0.95. b) we go through the list of species which are reported as having imbalanced data or invalid thresholds and we set a blanket threshold of 0.25 for such species and include a subset of the same. This would involve qualitative examination of the list of species from the notes made above.
 
-This .csv is titled *curatedThresholds-specieslist.csv*, which can be used in future scripts to extract detections from the BirdNET-outputs-folder to generate the paired-acoustic dataset. 
+This .csv is titled *curatedThresholds-species-list.csv*, which can be used in future scripts to extract detections from the BirdNET-outputs-folder to generate the paired-acoustic dataset. 
 
 
