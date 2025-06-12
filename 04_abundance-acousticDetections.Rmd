@@ -51,11 +51,31 @@ detections <- datSubset %>%
 data <- full_join(abundance, detections)%>%
   replace_na(list(abundance_pc = 0, detections_aru = 0))
 
-# visualization by season across species for summer
-fig_summer_abundance_detections_cor <- data %>%
+# we subset species to only include data with a minimum number of abundance and acoustic detections 
+spp_subset <-  data %>%
+  group_by(common_name, year_season) %>%
+  summarise(abundance_pc = sum(abundance_pc), detections_aru = sum(detections_aru)) %>%
+  ungroup() %>%
+  filter(abundance_pc >=30 & detections_aru >= 30)
+
+summer_subset <-  spp_subset %>%
+  filter(year_season == "2024 Summer")
+winter_subset <-  spp_subset %>%
+  filter(year_season == "2024 Winter")
+
+# subset data by season
+# we have 11 species in total for summer and 12 for winter
+summer <- data %>%
   filter(year_season == "2024 Summer") %>%
+  filter(common_name %in% summer_subset$common_name)
+winter <- data %>%
+  filter(year_season == "2024 Winter") %>%
+  filter(common_name %in% winter_subset$common_name)
+
+# visualization by season across species for summer
+fig_summer_abundance_detections_cor <- 
   ggscatterstats(
-  data = .,
+  data = summer,
   y = abundance_pc,
   x = detections_aru,
   type = "r",
@@ -71,11 +91,10 @@ fig_summer_abundance_detections_cor <- data %>%
 ggsave(fig_summer_abundance_detections_cor, filename = "figs/fig_abundance_vs_acousticDetections_correlations_summer.png", width = 14, height = 10, device = png(), units = "in", dpi = 300)
 dev.off() 
 
-# visualization by season across species for summer
-fig_winter_abundance_detections_cor <- data %>%
-  filter(year_season == "2024 Winter") %>%
+# visualization by season across species for winter
+fig_winter_abundance_detections_cor <- 
   ggscatterstats(
-  data = .,
+  data = winter,
   y = abundance_pc,
   x = detections_aru,
   type = "r",
@@ -101,11 +120,6 @@ While it is relevant to examine correlations between abundance (as estimated fro
 ## https://osf.io/fa9ky/
 
 # splitting by seasons
-summer <- data %>%
-  filter(year_season == "2024 Summer")
-winter <- data %>%
-  filter(year_season == "2024 Winter")
-
 summer <- setDT(summer)
 winter <- setDT(winter)
 
@@ -130,9 +144,9 @@ summer[, slope_dir := ifelse(slope >0, '+', '-')]
 winter[, slope_dir := ifelse(slope >0, '+', '-')]
 
 paste("Positive regressions:",length(unique(summer$common_name[summer$slope_dir %in% c('+')])))
-# 21 species had a positive regression/slope value in summer
+# 16 species had a positive regression/slope value in summer
 paste("Positive regressions:",length(unique(winter$common_name[winter$slope_dir %in% c('+')])))
-# 27 species had a positive regression/slope value in summer
+# 21 species had a positive regression/slope value in summer
 
 ## visualization for summer
 fig_summer_abund_detec_reg <- ggplot(summer, aes(x = detections_aru,
