@@ -223,7 +223,7 @@ for(i in 1:length(unique(summer$common_name))){
   # create plots
   plots[[i]] <- ggplot(for_plot, aes(x = detections_aru,
                                     y = abundance_pc)) +
-  geom_point(color = "#9CC3D5",size = 1.2) +
+  geom_point(color = "#00496FFF",size = 1.2) +
   geom_smooth(aes(color = "#D95F02"),
     method = 'lm', se = TRUE, 
               linewidth = 0.7) +
@@ -262,7 +262,7 @@ for(i in 1:length(unique(winter$common_name))){
   # create plots
   plots[[i]] <- ggplot(for_plot, aes(x = detections_aru,
                                     y = abundance_pc)) +
-  geom_point(color = "#9CC3D5",size = 1.2) +
+  geom_point(color = "#00496FFF",size = 1.2) +
   geom_smooth(aes(color = "#D95F02"),
     method = 'lm', se = TRUE, 
               linewidth = 0.7) +
