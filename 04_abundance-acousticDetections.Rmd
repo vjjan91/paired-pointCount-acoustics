@@ -1,0 +1,290 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Abundance vs. acoustic detections  
+
+In this script, we correlate and regress the abundance from point count data with the number of acoustic detections from the paired audio dataset, as classified by BirdNET.
+
+Here, abundance corresponds to the total number of individuals of a species detected for point count data. 
+
+## Install necessary libraries
+```{r}
+library(tidyverse)
+library(dplyr)
+library(stringr)
+library(vegan)
+library(ggplot2)
+library(scico)
+library(data.table)
+library(extrafont)
+library(ggstatsplot)
+library(viridis)   
+library(ggrepel)  
+```
+
+## Load existing data
+```{r}
+datSubset <- read.csv("results/datSubset.csv")
+```
+
+## Abundance and acoustic detection comparisons
+```{r}
+# estimate total abundance of all species for each site by season
+abundance <- datSubset %>%
+  filter(dataType == "point_count") %>%
+  group_by(year_season, scientific_name,
+           common_name, gridID) %>%
+  summarise(abundance_pc = sum(number)) %>%
+  ungroup()
+
+# estimate total acoustic detections per site and season for each species
+detections <- datSubset %>%
+  filter(dataType == "acoustic_data") %>%
+  group_by(year_season, scientific_name,
+           common_name, gridID)  %>% 
+  summarise(detections_aru = sum(number)) %>%
+  ungroup()
+
+# create a single dataframe
+data <- full_join(abundance, detections)%>%
+  replace_na(list(abundance_pc = 0, detections_aru = 0))
+
+# visualization by season across species for summer
+fig_summer_abundance_detections_cor <- data %>%
+  filter(year_season == "2024 Summer") %>%
+  ggscatterstats(
+  data = .,
+  y = abundance_pc,
+  x = detections_aru,
+  type = "r",
+  ylab = "Abundance (point-count)",
+  xlab = "Acoustic detections (ARU)",
+  ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 15, face = "bold"))))
+
+ggsave(fig_summer_abundance_detections_cor, filename = "figs/fig_abundance_vs_acousticDetections_correlations_summer.png", width = 14, height = 10, device = png(), units = "in", dpi = 300)
+dev.off() 
+
+# visualization by season across species for summer
+fig_winter_abundance_detections_cor <- data %>%
+  filter(year_season == "2024 Winter") %>%
+  ggscatterstats(
+  data = .,
+  y = abundance_pc,
+  x = detections_aru,
+  type = "r",
+  ylab = "Abundance (point-count)",
+  xlab = "Acoustic detections (ARU)",
+  ggplot.component = list(theme(text = element_text(family = "Century Gothic", size = 15, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 15, face = "bold"))))
+
+ggsave(fig_winter_abundance_detections_cor, filename = "figs/fig_abundance_vs_acousticDetections_correlations_winter.png", width = 14, height = 10, device = png(), units = "in", dpi = 300)
+dev.off() 
+```
+
+## Regressions between abundance and acoustic detections  
+
+While it is relevant to examine correlations between abundance (as estimated from point count data) and acoustic detections (as estimated from acoustic data), we will run robust regressions to ask one predicts the other.  
+```{r}
+## I am borrowing code from Mikula et al. 2020 below
+## The data and scripts from their manuscript can be found here:
+## https://osf.io/fa9ky/
+
+# splitting by seasons
+summer <- data %>%
+  filter(year_season == "2024 Summer")
+winter <- data %>%
+  filter(year_season == "2024 Winter")
+
+summer <- setDT(summer)
+winter <- setDT(winter)
+
+# extract t-value
+summer[,  t_value := summary(lm(abundance_pc~detections_aru))$coefficients[6], by = common_name] 
+winter[,  t_value := summary(lm(abundance_pc~detections_aru))$coefficients[6], by = common_name] 
+
+# extract slope
+summer[,  slope := lm(abundance_pc~detections_aru)%>% coef()%>% nth(2), by = common_name] 
+winter[,  slope := lm(abundance_pc~detections_aru)%>% coef()%>% nth(2), by = common_name] 
+
+# extract pearson's correlation
+summer[,  pearson := cor(abundance_pc, detections_aru), by = common_name] 
+winter[,  pearson := cor(abundance_pc, detections_aru), by = common_name] 
+
+# extract adjusted r squared
+summer[,  r_sq := summary(lm(abundance_pc~detections_aru))$adj.r.squared, by = common_name] 
+winter[,  r_sq := summary(lm(abundance_pc~detections_aru))$adj.r.squared, by = common_name] 
+
+# create a column with the direction of the slope (whether it is positive or negative), which can be referred to later while plotting    
+summer[, slope_dir := ifelse(slope >0, '+', '-')]
+winter[, slope_dir := ifelse(slope >0, '+', '-')]
+
+paste("Positive regressions:",length(unique(summer$common_name[summer$slope_dir %in% c('+')])))
+# 21 species had a positive regression/slope value in summer
+paste("Positive regressions:",length(unique(winter$common_name[winter$slope_dir %in% c('+')])))
+# 27 species had a positive regression/slope value in summer
+
+## visualization for summer
+fig_summer_abund_detec_reg <- ggplot(summer, aes(x = detections_aru,
+                                              y = abundance_pc)) +
+  geom_point(color = "#9CC3D5",size = 1.2) +
+  geom_smooth(data = summer, aes(group = common_name,
+                                     color = slope_dir), 
+              method = 'lm', se = FALSE, 
+              linewidth = 0.7) +
+  scale_color_manual(values=c("#1B9E77", "#D95F02")) +
+  labs(x="\nAcoustic detections (from acoustic data)", 
+       y="Abundance (from point count data)\n") + 
+  theme_bw() +
+  annotate("text", y=10, x=40, 
+           label= "Slope:", col = "grey30", size = 12) + 
+  annotate("text", y=8, x=40, 
+           label= "+", col = "#D95F02", size = 12) + 
+  annotate("text", y = 7, x=40, 
+           label = "-", col = "#1B9E77", size = 12)+
+  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      legend.position = "none")
+
+ggsave(fig_summer_abund_detec_reg, filename = "figs/fig_abundance_vs_acousticDetections_regressions_summer.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
+dev.off() 
+
+## visualization for winter
+fig_winter_abund_detec_reg <- ggplot(winter, aes(x = detections_aru,
+                                              y = abundance_pc)) +
+  geom_point(color = "#9CC3D5",size = 1.2) +
+  geom_smooth(data = winter, aes(group = common_name,
+                                     color = slope_dir), 
+              method = 'lm', se = FALSE, 
+              linewidth = 0.7) +
+  scale_color_manual(values=c("#1B9E77", "#D95F02")) +
+  labs(x="\nAcoustic detections (from acoustic data)", 
+       y="Abundance (from point count data)\n") + 
+  theme_bw() +
+  annotate("text", y=10, x=40, 
+           label= "Slope:", col = "grey30", size = 12) + 
+  annotate("text", y=8, x=40, 
+           label= "+", col = "#D95F02", size = 12) + 
+  annotate("text", y = 7, x=40, 
+           label = "-", col = "#1B9E77", size = 12)+
+  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      legend.position = "none")
+
+ggsave(fig_winter_abund_detec_reg, filename = "figs/fig_abundance_vs_acousticDetections_regressions_winter.png", width = 14, height = 16, device = png(), units = "in", dpi = 300)
+dev.off() 
+
+# extract the slope, t_value, pearson correlation and the adjusted r square
+lm_output_summer <- summer %>%
+  dplyr::select(common_name, t_value, slope, pearson, slope_dir,r_sq) %>% distinct() %>%
+  mutate(year_season = "2024 Summer")
+lm_output_winter <- winter %>%
+  dplyr::select(common_name, t_value, slope, pearson, slope_dir,r_sq) %>% distinct() %>%
+  mutate(year_season = "2024 Winter")
+
+# write the values to file
+lm_output <- bind_rows(lm_output_summer, lm_output_winter)
+write.csv(lm_output, "results/abundance-acousticDetections-regressions.csv",
+          row.names = F)
+```
+
+## Plotting species-specific regression plots  
+
+```{r}
+# visualization for summer
+plots <- list()
+
+for(i in 1:length(unique(summer$common_name))){
+  
+  # extract species scientific name
+  a <- unique(summer$common_name)[i]
+  
+  # subset summer for plotting
+  for_plot <- summer[summer$common_name==a,]
+  
+  # create plots
+  plots[[i]] <- ggplot(for_plot, aes(x = detections_aru,
+                                    y = abundance_pc)) +
+  geom_point(color = "#9CC3D5",size = 1.2) +
+  geom_smooth(aes(color = "#D95F02"),
+    method = 'lm', se = TRUE, 
+              linewidth = 0.7) +
+    labs(title = paste0(a,"  ","r_sq = ", signif(for_plot$r_sq, digits = 2), "  ", paste0("slope = ",signif(for_plot$slope, digits = 4))),
+      x="\nAcoustic Detections (from acoustic data)", 
+       y="Abundance (from point count data)\n") +
+    theme_bw() +
+  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      legend.position = "none")
+}
+
+# plot and save as a single pdf
+cairo_pdf(
+  filename = "figs/abundance-acousticDetections-by-species-regressions-summer.pdf",width = 13, height = 12,
+  onefile = TRUE
+)
+plots
+dev.off() 
+
+# visualization for winter
+plots <- list()
+
+for(i in 1:length(unique(winter$common_name))){
+  
+  # extract species scientific name
+  a <- unique(winter$common_name)[i]
+  
+  # subset winter for plotting
+  for_plot <- winter[winter$common_name==a,]
+  
+  # create plots
+  plots[[i]] <- ggplot(for_plot, aes(x = detections_aru,
+                                    y = abundance_pc)) +
+  geom_point(color = "#9CC3D5",size = 1.2) +
+  geom_smooth(aes(color = "#D95F02"),
+    method = 'lm', se = TRUE, 
+              linewidth = 0.7) +
+    labs(title = paste0(a,"  ","r_sq = ", signif(for_plot$r_sq, digits = 2), "  ", paste0("slope = ",signif(for_plot$slope, digits = 4))),
+      x="\nAcoustic Detections (from acoustic data)", 
+       y="Abundance (from point count data)\n") +
+    theme_bw() +
+  theme(text = element_text(family = "Century Gothic", size = 18, face = "bold"),plot.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      plot.subtitle = element_text(family = "Century Gothic", 
+      size = 15, face = "bold",color="#1b2838"),
+      axis.title = element_text(family = "Century Gothic",
+      size = 18, face = "bold"),
+      legend.position = "none")
+}
+
+# plot and save as a single pdf
+cairo_pdf(
+  filename = "figs/abundance-acousticDetections-by-species-regressions-winter.pdf",width = 13, height = 12,
+  onefile = TRUE
+)
+plots
+dev.off() 
+```
+
