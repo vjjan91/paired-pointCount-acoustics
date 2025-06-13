@@ -56,7 +56,7 @@ spp_subset <-  data %>%
   group_by(common_name, year_season) %>%
   summarise(abundance_pc = sum(abundance_pc), detections_aru = sum(detections_aru)) %>%
   ungroup() %>%
-  filter(abundance_pc >=30 & detections_aru >= 30)
+  filter(abundance_pc >=15 & detections_aru >= 15)
 
 summer_subset <-  spp_subset %>%
   filter(year_season == "2024 Summer")
