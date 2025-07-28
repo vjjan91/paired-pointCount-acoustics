@@ -18,3 +18,9 @@ install-required-libraries-1
 loading-the-acoustic-data-and-filtering-outputs-above-a-threshold
 loading-point-count-data-1
 curating-the-acoustic-dataset-and-creating-a-new-object
+abundance-vs.-acoustic-detections
+install-necessary-libraries
+load-existing-data
+abundance-and-acoustic-detection-comparisons
+regressions-between-abundance-and-acoustic-detections
+plotting-species-specific-regression-plots

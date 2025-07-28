@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Section 5 Abundance vs. acoustic detections | Source code and supporting information for Predicting bird species abundances from acoustic data</title>
+  <meta name="description" content="Section 5 Abundance vs. acoustic detections | Source code and supporting information for Predicting bird species abundances from acoustic data" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Section 5 Abundance vs. acoustic detections | Source code and supporting information for Predicting bird species abundances from acoustic data" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="vjjan91/paired-pointCount-acoustics" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Section 5 Abundance vs. acoustic detections | Source code and supporting information for Predicting bird species abundances from acoustic data" />
+  
+  
+  
+
+<meta name="author" content="Vijay Ramesh" />
+<meta name="author" content="Divya Mudappa" />
+<meta name="author" content="T R Shankar Raman" />
+<meta name="author" content="" />
+<meta name="author" content="Laurel B Symes" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-comparability.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#attribution"><i class="fa fa-check"></i><b>1.1</b> Attribution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#data-access"><i class="fa fa-check"></i><b>1.2</b> Data access</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#data-processing"><i class="fa fa-check"></i><b>1.3</b> Data processing</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html"><i class="fa fa-check"></i><b>2</b> Exploring point-count data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#loading-point-count-data"><i class="fa fa-check"></i><b>2.1</b> Loading point-count data</a></li>
+<li class="chapter" data-level="2.2" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#load-site-level-information-and-create-gridded-data"><i class="fa fa-check"></i><b>2.2</b> Load site level information and create gridded data</a></li>
+<li class="chapter" data-level="2.3" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#extract-species-level-information"><i class="fa fa-check"></i><b>2.3</b> Extract species-level information</a></li>
+<li class="chapter" data-level="2.4" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#visualizing-richness-data-across-seasons"><i class="fa fa-check"></i><b>2.4</b> Visualizing richness data across seasons</a></li>
+<li class="chapter" data-level="2.5" data-path="exploring-point-count-data.html"><a href="exploring-point-count-data.html#visualizing-abundance-by-species-across-seasons"><i class="fa fa-check"></i><b>2.5</b> Visualizing abundance by species across seasons</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html"><i class="fa fa-check"></i><b>3</b> Exploring outputs from BirdNET</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html#install-required-libraries"><i class="fa fa-check"></i><b>3.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="3.2" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html#creating-a-custom-species-list-for-birdnet-analysis"><i class="fa fa-check"></i><b>3.2</b> Creating a custom species list for BirdNET analysis</a></li>
+<li class="chapter" data-level="3.3" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html#results-from-validating-the-birdnet-out-of-the-box-model"><i class="fa fa-check"></i><b>3.3</b> Results from validating the BirdNET out-of-the-box model</a></li>
+<li class="chapter" data-level="3.4" data-path="exploring-outputs-from-birdnet.html"><a href="exploring-outputs-from-birdnet.html#setting-thresholds-for-species-after-validation"><i class="fa fa-check"></i><b>3.4</b> Setting thresholds for species after validation</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-comparability.html"><a href="data-comparability.html"><i class="fa fa-check"></i><b>4</b> Data comparability</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-comparability.html"><a href="data-comparability.html#install-required-libraries-1"><i class="fa fa-check"></i><b>4.1</b> Install required libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="data-comparability.html"><a href="data-comparability.html#loading-the-acoustic-data-and-filtering-outputs-above-a-threshold"><i class="fa fa-check"></i><b>4.2</b> Loading the acoustic data and filtering outputs above a threshold</a></li>
+<li class="chapter" data-level="4.3" data-path="data-comparability.html"><a href="data-comparability.html#loading-point-count-data-1"><i class="fa fa-check"></i><b>4.3</b> Loading point count data</a></li>
+<li class="chapter" data-level="4.4" data-path="data-comparability.html"><a href="data-comparability.html#curating-the-acoustic-dataset-and-creating-a-new-object"><i class="fa fa-check"></i><b>4.4</b> Curating the acoustic dataset and creating a new object</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="abundance-vs.-acoustic-detections.html"><a href="abundance-vs.-acoustic-detections.html"><i class="fa fa-check"></i><b>5</b> Abundance vs. acoustic detections</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="abundance-vs.-acoustic-detections.html"><a href="abundance-vs.-acoustic-detections.html#install-necessary-libraries"><i class="fa fa-check"></i><b>5.1</b> Install necessary libraries</a></li>
+<li class="chapter" data-level="5.2" data-path="abundance-vs.-acoustic-detections.html"><a href="abundance-vs.-acoustic-detections.html#load-existing-data"><i class="fa fa-check"></i><b>5.2</b> Load existing data</a></li>
+<li class="chapter" data-level="5.3" data-path="abundance-vs.-acoustic-detections.html"><a href="abundance-vs.-acoustic-detections.html#abundance-and-acoustic-detection-comparisons"><i class="fa fa-check"></i><b>5.3</b> Abundance and acoustic detection comparisons</a></li>
+<li class="chapter" data-level="5.4" data-path="abundance-vs.-acoustic-detections.html"><a href="abundance-vs.-acoustic-detections.html#regressions-between-abundance-and-acoustic-detections"><i class="fa fa-check"></i><b>5.4</b> Regressions between abundance and acoustic detections</a></li>
+<li class="chapter" data-level="5.5" data-path="abundance-vs.-acoustic-detections.html"><a href="abundance-vs.-acoustic-detections.html#plotting-species-specific-regression-plots"><i class="fa fa-check"></i><b>5.5</b> Plotting species-specific regression plots</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Source code and supporting information for <em>Predicting bird species abundances from acoustic data</em></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="abundance-vs.-acoustic-detections" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Section 5</span> Abundance vs. acoustic detections<a href="abundance-vs.-acoustic-detections.html#abundance-vs.-acoustic-detections" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this script, we correlate and regress the abundance from point count data with the number of acoustic detections from the paired audio dataset, as classified by BirdNET.</p>
+<p>Here, abundance corresponds to the total number of individuals of a species detected for point count data.</p>
+<div id="install-necessary-libraries" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Install necessary libraries<a href="abundance-vs.-acoustic-detections.html#install-necessary-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="abundance-vs.-acoustic-detections.html#cb14-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb14-2"><a href="abundance-vs.-acoustic-detections.html#cb14-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb14-3"><a href="abundance-vs.-acoustic-detections.html#cb14-3" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb14-4"><a href="abundance-vs.-acoustic-detections.html#cb14-4" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb14-5"><a href="abundance-vs.-acoustic-detections.html#cb14-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb14-6"><a href="abundance-vs.-acoustic-detections.html#cb14-6" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb14-7"><a href="abundance-vs.-acoustic-detections.html#cb14-7" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb14-8"><a href="abundance-vs.-acoustic-detections.html#cb14-8" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb14-9"><a href="abundance-vs.-acoustic-detections.html#cb14-9" tabindex="-1"></a><span class="fu">library</span>(ggstatsplot)</span>
+<span id="cb14-10"><a href="abundance-vs.-acoustic-detections.html#cb14-10" tabindex="-1"></a><span class="fu">library</span>(viridis)   </span>
+<span id="cb14-11"><a href="abundance-vs.-acoustic-detections.html#cb14-11" tabindex="-1"></a><span class="fu">library</span>(ggrepel)  </span></code></pre></div>
+</div>
+<div id="load-existing-data" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Load existing data<a href="abundance-vs.-acoustic-detections.html#load-existing-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="abundance-vs.-acoustic-detections.html#cb15-1" tabindex="-1"></a>datSubset <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;results/datSubset.csv&quot;</span>)</span></code></pre></div>
+</div>
+<div id="abundance-and-acoustic-detection-comparisons" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Abundance and acoustic detection comparisons<a href="abundance-vs.-acoustic-detections.html#abundance-and-acoustic-detection-comparisons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="abundance-vs.-acoustic-detections.html#cb16-1" tabindex="-1"></a><span class="co"># estimate total abundance of all species for each site by season</span></span>
+<span id="cb16-2"><a href="abundance-vs.-acoustic-detections.html#cb16-2" tabindex="-1"></a>abundance <span class="ot">&lt;-</span> datSubset <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="abundance-vs.-acoustic-detections.html#cb16-3" tabindex="-1"></a>  <span class="fu">filter</span>(dataType <span class="sc">==</span> <span class="st">&quot;point_count&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="abundance-vs.-acoustic-detections.html#cb16-4" tabindex="-1"></a>  <span class="fu">group_by</span>(year_season, scientific_name,</span>
+<span id="cb16-5"><a href="abundance-vs.-acoustic-detections.html#cb16-5" tabindex="-1"></a>           common_name, gridID) <span class="sc">%&gt;%</span></span>
+<span id="cb16-6"><a href="abundance-vs.-acoustic-detections.html#cb16-6" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">abundance_pc =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-7"><a href="abundance-vs.-acoustic-detections.html#cb16-7" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb16-8"><a href="abundance-vs.-acoustic-detections.html#cb16-8" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="abundance-vs.-acoustic-detections.html#cb16-9" tabindex="-1"></a><span class="co"># estimate total acoustic detections per site and season for each species</span></span>
+<span id="cb16-10"><a href="abundance-vs.-acoustic-detections.html#cb16-10" tabindex="-1"></a>detections <span class="ot">&lt;-</span> datSubset <span class="sc">%&gt;%</span></span>
+<span id="cb16-11"><a href="abundance-vs.-acoustic-detections.html#cb16-11" tabindex="-1"></a>  <span class="fu">filter</span>(dataType <span class="sc">==</span> <span class="st">&quot;acoustic_data&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-12"><a href="abundance-vs.-acoustic-detections.html#cb16-12" tabindex="-1"></a>  <span class="fu">group_by</span>(year_season, scientific_name,</span>
+<span id="cb16-13"><a href="abundance-vs.-acoustic-detections.html#cb16-13" tabindex="-1"></a>           common_name, gridID)  <span class="sc">%&gt;%</span> </span>
+<span id="cb16-14"><a href="abundance-vs.-acoustic-detections.html#cb16-14" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">detections_aru =</span> <span class="fu">sum</span>(number)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-15"><a href="abundance-vs.-acoustic-detections.html#cb16-15" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb16-16"><a href="abundance-vs.-acoustic-detections.html#cb16-16" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="abundance-vs.-acoustic-detections.html#cb16-17" tabindex="-1"></a><span class="co"># create a single dataframe</span></span>
+<span id="cb16-18"><a href="abundance-vs.-acoustic-detections.html#cb16-18" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">full_join</span>(abundance, detections)<span class="sc">%&gt;%</span></span>
+<span id="cb16-19"><a href="abundance-vs.-acoustic-detections.html#cb16-19" tabindex="-1"></a>  <span class="fu">replace_na</span>(<span class="fu">list</span>(<span class="at">abundance_pc =</span> <span class="dv">0</span>, <span class="at">detections_aru =</span> <span class="dv">0</span>))</span>
+<span id="cb16-20"><a href="abundance-vs.-acoustic-detections.html#cb16-20" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="abundance-vs.-acoustic-detections.html#cb16-21" tabindex="-1"></a><span class="co"># we subset species to only include data with a minimum number of abundance and acoustic detections </span></span>
+<span id="cb16-22"><a href="abundance-vs.-acoustic-detections.html#cb16-22" tabindex="-1"></a>spp_subset <span class="ot">&lt;-</span>  data <span class="sc">%&gt;%</span></span>
+<span id="cb16-23"><a href="abundance-vs.-acoustic-detections.html#cb16-23" tabindex="-1"></a>  <span class="fu">group_by</span>(common_name, year_season) <span class="sc">%&gt;%</span></span>
+<span id="cb16-24"><a href="abundance-vs.-acoustic-detections.html#cb16-24" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">abundance_pc =</span> <span class="fu">sum</span>(abundance_pc), <span class="at">detections_aru =</span> <span class="fu">sum</span>(detections_aru)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-25"><a href="abundance-vs.-acoustic-detections.html#cb16-25" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb16-26"><a href="abundance-vs.-acoustic-detections.html#cb16-26" tabindex="-1"></a>  <span class="fu">filter</span>(abundance_pc <span class="sc">&gt;=</span><span class="dv">15</span> <span class="sc">&amp;</span> detections_aru <span class="sc">&gt;=</span> <span class="dv">15</span>)</span>
+<span id="cb16-27"><a href="abundance-vs.-acoustic-detections.html#cb16-27" tabindex="-1"></a></span>
+<span id="cb16-28"><a href="abundance-vs.-acoustic-detections.html#cb16-28" tabindex="-1"></a>summer_subset <span class="ot">&lt;-</span>  spp_subset <span class="sc">%&gt;%</span></span>
+<span id="cb16-29"><a href="abundance-vs.-acoustic-detections.html#cb16-29" tabindex="-1"></a>  <span class="fu">filter</span>(year_season <span class="sc">==</span> <span class="st">&quot;2024 Summer&quot;</span>)</span>
+<span id="cb16-30"><a href="abundance-vs.-acoustic-detections.html#cb16-30" tabindex="-1"></a>winter_subset <span class="ot">&lt;-</span>  spp_subset <span class="sc">%&gt;%</span></span>
+<span id="cb16-31"><a href="abundance-vs.-acoustic-detections.html#cb16-31" tabindex="-1"></a>  <span class="fu">filter</span>(year_season <span class="sc">==</span> <span class="st">&quot;2024 Winter&quot;</span>)</span>
+<span id="cb16-32"><a href="abundance-vs.-acoustic-detections.html#cb16-32" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="abundance-vs.-acoustic-detections.html#cb16-33" tabindex="-1"></a><span class="co"># subset data by season</span></span>
+<span id="cb16-34"><a href="abundance-vs.-acoustic-detections.html#cb16-34" tabindex="-1"></a><span class="co"># we have 11 species in total for summer and 12 for winter</span></span>
+<span id="cb16-35"><a href="abundance-vs.-acoustic-detections.html#cb16-35" tabindex="-1"></a>summer <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb16-36"><a href="abundance-vs.-acoustic-detections.html#cb16-36" tabindex="-1"></a>  <span class="fu">filter</span>(year_season <span class="sc">==</span> <span class="st">&quot;2024 Summer&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-37"><a href="abundance-vs.-acoustic-detections.html#cb16-37" tabindex="-1"></a>  <span class="fu">filter</span>(common_name <span class="sc">%in%</span> summer_subset<span class="sc">$</span>common_name)</span>
+<span id="cb16-38"><a href="abundance-vs.-acoustic-detections.html#cb16-38" tabindex="-1"></a>winter <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb16-39"><a href="abundance-vs.-acoustic-detections.html#cb16-39" tabindex="-1"></a>  <span class="fu">filter</span>(year_season <span class="sc">==</span> <span class="st">&quot;2024 Winter&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-40"><a href="abundance-vs.-acoustic-detections.html#cb16-40" tabindex="-1"></a>  <span class="fu">filter</span>(common_name <span class="sc">%in%</span> winter_subset<span class="sc">$</span>common_name)</span>
+<span id="cb16-41"><a href="abundance-vs.-acoustic-detections.html#cb16-41" tabindex="-1"></a></span>
+<span id="cb16-42"><a href="abundance-vs.-acoustic-detections.html#cb16-42" tabindex="-1"></a><span class="co"># visualization by season across species for summer</span></span>
+<span id="cb16-43"><a href="abundance-vs.-acoustic-detections.html#cb16-43" tabindex="-1"></a>fig_summer_abundance_detections_cor <span class="ot">&lt;-</span> </span>
+<span id="cb16-44"><a href="abundance-vs.-acoustic-detections.html#cb16-44" tabindex="-1"></a>  <span class="fu">ggscatterstats</span>(</span>
+<span id="cb16-45"><a href="abundance-vs.-acoustic-detections.html#cb16-45" tabindex="-1"></a>  <span class="at">data =</span> summer,</span>
+<span id="cb16-46"><a href="abundance-vs.-acoustic-detections.html#cb16-46" tabindex="-1"></a>  <span class="at">y =</span> abundance_pc,</span>
+<span id="cb16-47"><a href="abundance-vs.-acoustic-detections.html#cb16-47" tabindex="-1"></a>  <span class="at">x =</span> detections_aru,</span>
+<span id="cb16-48"><a href="abundance-vs.-acoustic-detections.html#cb16-48" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;r&quot;</span>,</span>
+<span id="cb16-49"><a href="abundance-vs.-acoustic-detections.html#cb16-49" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Abundance (point-count)&quot;</span>,</span>
+<span id="cb16-50"><a href="abundance-vs.-acoustic-detections.html#cb16-50" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;Acoustic detections (ARU)&quot;</span>,</span>
+<span id="cb16-51"><a href="abundance-vs.-acoustic-detections.html#cb16-51" tabindex="-1"></a>  <span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb16-52"><a href="abundance-vs.-acoustic-detections.html#cb16-52" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb16-53"><a href="abundance-vs.-acoustic-detections.html#cb16-53" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb16-54"><a href="abundance-vs.-acoustic-detections.html#cb16-54" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb16-55"><a href="abundance-vs.-acoustic-detections.html#cb16-55" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb16-56"><a href="abundance-vs.-acoustic-detections.html#cb16-56" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>))))</span>
+<span id="cb16-57"><a href="abundance-vs.-acoustic-detections.html#cb16-57" tabindex="-1"></a></span>
+<span id="cb16-58"><a href="abundance-vs.-acoustic-detections.html#cb16-58" tabindex="-1"></a><span class="fu">ggsave</span>(fig_summer_abundance_detections_cor, <span class="at">filename =</span> <span class="st">&quot;figs/fig_abundance_vs_acousticDetections_correlations_summer.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">10</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb16-59"><a href="abundance-vs.-acoustic-detections.html#cb16-59" tabindex="-1"></a><span class="fu">dev.off</span>() </span>
+<span id="cb16-60"><a href="abundance-vs.-acoustic-detections.html#cb16-60" tabindex="-1"></a></span>
+<span id="cb16-61"><a href="abundance-vs.-acoustic-detections.html#cb16-61" tabindex="-1"></a><span class="co"># visualization by season across species for winter</span></span>
+<span id="cb16-62"><a href="abundance-vs.-acoustic-detections.html#cb16-62" tabindex="-1"></a>fig_winter_abundance_detections_cor <span class="ot">&lt;-</span> </span>
+<span id="cb16-63"><a href="abundance-vs.-acoustic-detections.html#cb16-63" tabindex="-1"></a>  <span class="fu">ggscatterstats</span>(</span>
+<span id="cb16-64"><a href="abundance-vs.-acoustic-detections.html#cb16-64" tabindex="-1"></a>  <span class="at">data =</span> winter,</span>
+<span id="cb16-65"><a href="abundance-vs.-acoustic-detections.html#cb16-65" tabindex="-1"></a>  <span class="at">y =</span> abundance_pc,</span>
+<span id="cb16-66"><a href="abundance-vs.-acoustic-detections.html#cb16-66" tabindex="-1"></a>  <span class="at">x =</span> detections_aru,</span>
+<span id="cb16-67"><a href="abundance-vs.-acoustic-detections.html#cb16-67" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">&quot;r&quot;</span>,</span>
+<span id="cb16-68"><a href="abundance-vs.-acoustic-detections.html#cb16-68" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Abundance (point-count)&quot;</span>,</span>
+<span id="cb16-69"><a href="abundance-vs.-acoustic-detections.html#cb16-69" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;Acoustic detections (ARU)&quot;</span>,</span>
+<span id="cb16-70"><a href="abundance-vs.-acoustic-detections.html#cb16-70" tabindex="-1"></a>  <span class="at">ggplot.component =</span> <span class="fu">list</span>(<span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb16-71"><a href="abundance-vs.-acoustic-detections.html#cb16-71" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb16-72"><a href="abundance-vs.-acoustic-detections.html#cb16-72" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb16-73"><a href="abundance-vs.-acoustic-detections.html#cb16-73" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb16-74"><a href="abundance-vs.-acoustic-detections.html#cb16-74" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb16-75"><a href="abundance-vs.-acoustic-detections.html#cb16-75" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>))))</span>
+<span id="cb16-76"><a href="abundance-vs.-acoustic-detections.html#cb16-76" tabindex="-1"></a></span>
+<span id="cb16-77"><a href="abundance-vs.-acoustic-detections.html#cb16-77" tabindex="-1"></a><span class="fu">ggsave</span>(fig_winter_abundance_detections_cor, <span class="at">filename =</span> <span class="st">&quot;figs/fig_abundance_vs_acousticDetections_correlations_winter.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">10</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb16-78"><a href="abundance-vs.-acoustic-detections.html#cb16-78" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+</div>
+<div id="regressions-between-abundance-and-acoustic-detections" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Regressions between abundance and acoustic detections<a href="abundance-vs.-acoustic-detections.html#regressions-between-abundance-and-acoustic-detections" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>While it is relevant to examine correlations between abundance (as estimated from point count data) and acoustic detections (as estimated from acoustic data), we will run robust regressions to ask one predicts the other.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="abundance-vs.-acoustic-detections.html#cb17-1" tabindex="-1"></a><span class="do">## I am borrowing code from Mikula et al. 2020 below</span></span>
+<span id="cb17-2"><a href="abundance-vs.-acoustic-detections.html#cb17-2" tabindex="-1"></a><span class="do">## The data and scripts from their manuscript can be found here:</span></span>
+<span id="cb17-3"><a href="abundance-vs.-acoustic-detections.html#cb17-3" tabindex="-1"></a><span class="do">## https://osf.io/fa9ky/</span></span>
+<span id="cb17-4"><a href="abundance-vs.-acoustic-detections.html#cb17-4" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="abundance-vs.-acoustic-detections.html#cb17-5" tabindex="-1"></a><span class="co"># splitting by seasons</span></span>
+<span id="cb17-6"><a href="abundance-vs.-acoustic-detections.html#cb17-6" tabindex="-1"></a>summer <span class="ot">&lt;-</span> <span class="fu">setDT</span>(summer)</span>
+<span id="cb17-7"><a href="abundance-vs.-acoustic-detections.html#cb17-7" tabindex="-1"></a>winter <span class="ot">&lt;-</span> <span class="fu">setDT</span>(winter)</span>
+<span id="cb17-8"><a href="abundance-vs.-acoustic-detections.html#cb17-8" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="abundance-vs.-acoustic-detections.html#cb17-9" tabindex="-1"></a><span class="co"># extract t-value</span></span>
+<span id="cb17-10"><a href="abundance-vs.-acoustic-detections.html#cb17-10" tabindex="-1"></a>summer[,  t_value <span class="sc">:=</span> <span class="fu">summary</span>(<span class="fu">lm</span>(abundance_pc<span class="sc">~</span>detections_aru))<span class="sc">$</span>coefficients[<span class="dv">6</span>], by <span class="ot">=</span> common_name] </span>
+<span id="cb17-11"><a href="abundance-vs.-acoustic-detections.html#cb17-11" tabindex="-1"></a>winter[,  t_value <span class="sc">:=</span> <span class="fu">summary</span>(<span class="fu">lm</span>(abundance_pc<span class="sc">~</span>detections_aru))<span class="sc">$</span>coefficients[<span class="dv">6</span>], by <span class="ot">=</span> common_name] </span>
+<span id="cb17-12"><a href="abundance-vs.-acoustic-detections.html#cb17-12" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="abundance-vs.-acoustic-detections.html#cb17-13" tabindex="-1"></a><span class="co"># extract slope</span></span>
+<span id="cb17-14"><a href="abundance-vs.-acoustic-detections.html#cb17-14" tabindex="-1"></a>summer[,  slope <span class="sc">:=</span> <span class="fu">lm</span>(abundance_pc<span class="sc">~</span>detections_aru)<span class="sc">%&gt;%</span> <span class="fu">coef</span>()<span class="sc">%&gt;%</span> <span class="fu">nth</span>(<span class="dv">2</span>), by <span class="ot">=</span> common_name] </span>
+<span id="cb17-15"><a href="abundance-vs.-acoustic-detections.html#cb17-15" tabindex="-1"></a>winter[,  slope <span class="sc">:=</span> <span class="fu">lm</span>(abundance_pc<span class="sc">~</span>detections_aru)<span class="sc">%&gt;%</span> <span class="fu">coef</span>()<span class="sc">%&gt;%</span> <span class="fu">nth</span>(<span class="dv">2</span>), by <span class="ot">=</span> common_name] </span>
+<span id="cb17-16"><a href="abundance-vs.-acoustic-detections.html#cb17-16" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="abundance-vs.-acoustic-detections.html#cb17-17" tabindex="-1"></a><span class="co"># extract pearson&#39;s correlation</span></span>
+<span id="cb17-18"><a href="abundance-vs.-acoustic-detections.html#cb17-18" tabindex="-1"></a>summer[,  pearson <span class="sc">:=</span> <span class="fu">cor</span>(abundance_pc, detections_aru), by <span class="ot">=</span> common_name] </span>
+<span id="cb17-19"><a href="abundance-vs.-acoustic-detections.html#cb17-19" tabindex="-1"></a>winter[,  pearson <span class="sc">:=</span> <span class="fu">cor</span>(abundance_pc, detections_aru), by <span class="ot">=</span> common_name] </span>
+<span id="cb17-20"><a href="abundance-vs.-acoustic-detections.html#cb17-20" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="abundance-vs.-acoustic-detections.html#cb17-21" tabindex="-1"></a><span class="co"># extract adjusted r squared</span></span>
+<span id="cb17-22"><a href="abundance-vs.-acoustic-detections.html#cb17-22" tabindex="-1"></a>summer[,  r_sq <span class="sc">:=</span> <span class="fu">summary</span>(<span class="fu">lm</span>(abundance_pc<span class="sc">~</span>detections_aru))<span class="sc">$</span>adj.r.squared, by <span class="ot">=</span> common_name] </span>
+<span id="cb17-23"><a href="abundance-vs.-acoustic-detections.html#cb17-23" tabindex="-1"></a>winter[,  r_sq <span class="sc">:=</span> <span class="fu">summary</span>(<span class="fu">lm</span>(abundance_pc<span class="sc">~</span>detections_aru))<span class="sc">$</span>adj.r.squared, by <span class="ot">=</span> common_name] </span>
+<span id="cb17-24"><a href="abundance-vs.-acoustic-detections.html#cb17-24" tabindex="-1"></a></span>
+<span id="cb17-25"><a href="abundance-vs.-acoustic-detections.html#cb17-25" tabindex="-1"></a><span class="co"># create a column with the direction of the slope (whether it is positive or negative), which can be referred to later while plotting    </span></span>
+<span id="cb17-26"><a href="abundance-vs.-acoustic-detections.html#cb17-26" tabindex="-1"></a>summer[, slope_dir <span class="sc">:=</span> <span class="fu">ifelse</span>(slope <span class="sc">&gt;</span><span class="dv">0</span>, <span class="st">&#39;+&#39;</span>, <span class="st">&#39;-&#39;</span>)]</span>
+<span id="cb17-27"><a href="abundance-vs.-acoustic-detections.html#cb17-27" tabindex="-1"></a>winter[, slope_dir <span class="sc">:=</span> <span class="fu">ifelse</span>(slope <span class="sc">&gt;</span><span class="dv">0</span>, <span class="st">&#39;+&#39;</span>, <span class="st">&#39;-&#39;</span>)]</span>
+<span id="cb17-28"><a href="abundance-vs.-acoustic-detections.html#cb17-28" tabindex="-1"></a></span>
+<span id="cb17-29"><a href="abundance-vs.-acoustic-detections.html#cb17-29" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Positive regressions:&quot;</span>,<span class="fu">length</span>(<span class="fu">unique</span>(summer<span class="sc">$</span>common_name[summer<span class="sc">$</span>slope_dir <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;+&#39;</span>)])))</span>
+<span id="cb17-30"><a href="abundance-vs.-acoustic-detections.html#cb17-30" tabindex="-1"></a><span class="co"># 16 species had a positive regression/slope value in summer</span></span>
+<span id="cb17-31"><a href="abundance-vs.-acoustic-detections.html#cb17-31" tabindex="-1"></a><span class="fu">paste</span>(<span class="st">&quot;Positive regressions:&quot;</span>,<span class="fu">length</span>(<span class="fu">unique</span>(winter<span class="sc">$</span>common_name[winter<span class="sc">$</span>slope_dir <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&#39;+&#39;</span>)])))</span>
+<span id="cb17-32"><a href="abundance-vs.-acoustic-detections.html#cb17-32" tabindex="-1"></a><span class="co"># 21 species had a positive regression/slope value in summer</span></span>
+<span id="cb17-33"><a href="abundance-vs.-acoustic-detections.html#cb17-33" tabindex="-1"></a></span>
+<span id="cb17-34"><a href="abundance-vs.-acoustic-detections.html#cb17-34" tabindex="-1"></a><span class="do">## visualization for summer</span></span>
+<span id="cb17-35"><a href="abundance-vs.-acoustic-detections.html#cb17-35" tabindex="-1"></a>fig_summer_abund_detec_reg <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(summer, <span class="fu">aes</span>(<span class="at">x =</span> detections_aru,</span>
+<span id="cb17-36"><a href="abundance-vs.-acoustic-detections.html#cb17-36" tabindex="-1"></a>                                              <span class="at">y =</span> abundance_pc)) <span class="sc">+</span></span>
+<span id="cb17-37"><a href="abundance-vs.-acoustic-detections.html#cb17-37" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;#9CC3D5&quot;</span>,<span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb17-38"><a href="abundance-vs.-acoustic-detections.html#cb17-38" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">data =</span> summer, <span class="fu">aes</span>(<span class="at">group =</span> common_name,</span>
+<span id="cb17-39"><a href="abundance-vs.-acoustic-detections.html#cb17-39" tabindex="-1"></a>                                     <span class="at">color =</span> slope_dir), </span>
+<span id="cb17-40"><a href="abundance-vs.-acoustic-detections.html#cb17-40" tabindex="-1"></a>              <span class="at">method =</span> <span class="st">&#39;lm&#39;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb17-41"><a href="abundance-vs.-acoustic-detections.html#cb17-41" tabindex="-1"></a>              <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb17-42"><a href="abundance-vs.-acoustic-detections.html#cb17-42" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;#1B9E77&quot;</span>, <span class="st">&quot;#D95F02&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb17-43"><a href="abundance-vs.-acoustic-detections.html#cb17-43" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Acoustic detections (from acoustic data)&quot;</span>, </span>
+<span id="cb17-44"><a href="abundance-vs.-acoustic-detections.html#cb17-44" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Abundance (from point count data)</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb17-45"><a href="abundance-vs.-acoustic-detections.html#cb17-45" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb17-46"><a href="abundance-vs.-acoustic-detections.html#cb17-46" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">y=</span><span class="dv">10</span>, <span class="at">x=</span><span class="dv">40</span>, </span>
+<span id="cb17-47"><a href="abundance-vs.-acoustic-detections.html#cb17-47" tabindex="-1"></a>           <span class="at">label=</span> <span class="st">&quot;Slope:&quot;</span>, <span class="at">col =</span> <span class="st">&quot;grey30&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>) <span class="sc">+</span> </span>
+<span id="cb17-48"><a href="abundance-vs.-acoustic-detections.html#cb17-48" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">y=</span><span class="dv">8</span>, <span class="at">x=</span><span class="dv">40</span>, </span>
+<span id="cb17-49"><a href="abundance-vs.-acoustic-detections.html#cb17-49" tabindex="-1"></a>           <span class="at">label=</span> <span class="st">&quot;+&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#D95F02&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>) <span class="sc">+</span> </span>
+<span id="cb17-50"><a href="abundance-vs.-acoustic-detections.html#cb17-50" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">y =</span> <span class="dv">7</span>, <span class="at">x=</span><span class="dv">40</span>, </span>
+<span id="cb17-51"><a href="abundance-vs.-acoustic-detections.html#cb17-51" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">&quot;-&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#1B9E77&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)<span class="sc">+</span></span>
+<span id="cb17-52"><a href="abundance-vs.-acoustic-detections.html#cb17-52" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb17-53"><a href="abundance-vs.-acoustic-detections.html#cb17-53" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb17-54"><a href="abundance-vs.-acoustic-detections.html#cb17-54" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb17-55"><a href="abundance-vs.-acoustic-detections.html#cb17-55" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb17-56"><a href="abundance-vs.-acoustic-detections.html#cb17-56" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb17-57"><a href="abundance-vs.-acoustic-detections.html#cb17-57" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb17-58"><a href="abundance-vs.-acoustic-detections.html#cb17-58" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb17-59"><a href="abundance-vs.-acoustic-detections.html#cb17-59" tabindex="-1"></a></span>
+<span id="cb17-60"><a href="abundance-vs.-acoustic-detections.html#cb17-60" tabindex="-1"></a><span class="fu">ggsave</span>(fig_summer_abund_detec_reg, <span class="at">filename =</span> <span class="st">&quot;figs/fig_abundance_vs_acousticDetections_regressions_summer.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb17-61"><a href="abundance-vs.-acoustic-detections.html#cb17-61" tabindex="-1"></a><span class="fu">dev.off</span>() </span>
+<span id="cb17-62"><a href="abundance-vs.-acoustic-detections.html#cb17-62" tabindex="-1"></a></span>
+<span id="cb17-63"><a href="abundance-vs.-acoustic-detections.html#cb17-63" tabindex="-1"></a><span class="do">## visualization for winter</span></span>
+<span id="cb17-64"><a href="abundance-vs.-acoustic-detections.html#cb17-64" tabindex="-1"></a>fig_winter_abund_detec_reg <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(winter, <span class="fu">aes</span>(<span class="at">x =</span> detections_aru,</span>
+<span id="cb17-65"><a href="abundance-vs.-acoustic-detections.html#cb17-65" tabindex="-1"></a>                                              <span class="at">y =</span> abundance_pc)) <span class="sc">+</span></span>
+<span id="cb17-66"><a href="abundance-vs.-acoustic-detections.html#cb17-66" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;#9CC3D5&quot;</span>,<span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb17-67"><a href="abundance-vs.-acoustic-detections.html#cb17-67" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">data =</span> winter, <span class="fu">aes</span>(<span class="at">group =</span> common_name,</span>
+<span id="cb17-68"><a href="abundance-vs.-acoustic-detections.html#cb17-68" tabindex="-1"></a>                                     <span class="at">color =</span> slope_dir), </span>
+<span id="cb17-69"><a href="abundance-vs.-acoustic-detections.html#cb17-69" tabindex="-1"></a>              <span class="at">method =</span> <span class="st">&#39;lm&#39;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb17-70"><a href="abundance-vs.-acoustic-detections.html#cb17-70" tabindex="-1"></a>              <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb17-71"><a href="abundance-vs.-acoustic-detections.html#cb17-71" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;#1B9E77&quot;</span>, <span class="st">&quot;#D95F02&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb17-72"><a href="abundance-vs.-acoustic-detections.html#cb17-72" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Acoustic detections (from acoustic data)&quot;</span>, </span>
+<span id="cb17-73"><a href="abundance-vs.-acoustic-detections.html#cb17-73" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Abundance (from point count data)</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb17-74"><a href="abundance-vs.-acoustic-detections.html#cb17-74" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb17-75"><a href="abundance-vs.-acoustic-detections.html#cb17-75" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">y=</span><span class="dv">10</span>, <span class="at">x=</span><span class="dv">40</span>, </span>
+<span id="cb17-76"><a href="abundance-vs.-acoustic-detections.html#cb17-76" tabindex="-1"></a>           <span class="at">label=</span> <span class="st">&quot;Slope:&quot;</span>, <span class="at">col =</span> <span class="st">&quot;grey30&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>) <span class="sc">+</span> </span>
+<span id="cb17-77"><a href="abundance-vs.-acoustic-detections.html#cb17-77" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">y=</span><span class="dv">8</span>, <span class="at">x=</span><span class="dv">40</span>, </span>
+<span id="cb17-78"><a href="abundance-vs.-acoustic-detections.html#cb17-78" tabindex="-1"></a>           <span class="at">label=</span> <span class="st">&quot;+&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#D95F02&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>) <span class="sc">+</span> </span>
+<span id="cb17-79"><a href="abundance-vs.-acoustic-detections.html#cb17-79" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">y =</span> <span class="dv">7</span>, <span class="at">x=</span><span class="dv">40</span>, </span>
+<span id="cb17-80"><a href="abundance-vs.-acoustic-detections.html#cb17-80" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">&quot;-&quot;</span>, <span class="at">col =</span> <span class="st">&quot;#1B9E77&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)<span class="sc">+</span></span>
+<span id="cb17-81"><a href="abundance-vs.-acoustic-detections.html#cb17-81" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb17-82"><a href="abundance-vs.-acoustic-detections.html#cb17-82" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb17-83"><a href="abundance-vs.-acoustic-detections.html#cb17-83" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb17-84"><a href="abundance-vs.-acoustic-detections.html#cb17-84" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb17-85"><a href="abundance-vs.-acoustic-detections.html#cb17-85" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb17-86"><a href="abundance-vs.-acoustic-detections.html#cb17-86" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb17-87"><a href="abundance-vs.-acoustic-detections.html#cb17-87" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb17-88"><a href="abundance-vs.-acoustic-detections.html#cb17-88" tabindex="-1"></a></span>
+<span id="cb17-89"><a href="abundance-vs.-acoustic-detections.html#cb17-89" tabindex="-1"></a><span class="fu">ggsave</span>(fig_winter_abund_detec_reg, <span class="at">filename =</span> <span class="st">&quot;figs/fig_abundance_vs_acousticDetections_regressions_winter.png&quot;</span>, <span class="at">width =</span> <span class="dv">14</span>, <span class="at">height =</span> <span class="dv">16</span>, <span class="at">device =</span> <span class="fu">png</span>(), <span class="at">units =</span> <span class="st">&quot;in&quot;</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb17-90"><a href="abundance-vs.-acoustic-detections.html#cb17-90" tabindex="-1"></a><span class="fu">dev.off</span>() </span>
+<span id="cb17-91"><a href="abundance-vs.-acoustic-detections.html#cb17-91" tabindex="-1"></a></span>
+<span id="cb17-92"><a href="abundance-vs.-acoustic-detections.html#cb17-92" tabindex="-1"></a><span class="co"># extract the slope, t_value, pearson correlation and the adjusted r square</span></span>
+<span id="cb17-93"><a href="abundance-vs.-acoustic-detections.html#cb17-93" tabindex="-1"></a>lm_output_summer <span class="ot">&lt;-</span> summer <span class="sc">%&gt;%</span></span>
+<span id="cb17-94"><a href="abundance-vs.-acoustic-detections.html#cb17-94" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(common_name, t_value, slope, pearson, slope_dir,r_sq) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb17-95"><a href="abundance-vs.-acoustic-detections.html#cb17-95" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year_season =</span> <span class="st">&quot;2024 Summer&quot;</span>)</span>
+<span id="cb17-96"><a href="abundance-vs.-acoustic-detections.html#cb17-96" tabindex="-1"></a>lm_output_winter <span class="ot">&lt;-</span> winter <span class="sc">%&gt;%</span></span>
+<span id="cb17-97"><a href="abundance-vs.-acoustic-detections.html#cb17-97" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(common_name, t_value, slope, pearson, slope_dir,r_sq) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb17-98"><a href="abundance-vs.-acoustic-detections.html#cb17-98" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year_season =</span> <span class="st">&quot;2024 Winter&quot;</span>)</span>
+<span id="cb17-99"><a href="abundance-vs.-acoustic-detections.html#cb17-99" tabindex="-1"></a></span>
+<span id="cb17-100"><a href="abundance-vs.-acoustic-detections.html#cb17-100" tabindex="-1"></a><span class="co"># write the values to file</span></span>
+<span id="cb17-101"><a href="abundance-vs.-acoustic-detections.html#cb17-101" tabindex="-1"></a>lm_output <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(lm_output_summer, lm_output_winter)</span>
+<span id="cb17-102"><a href="abundance-vs.-acoustic-detections.html#cb17-102" tabindex="-1"></a><span class="fu">write.csv</span>(lm_output, <span class="st">&quot;results/abundance-acousticDetections-regressions.csv&quot;</span>,</span>
+<span id="cb17-103"><a href="abundance-vs.-acoustic-detections.html#cb17-103" tabindex="-1"></a>          <span class="at">row.names =</span> F)</span></code></pre></div>
+</div>
+<div id="plotting-species-specific-regression-plots" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Plotting species-specific regression plots<a href="abundance-vs.-acoustic-detections.html#plotting-species-specific-regression-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="abundance-vs.-acoustic-detections.html#cb18-1" tabindex="-1"></a><span class="co"># visualization for summer</span></span>
+<span id="cb18-2"><a href="abundance-vs.-acoustic-detections.html#cb18-2" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb18-3"><a href="abundance-vs.-acoustic-detections.html#cb18-3" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="abundance-vs.-acoustic-detections.html#cb18-4" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(summer<span class="sc">$</span>common_name))){</span>
+<span id="cb18-5"><a href="abundance-vs.-acoustic-detections.html#cb18-5" tabindex="-1"></a>  </span>
+<span id="cb18-6"><a href="abundance-vs.-acoustic-detections.html#cb18-6" tabindex="-1"></a>  <span class="co"># extract species scientific name</span></span>
+<span id="cb18-7"><a href="abundance-vs.-acoustic-detections.html#cb18-7" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">unique</span>(summer<span class="sc">$</span>common_name)[i]</span>
+<span id="cb18-8"><a href="abundance-vs.-acoustic-detections.html#cb18-8" tabindex="-1"></a>  </span>
+<span id="cb18-9"><a href="abundance-vs.-acoustic-detections.html#cb18-9" tabindex="-1"></a>  <span class="co"># subset summer for plotting</span></span>
+<span id="cb18-10"><a href="abundance-vs.-acoustic-detections.html#cb18-10" tabindex="-1"></a>  for_plot <span class="ot">&lt;-</span> summer[summer<span class="sc">$</span>common_name<span class="sc">==</span>a,]</span>
+<span id="cb18-11"><a href="abundance-vs.-acoustic-detections.html#cb18-11" tabindex="-1"></a>  </span>
+<span id="cb18-12"><a href="abundance-vs.-acoustic-detections.html#cb18-12" tabindex="-1"></a>  <span class="co"># create plots</span></span>
+<span id="cb18-13"><a href="abundance-vs.-acoustic-detections.html#cb18-13" tabindex="-1"></a>  plots[[i]] <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(for_plot, <span class="fu">aes</span>(<span class="at">x =</span> detections_aru,</span>
+<span id="cb18-14"><a href="abundance-vs.-acoustic-detections.html#cb18-14" tabindex="-1"></a>                                    <span class="at">y =</span> abundance_pc)) <span class="sc">+</span></span>
+<span id="cb18-15"><a href="abundance-vs.-acoustic-detections.html#cb18-15" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;#00496FFF&quot;</span>,<span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb18-16"><a href="abundance-vs.-acoustic-detections.html#cb18-16" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color =</span> <span class="st">&quot;#D95F02&quot;</span>),</span>
+<span id="cb18-17"><a href="abundance-vs.-acoustic-detections.html#cb18-17" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&#39;lm&#39;</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb18-18"><a href="abundance-vs.-acoustic-detections.html#cb18-18" tabindex="-1"></a>              <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb18-19"><a href="abundance-vs.-acoustic-detections.html#cb18-19" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(a,<span class="st">&quot;  &quot;</span>,<span class="st">&quot;r_sq = &quot;</span>, <span class="fu">signif</span>(for_plot<span class="sc">$</span>r_sq, <span class="at">digits =</span> <span class="dv">2</span>), <span class="st">&quot;  &quot;</span>, <span class="fu">paste0</span>(<span class="st">&quot;slope = &quot;</span>,<span class="fu">signif</span>(for_plot<span class="sc">$</span>slope, <span class="at">digits =</span> <span class="dv">4</span>))),</span>
+<span id="cb18-20"><a href="abundance-vs.-acoustic-detections.html#cb18-20" tabindex="-1"></a>      <span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Acoustic Detections (from acoustic data)&quot;</span>, </span>
+<span id="cb18-21"><a href="abundance-vs.-acoustic-detections.html#cb18-21" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Abundance (from point count data)</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-22"><a href="abundance-vs.-acoustic-detections.html#cb18-22" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb18-23"><a href="abundance-vs.-acoustic-detections.html#cb18-23" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb18-24"><a href="abundance-vs.-acoustic-detections.html#cb18-24" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb18-25"><a href="abundance-vs.-acoustic-detections.html#cb18-25" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb18-26"><a href="abundance-vs.-acoustic-detections.html#cb18-26" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb18-27"><a href="abundance-vs.-acoustic-detections.html#cb18-27" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb18-28"><a href="abundance-vs.-acoustic-detections.html#cb18-28" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb18-29"><a href="abundance-vs.-acoustic-detections.html#cb18-29" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb18-30"><a href="abundance-vs.-acoustic-detections.html#cb18-30" tabindex="-1"></a>}</span>
+<span id="cb18-31"><a href="abundance-vs.-acoustic-detections.html#cb18-31" tabindex="-1"></a></span>
+<span id="cb18-32"><a href="abundance-vs.-acoustic-detections.html#cb18-32" tabindex="-1"></a><span class="co"># plot and save as a single pdf</span></span>
+<span id="cb18-33"><a href="abundance-vs.-acoustic-detections.html#cb18-33" tabindex="-1"></a><span class="fu">cairo_pdf</span>(</span>
+<span id="cb18-34"><a href="abundance-vs.-acoustic-detections.html#cb18-34" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;figs/abundance-acousticDetections-by-species-regressions-summer.pdf&quot;</span>,<span class="at">width =</span> <span class="dv">13</span>, <span class="at">height =</span> <span class="dv">12</span>,</span>
+<span id="cb18-35"><a href="abundance-vs.-acoustic-detections.html#cb18-35" tabindex="-1"></a>  <span class="at">onefile =</span> <span class="cn">TRUE</span></span>
+<span id="cb18-36"><a href="abundance-vs.-acoustic-detections.html#cb18-36" tabindex="-1"></a>)</span>
+<span id="cb18-37"><a href="abundance-vs.-acoustic-detections.html#cb18-37" tabindex="-1"></a>plots</span>
+<span id="cb18-38"><a href="abundance-vs.-acoustic-detections.html#cb18-38" tabindex="-1"></a><span class="fu">dev.off</span>() </span>
+<span id="cb18-39"><a href="abundance-vs.-acoustic-detections.html#cb18-39" tabindex="-1"></a></span>
+<span id="cb18-40"><a href="abundance-vs.-acoustic-detections.html#cb18-40" tabindex="-1"></a><span class="co"># visualization for winter</span></span>
+<span id="cb18-41"><a href="abundance-vs.-acoustic-detections.html#cb18-41" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb18-42"><a href="abundance-vs.-acoustic-detections.html#cb18-42" tabindex="-1"></a></span>
+<span id="cb18-43"><a href="abundance-vs.-acoustic-detections.html#cb18-43" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(winter<span class="sc">$</span>common_name))){</span>
+<span id="cb18-44"><a href="abundance-vs.-acoustic-detections.html#cb18-44" tabindex="-1"></a>  </span>
+<span id="cb18-45"><a href="abundance-vs.-acoustic-detections.html#cb18-45" tabindex="-1"></a>  <span class="co"># extract species scientific name</span></span>
+<span id="cb18-46"><a href="abundance-vs.-acoustic-detections.html#cb18-46" tabindex="-1"></a>  a <span class="ot">&lt;-</span> <span class="fu">unique</span>(winter<span class="sc">$</span>common_name)[i]</span>
+<span id="cb18-47"><a href="abundance-vs.-acoustic-detections.html#cb18-47" tabindex="-1"></a>  </span>
+<span id="cb18-48"><a href="abundance-vs.-acoustic-detections.html#cb18-48" tabindex="-1"></a>  <span class="co"># subset winter for plotting</span></span>
+<span id="cb18-49"><a href="abundance-vs.-acoustic-detections.html#cb18-49" tabindex="-1"></a>  for_plot <span class="ot">&lt;-</span> winter[winter<span class="sc">$</span>common_name<span class="sc">==</span>a,]</span>
+<span id="cb18-50"><a href="abundance-vs.-acoustic-detections.html#cb18-50" tabindex="-1"></a>  </span>
+<span id="cb18-51"><a href="abundance-vs.-acoustic-detections.html#cb18-51" tabindex="-1"></a>  <span class="co"># create plots</span></span>
+<span id="cb18-52"><a href="abundance-vs.-acoustic-detections.html#cb18-52" tabindex="-1"></a>  plots[[i]] <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(for_plot, <span class="fu">aes</span>(<span class="at">x =</span> detections_aru,</span>
+<span id="cb18-53"><a href="abundance-vs.-acoustic-detections.html#cb18-53" tabindex="-1"></a>                                    <span class="at">y =</span> abundance_pc)) <span class="sc">+</span></span>
+<span id="cb18-54"><a href="abundance-vs.-acoustic-detections.html#cb18-54" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;#00496FFF&quot;</span>,<span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb18-55"><a href="abundance-vs.-acoustic-detections.html#cb18-55" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color =</span> <span class="st">&quot;#D95F02&quot;</span>),</span>
+<span id="cb18-56"><a href="abundance-vs.-acoustic-detections.html#cb18-56" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">&#39;lm&#39;</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb18-57"><a href="abundance-vs.-acoustic-detections.html#cb18-57" tabindex="-1"></a>              <span class="at">linewidth =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb18-58"><a href="abundance-vs.-acoustic-detections.html#cb18-58" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="fu">paste0</span>(a,<span class="st">&quot;  &quot;</span>,<span class="st">&quot;r_sq = &quot;</span>, <span class="fu">signif</span>(for_plot<span class="sc">$</span>r_sq, <span class="at">digits =</span> <span class="dv">2</span>), <span class="st">&quot;  &quot;</span>, <span class="fu">paste0</span>(<span class="st">&quot;slope = &quot;</span>,<span class="fu">signif</span>(for_plot<span class="sc">$</span>slope, <span class="at">digits =</span> <span class="dv">4</span>))),</span>
+<span id="cb18-59"><a href="abundance-vs.-acoustic-detections.html#cb18-59" tabindex="-1"></a>      <span class="at">x=</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">Acoustic Detections (from acoustic data)&quot;</span>, </span>
+<span id="cb18-60"><a href="abundance-vs.-acoustic-detections.html#cb18-60" tabindex="-1"></a>       <span class="at">y=</span><span class="st">&quot;Abundance (from point count data)</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb18-61"><a href="abundance-vs.-acoustic-detections.html#cb18-61" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb18-62"><a href="abundance-vs.-acoustic-detections.html#cb18-62" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb18-63"><a href="abundance-vs.-acoustic-detections.html#cb18-63" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb18-64"><a href="abundance-vs.-acoustic-detections.html#cb18-64" tabindex="-1"></a>      <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>, </span>
+<span id="cb18-65"><a href="abundance-vs.-acoustic-detections.html#cb18-65" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">15</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>,<span class="at">color=</span><span class="st">&quot;#1b2838&quot;</span>),</span>
+<span id="cb18-66"><a href="abundance-vs.-acoustic-detections.html#cb18-66" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Century Gothic&quot;</span>,</span>
+<span id="cb18-67"><a href="abundance-vs.-acoustic-detections.html#cb18-67" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb18-68"><a href="abundance-vs.-acoustic-detections.html#cb18-68" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb18-69"><a href="abundance-vs.-acoustic-detections.html#cb18-69" tabindex="-1"></a>}</span>
+<span id="cb18-70"><a href="abundance-vs.-acoustic-detections.html#cb18-70" tabindex="-1"></a></span>
+<span id="cb18-71"><a href="abundance-vs.-acoustic-detections.html#cb18-71" tabindex="-1"></a><span class="co"># plot and save as a single pdf</span></span>
+<span id="cb18-72"><a href="abundance-vs.-acoustic-detections.html#cb18-72" tabindex="-1"></a><span class="fu">cairo_pdf</span>(</span>
+<span id="cb18-73"><a href="abundance-vs.-acoustic-detections.html#cb18-73" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;figs/abundance-acousticDetections-by-species-regressions-winter.pdf&quot;</span>,<span class="at">width =</span> <span class="dv">13</span>, <span class="at">height =</span> <span class="dv">12</span>,</span>
+<span id="cb18-74"><a href="abundance-vs.-acoustic-detections.html#cb18-74" tabindex="-1"></a>  <span class="at">onefile =</span> <span class="cn">TRUE</span></span>
+<span id="cb18-75"><a href="abundance-vs.-acoustic-detections.html#cb18-75" tabindex="-1"></a>)</span>
+<span id="cb18-76"><a href="abundance-vs.-acoustic-detections.html#cb18-76" tabindex="-1"></a>plots</span>
+<span id="cb18-77"><a href="abundance-vs.-acoustic-detections.html#cb18-77" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-comparability.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vjjan91/paired-pointCount-acoustics/edit/master/04_abundance-acousticDetections.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
